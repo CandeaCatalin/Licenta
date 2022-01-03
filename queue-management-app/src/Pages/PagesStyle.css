@@ -1,0 +1,128 @@
+body {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(
+            180deg,
+            rgba(46, 49, 146, 1) 0%,
+            rgba(46, 49, 146, 1) 0%,
+            rgba(75, 79, 114, 1) 100%
+    );
+    overflow: hidden;
+}
+
+.vertical-center {
+    margin-top:15vh;
+    vertical-align: middle;
+}
+
+.form-box {
+    width: 100%;
+    max-width: 430px;
+    padding: 15px;
+    margin: auto;
+}
+
+.form-box .checkbox {
+    font-weight: 400;
+}
+
+
+.form-box .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-box input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-box input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.submit-button {
+    border-radius: 20px;
+    background: rgb(32, 36, 81);
+    border: none;
+    color: #f7f7f7;
+}
+
+.submit-button:hover{
+    color: rgb(233, 154, 31);
+}
+
+.button-modal-prim {
+    border-radius: 20px;
+    background: linear-gradient(
+            180deg,
+            rgba(29, 205, 233, 1) 5%,
+            rgba(104, 63, 247, 1) 100%,
+            rgba(104, 63, 247, 1) 100%
+    );
+
+    border: none;
+}
+
+.button-modal-sec {
+    border-radius: 20px;
+    background: gray;
+
+    border-color: none;
+}
+
+.box {
+    /* background-color: white; */
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 1rem;
+    border-radius: 20px;
+}
+
+.page-title {
+    text-align: center;
+}
+
+.mainpage-body {
+    background-color: white;
+    height: 100%;
+    padding-bottom: 50%;
+}
+
+.main-div {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+            180deg,
+            rgb(161, 232, 243) 0%,
+            rgb(255 255 255 / 0%)
+    );
+    margin: 55px 5% 10% 5%;
+    border-radius: 30px;
+    padding-bottom: 10%;
+}
+
+
+.main-div li {
+    margin: 1rem 0rem 0.5rem;
+    list-style-type: none;
+    background-color: transparent;
+}
+
+.main-div a {
+    color: black;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+.text-link{
+    color: rgb(46, 49, 146);
+    font-weight:bold ;
+    text-decoration: none;
+}
+.text-link:hover{
+    color: rgb(81, 86, 116);
+}
