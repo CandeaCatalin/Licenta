@@ -11,8 +11,10 @@ body {
 }
 
 .vertical-center {
-    margin-top:15vh;
-    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .form-box {
