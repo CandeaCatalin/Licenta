@@ -3,6 +3,7 @@
 # dependencies
 queue-management-app/node_modules
 queue-management-app/.pnp
+queue-management-app/package-lock.json
 .pnp.js
 
 # testing
@@ -21,6 +22,7 @@ backend/2.Domain/Domain.Schema/obj/
 backend/2.Domain/Domain.Schema/bin/
 backend/2.Domain/EF.Models/obj/
 backend/2.Domain/EF.Models/bin/
+backend/.vs/queue-management-backend/
 
 
 # misc
