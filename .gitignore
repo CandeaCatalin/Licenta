@@ -1,16 +1,21 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+queue-management-app/node_modules
+queue-management-app/.pnp
 .pnp.js
 
 # testing
-/coverage
+queue-management-app/coverage
 
 # production
-/build
+queue-management-app/build
 .idea
+
+# API debug
+backend/API/obj/
+backend/API/bin/
+
 
 # misc
 .DS_Store
