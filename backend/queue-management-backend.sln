@@ -14,6 +14,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Schema", "2.Domain\Domain.Schema\Domain.Schema.csproj", "{73F653C3-30E5-43C2-8A09-057EA8C2C6EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF.Models", "2.Domain\EF.Models\EF.Models.csproj", "{5D43B4B2-EFA8-4585-B50A-E356F41E7AD9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{73F653C3-30E5-43C2-8A09-057EA8C2C6EA} = {73F653C3-30E5-43C2-8A09-057EA8C2C6EA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

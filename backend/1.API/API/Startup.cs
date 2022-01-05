@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Data.Repositories;
+using EF.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API
 {
@@ -32,6 +35,8 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Queue Management", Version = "v1" });
             });
+            services.AddDbContext<QueueManagerContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DbConnection")).EnableSensitiveDataLogging().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

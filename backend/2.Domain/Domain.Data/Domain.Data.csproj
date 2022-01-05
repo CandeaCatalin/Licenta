@@ -15,5 +15,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\Domain.Schema\Domain.Schema.csproj" />
+    <ProjectReference Include="..\EF.Models\EF.Models.csproj" />
+  </ItemGroup>
 </Project>
