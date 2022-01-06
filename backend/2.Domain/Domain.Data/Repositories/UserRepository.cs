@@ -51,7 +51,7 @@ namespace Domain.Data.Repositories
 
         public User GetById(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.Users.Include(u => u.Queue).FirstOrDefault(u => u.Id == id);
         }
 
         public void UpdateImage(int userId, byte[] image)
@@ -66,7 +66,10 @@ namespace Domain.Data.Repositories
 
         public void VerifyRegistration(int userId)
         {
-            throw new System.NotImplementedException();
+            User user = GetById(userId);
+            user.IsActive = true;
+            _context.Users.Update(user);
+            _context.SaveChanges();
         }
     }
 }

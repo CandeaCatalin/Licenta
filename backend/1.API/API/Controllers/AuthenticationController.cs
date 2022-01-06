@@ -34,7 +34,7 @@ namespace API.Controllers
                 LastName = dto.LastName,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Email = dto.Email.ToLower(),
-                ImageUrl = new byte[]{}
+                ImageUrl = new byte[]{},
             };
             if (string.IsNullOrEmpty(dto.Password))
             {
@@ -53,13 +53,13 @@ namespace API.Controllers
 
                 return Created("success", returnedUser);
             }
-            catch (FormatException e)
+            catch (ArgumentException e)
             {
                 return Ok(new { message = e.Message });
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return Ok(new { message = "Email already exists" });
+                return Ok(new { message = e});
             }
         }
         [HttpPost("login")]

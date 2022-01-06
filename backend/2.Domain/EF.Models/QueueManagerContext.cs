@@ -12,7 +12,7 @@ namespace EF.Models
             }
             public DbSet<User> Users { get; set; }
             public DbSet<Queue> Queues { get; set; }
-            public DbSet<QueueToUser> QueueToUsers { get; set; }
+            public DbSet<QueueToUserCreated> QueueToUsersCreated { get; set; }
 
             protected override void OnModelCreating(ModelBuilder modelBuilder)
             {

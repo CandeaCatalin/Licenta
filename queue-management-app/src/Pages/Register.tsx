@@ -1,7 +1,8 @@
-import {FC, SyntheticEvent, useState} from "react";
-import {Link} from "react-router-dom";
+import {FC, SyntheticEvent, useContext, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import {User} from "../Models";
 import "./PagesStyle.css";
+import {UserContext} from "../Context/UserContext";
 
 
 interface RegisterProps {
@@ -15,21 +16,25 @@ export const Register: FC<RegisterProps> = ({}) => {
         id: 0,
         imageUrl: "",
         lastName: "",
+        queueId: 0
     });
-
+    const userContext = useContext(UserContext);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const navigate = useNavigate();
+
     const onSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         setIsSubmitted(true);
-        //Do the action for submitting
+        if ( await userContext.register(user, password, confirmPassword)){
+            navigate('../login', {replace: true});
+        }
         setIsSubmitted(false);
     };
 
     return (
         <>
-
             <div className={"vertical-center"}>
                 <main className="form-box">
                     <div className="box col-12 mb-3">

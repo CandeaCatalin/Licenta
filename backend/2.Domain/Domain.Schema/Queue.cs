@@ -8,8 +8,7 @@ namespace Domain.Schema
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public Queue<User> User { get; set; } = new Queue<User>();
         public DateTime CreatedTime { get; set; }
         public DateTime EndTime { get; set; }
     }

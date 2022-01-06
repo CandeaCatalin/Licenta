@@ -4,4 +4,5 @@ export type User = {
     email: string;
     imageUrl: string;
     id: number;
+    queueId:number;
 };
