@@ -1,21 +1,21 @@
-import {FC} from "react";
-import { Link } from "react-router-dom";
+import {FC, useContext} from "react";
+import {UserContext} from "../Context/UserContext";
 
 
-interface MainPageProps
-{
+interface MainPageProps {
 
 }
 
-export const MainPage: FC<MainPageProps > = ({}) => {
-
+export const MainPage: FC<MainPageProps> = () => {
+    const userContext = useContext(UserContext);
     return (
         <div>
-        <h1>Home</h1>
-        <nav>
-            <Link to="/">MainePage</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-        </nav>
-    </div>);
+            <h1>{userContext.user.email}</h1>
+            <h1>{userContext.user.firstName}</h1>
+            <h1>{userContext.user.lastName}</h1>
+            <button onClick={() => {
+                userContext.logOut()
+            }}>Logout
+            </button>
+        </div>);
 }

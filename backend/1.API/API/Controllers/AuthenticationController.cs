@@ -20,26 +20,28 @@ namespace API.Controllers
             _repository = repository;
             _jwtService = jwtService;
         }
-        [HttpPost("register")]
 
+        [HttpPost("register")]
         public IActionResult Register(RegisterDto dto)
         {
             if (dto.Password != dto.ConfirmPassword)
             {
                 return Ok(new { message = "Passwords must match!" });
             }
+
             User user = new User
             {
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Email = dto.Email.ToLower(),
-                ImageUrl = new byte[]{},
+                ImageUrl = new byte[] { },
             };
             if (string.IsNullOrEmpty(dto.Password))
             {
                 user.Password = null;
             }
+
             try
             {
                 User returnedUser = _repository.Create(user);
@@ -49,7 +51,10 @@ namespace API.Controllers
                     HttpOnly = true
                 });
                 MailService mailService = new MailService();
-                mailService.sendEmail(returnedUser.Email,"Hello. In order to confirm your registration please access " + "https://localhost:5001/api/Authentication/activateAccount?userId=" + returnedUser.Id.ToString(), "Confirm registration!");
+                mailService.sendEmail(returnedUser.Email,
+                    "Hello. In order to confirm your registration please access " +
+                    "https://localhost:5001/api/Authentication/activateAccount?userId=" + returnedUser.Id.ToString(),
+                    "Confirm registration!");
 
                 return Created("success", returnedUser);
             }
@@ -59,9 +64,10 @@ namespace API.Controllers
             }
             catch (Exception e)
             {
-                return Ok(new { message = e});
+                return Ok(new { message = e });
             }
         }
+
         [HttpPost("login")]
         public IActionResult Login(LoginDto dto)
         {
@@ -70,20 +76,23 @@ namespace API.Controllers
             {
                 return BadRequest(new { message = "Invalid Credentials" });
             }
+
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
             {
                 return BadRequest(new { message = "Invalid Credentials" });
             }
-            if(user.IsActive == false)
+
+            if (user.IsActive == false)
             {
                 return BadRequest(new { message = "The account must be activated!" });
             }
+
             string jwt = _jwtService.Generate(user.Id);
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
                 HttpOnly = true
             });
-            return Ok(new {  user = user });
+            return Ok(new { user = user });
         }
 
         [HttpPost("logout")]
@@ -92,12 +101,12 @@ namespace API.Controllers
             Response.Cookies.Delete("jwt");
             return Ok(new { message = "Logout Successful" });
         }
+
         [HttpGet("activateAccount")]
         public IActionResult ActivateAccount(int userId)
         {
             _repository.VerifyRegistration(userId);
             return Ok();
         }
-
     }
 }

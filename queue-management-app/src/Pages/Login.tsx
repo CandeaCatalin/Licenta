@@ -1,13 +1,15 @@
-import {FC, SyntheticEvent, useState} from "react";
+import {FC, SyntheticEvent, useContext, useState} from "react";
 import {Link} from "react-router-dom";
 import "./PagesStyle.css";
+import {UserContext} from "../Context/UserContext";
 
 
 interface LoginProps {
 
 }
 
-export const Login: FC<LoginProps> = ({}) => {
+export const Login: FC<LoginProps> = () => {
+    const userContext = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -15,18 +17,14 @@ export const Login: FC<LoginProps> = ({}) => {
 
         e.preventDefault();
         setIsSubmitted(true);
-        //Do the action for submitting
+        userContext.login(email, password);
         setIsSubmitted(false);
     };
 
     return (
         <>
-            {/*<Toast/>*/}
-
-
             <div className={"vertical-center"}>
                 <main className="form-box">
-
                     <div className="box mb-5">
                         <form onSubmit={onSubmit}>
                             <h1 className=" page-title h3 mb-3 fw-normal">

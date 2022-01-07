@@ -1,5 +1,5 @@
 import {FC, SyntheticEvent, useContext, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {User} from "../Models";
 import "./PagesStyle.css";
 import {UserContext} from "../Context/UserContext";
@@ -9,7 +9,7 @@ interface RegisterProps {
 
 }
 
-export const Register: FC<RegisterProps> = ({}) => {
+export const Register: FC<RegisterProps> = () => {
     const [user, setUser] = useState<User>({
         email: "",
         firstName: "",
@@ -22,14 +22,11 @@ export const Register: FC<RegisterProps> = ({}) => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const navigate = useNavigate();
 
     const onSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         setIsSubmitted(true);
-        if ( await userContext.register(user, password, confirmPassword)){
-            navigate('../login', {replace: true});
-        }
+        userContext.register(user, password, confirmPassword);
         setIsSubmitted(false);
     };
 

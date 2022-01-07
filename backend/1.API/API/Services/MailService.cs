@@ -13,7 +13,7 @@ namespace API.Services
 
         public string sendEmail(string toEmail, string body, string subject)
         {
-            message.From.Add(new MailboxAddress("QueueManagementSupport", "queuemanagementapp@gmail.com"));
+            message.From.Add(new MailboxAddress("Queue Management Support", "queuemanagementapp@gmail.com"));
             message.To.Add(MailboxAddress.Parse(toEmail));
             message.Subject = subject;
             message.Body = new TextPart("plain")
