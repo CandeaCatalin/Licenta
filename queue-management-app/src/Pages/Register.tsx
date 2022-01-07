@@ -16,7 +16,8 @@ export const Register: FC<RegisterProps> = () => {
         id: 0,
         imageUrl: "",
         lastName: "",
-        queueId: 0
+        queueId: 0,
+        queueRole:""
     });
     const userContext = useContext(UserContext);
     const [isSubmitted, setIsSubmitted] = useState(false);

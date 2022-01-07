@@ -5,4 +5,5 @@ export type User = {
     imageUrl: string;
     id: number;
     queueId:number;
+    queueRole:string;
 };

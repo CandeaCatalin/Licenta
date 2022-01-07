@@ -22,7 +22,8 @@ export const UserProvider: FC = ({children}) => {
         id: 0,
         imageUrl: "",
         lastName: "",
-        queueId: 0
+        queueId: 0,
+        queueRole:""
     });
     const navigate = useNavigate();
     useEffect(() => {
