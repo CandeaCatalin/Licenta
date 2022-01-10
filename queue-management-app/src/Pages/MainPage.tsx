@@ -19,7 +19,7 @@ export const MainPage: FC<MainPageProps> = () => {
         } else if (userContext.user.queueRole === "Member") {
             setSelectedPage("QueueMember");
         }
-    }, []);
+    }, [userContext.user]);
     const changePage = (newPage: string) => {
         setSelectedPage(newPage);
     };
@@ -31,7 +31,6 @@ export const MainPage: FC<MainPageProps> = () => {
     }
     return (
         <>
-
             {selectedPage === "Information" && (
                 <div>
                     <h1>{userContext.user.email}</h1>

@@ -3,7 +3,6 @@ import {User} from "../Models";
 import {QueueManagementAPI} from "./API";
 import {useNavigate} from "react-router-dom";
 
-
 type UserContextType = {
     user: User;
     register: any;
@@ -16,6 +15,7 @@ export const UserContext = createContext<UserContextType>(null);
 
 export const UserProvider: FC = ({children}) => {
     const QueueManagementApi = new QueueManagementAPI();
+
     const [user, setUser] = useState<User>({
         email: "",
         firstName: "",
@@ -23,7 +23,7 @@ export const UserProvider: FC = ({children}) => {
         imageUrl: "",
         lastName: "",
         queueId: 0,
-        queueRole:""
+        queueRole: ""
     });
     const navigate = useNavigate();
     useEffect(() => {
@@ -32,16 +32,21 @@ export const UserProvider: FC = ({children}) => {
 
             if (response !== undefined) {
                 setUser(response);
+            } else {
+                setUser({...user, id: -1}); // -1  = user not logged
             }
         })();
+
     }, []);
+
     useEffect(() => {
-        if (user?.id === 0) {
+        if (user?.id === -1) {
             navigate('../login', {replace: true});
         } else {
             navigate('../', {replace: true});
         }
     }, [user]);
+
     const register = async (user: User, password: string, confirmPassword: string) => {
         const response = await QueueManagementApi.register(user, password, confirmPassword);
         if (response) {
