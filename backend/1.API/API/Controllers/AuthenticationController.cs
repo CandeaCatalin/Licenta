@@ -1,7 +1,7 @@
 ﻿using System;
 using API.Dtos.Authentication;
 using API.Services;
-using Domain.Data.Repositories;
+using Domain.Data.Repositories.User;
 using Domain.Schema;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

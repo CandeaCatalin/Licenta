@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Domain.Schema;
 using EF.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Domain.Data.Repositories
+namespace Domain.Data.Repositories.User
 {
     public class UserRepository : IUserRepository
     {
@@ -16,7 +15,7 @@ namespace Domain.Data.Repositories
             _context = context;
         }
 
-        public User Create(User user)
+        public Schema.User Create(Schema.User user)
         {
             if (string.IsNullOrEmpty(user.FirstName))
             {
@@ -44,12 +43,12 @@ namespace Domain.Data.Repositories
             return GetByEmail(user.Email);
         }
 
-        public User GetByEmail(string email)
+        public Schema.User GetByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == email.ToLower());
+            return _context.Users.Include(u=>u.Queue).FirstOrDefault(u => u.Email == email.ToLower());
         }
 
-        public User GetById(int id)
+        public Schema.User GetById(int id)
         {
             return _context.Users.Include(u => u.Queue).FirstOrDefault(u => u.Id == id);
         }
@@ -59,14 +58,14 @@ namespace Domain.Data.Repositories
             throw new System.NotImplementedException();
         }
 
-        public User UpdateUser(User user, string newPassword)
+        public Schema.User UpdateUser(Schema.User user, string newPassword)
         {
             throw new System.NotImplementedException();
         }
 
         public void VerifyRegistration(int userId)
         {
-            User user = GetById(userId);
+            Schema.User user = GetById(userId);
             user.IsActive = true;
             _context.Users.Update(user);
             _context.SaveChanges();

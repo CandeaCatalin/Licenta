@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF.Models.Migrations
 {
     [DbContext(typeof(QueueManagerContext))]
-    [Migration("20220106091559_init")]
+    [Migration("20220110135435_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,9 +35,6 @@ namespace EF.Models.Migrations
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -110,6 +107,28 @@ namespace EF.Models.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Domain.Schema.UsersMappedToQueue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("QueueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QueueId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UsersMappedToQueue");
+                });
+
             modelBuilder.Entity("Domain.Schema.QueueToUserCreated", b =>
                 {
                     b.HasOne("Domain.Schema.Queue", "Queue")
@@ -132,14 +151,28 @@ namespace EF.Models.Migrations
             modelBuilder.Entity("Domain.Schema.User", b =>
                 {
                     b.HasOne("Domain.Schema.Queue", "Queue")
-                        .WithMany("User")
+                        .WithMany()
                         .HasForeignKey("QueueId");
 
                     b.Navigation("Queue");
                 });
 
-            modelBuilder.Entity("Domain.Schema.Queue", b =>
+            modelBuilder.Entity("Domain.Schema.UsersMappedToQueue", b =>
                 {
+                    b.HasOne("Domain.Schema.Queue", "Queue")
+                        .WithMany()
+                        .HasForeignKey("QueueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Schema.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Queue");
+
                     b.Navigation("User");
                 });
 #pragma warning restore 612, 618

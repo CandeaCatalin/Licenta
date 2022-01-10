@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Domain.Data.Repositories;
+using Domain.Data.Repositories.User;
 using Domain.Schema;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;

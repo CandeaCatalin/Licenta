@@ -14,7 +14,7 @@ namespace Domain.Schema
         public string Email { get; set; }
         public byte[] ImageUrl { get; set; } = new byte[] { };
         public int? QueueId { get; set; }
-        public Queue Queue { get; set; }
+        public Queue? Queue { get; set; }
         public DateTime CreatedTime { get; set; }
         public bool IsActive { get; set; } = false;
     }
