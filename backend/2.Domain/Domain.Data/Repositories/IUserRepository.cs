@@ -8,8 +8,7 @@ namespace Domain.Data.Repositories
         User GetByEmail(string email);
         User GetById(int id);
         User Login(string email, bool isAdmin = false);
-        void UpdateImage(int userId, byte[] image);
-        User UpdateUser(User user, string newPassword);
+        bool Delete(string email);
         void VerifyRegistration(int userId);
     }
 }

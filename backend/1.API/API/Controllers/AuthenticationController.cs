@@ -113,7 +113,7 @@ namespace API.Controllers
         [HttpPost("/user/login")]
         public IActionResult LoginUser(LoginDto dto)
         {
-            User user = _repository.Login(dto.Email,false);
+            User user = _repository.Login(dto.Email, false);
             if (user == null)
             {
                 return BadRequest(new { message = "Invalid Credentials" });
@@ -140,7 +140,7 @@ namespace API.Controllers
         [HttpPost("/admin/login")]
         public IActionResult LoginAdmin(LoginDto dto)
         {
-            User user = _repository.Login(dto.Email , true);
+            User user = _repository.Login(dto.Email, true);
             if (user == null)
             {
                 return BadRequest(new { message = "Invalid Credentials" });
