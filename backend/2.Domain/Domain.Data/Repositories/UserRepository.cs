@@ -16,8 +16,8 @@ namespace Domain.Data.Repositories
             _context = context;
         }
 
-        public User Create(User user)
-        {
+        public User Create(User user){
+
             if (string.IsNullOrEmpty(user.FirstName))
             {
                 throw new ArgumentException ("FirstName is invalid");

@@ -35,7 +35,7 @@ namespace API.Controllers
                 LastName = dto.LastName,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Email = dto.Email.ToLower(),
-                ImageUrl = new byte[] { },
+            
             };
             if (string.IsNullOrEmpty(dto.Password))
             {
