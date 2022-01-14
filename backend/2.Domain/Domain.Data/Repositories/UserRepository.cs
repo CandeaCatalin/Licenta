@@ -63,6 +63,19 @@ namespace Domain.Data.Repositories
                 .FirstOrDefault(u => u.Email == email.ToLower() && isAdmin == (u.UserRoleId == 2));
         }
 
+        public bool Delete(string email)
+        {
+            User user = GetByEmail(email);
+            if (user == null)
+            {
+                throw new Exception(message: "User not found");
+            }
+
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+            return true;
+        }
+
         public User GetById(int id)
         {
             return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRole)

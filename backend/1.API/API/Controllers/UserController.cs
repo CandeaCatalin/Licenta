@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
+using API.Dtos.User;
 using API.Services;
 using Domain.Data.Repositories;
 using Domain.Schema;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -21,7 +20,7 @@ namespace API.Controllers
             _jwtService = jwtService;
         }
 
-        [HttpGet("")]
+        [HttpGet("get")]
         public IActionResult GetUser()
         {
             User user = _jwtService.CheckIfUserIsLogged(_repository, Request);
@@ -31,6 +30,20 @@ namespace API.Controllers
             }
             else
                 return Ok(user);
+        }
+
+        [HttpPost("delete")]
+        public IActionResult DeleteUser(DeleteUserDto dto)
+        {
+            try
+            {
+                _repository.Delete(dto.Email);
+                return Ok(new { message = dto.Email + " was deleted!" });
+            }
+            catch (Exception e)
+            {
+                return Ok(new { message = e.Message });
+            }
         }
     }
 }
