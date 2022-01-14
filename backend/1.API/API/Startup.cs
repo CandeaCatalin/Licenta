@@ -39,6 +39,7 @@ namespace API
             services.AddDbContext<QueueManagerContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DbConnection")).EnableSensitiveDataLogging().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IQueueRepository, QueueRepository>();
             services.AddScoped<JwtService>();
         }
 
@@ -49,7 +50,7 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "VirtuWally.API v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QueueManagement.API v1"));
             }
 
             app.UseHttpsRedirection();
