@@ -12,10 +12,13 @@ namespace Domain.Schema
         [JsonIgnore]
         public string Password { get; set; }
         public string Email { get; set; }
+        public int? QueueId { get; set; }
         public Queue Queue { get; set; }
+        public int? PhysicalQueueId { get; set; }
         public PhysicalQueue PhysicalQueue { get; set; }
         public DateTime CreatedTime { get; set; }
         public bool IsActive { get; set; } = false;
+        public int UserRoleId { get; set; }
         public UserRole UserRole { get; set; }
     }
 }

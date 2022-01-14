@@ -8,7 +8,6 @@ namespace Domain.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
-
         private readonly QueueManagerContext _context;
 
         public UserRepository(QueueManagerContext context)
@@ -16,26 +15,29 @@ namespace Domain.Data.Repositories
             _context = context;
         }
 
-        public User Create(User user){
-
-            if (string.IsNullOrEmpty(user.FirstName))
+        public User Create(User user, bool isAdmin = false)
+        {
+            if (isAdmin == false)
             {
-                throw new ArgumentException ("FirstName is invalid");
-            }
+                if (string.IsNullOrEmpty(user.FirstName))
+                {
+                    throw new ArgumentException("FirstName is invalid");
+                }
 
-            if (string.IsNullOrEmpty(user.LastName))
-            {
-                throw new ArgumentException ("LastName is invalid");
+                if (string.IsNullOrEmpty(user.LastName))
+                {
+                    throw new ArgumentException("LastName is invalid");
+                }
             }
 
             if (string.IsNullOrEmpty(user.Password))
             {
-                throw new ArgumentException ("Password is invalid");
+                throw new ArgumentException("Password is invalid");
             }
 
             if (string.IsNullOrEmpty(user.Email) || new System.Net.Mail.MailAddress(user.Email) == null)
             {
-                throw new ArgumentException ("Email is invalid");
+                throw new ArgumentException("Email is invalid");
             }
 
             _context.Users.Add(user);
@@ -44,14 +46,27 @@ namespace Domain.Data.Repositories
             return GetByEmail(user.Email);
         }
 
+        public User CreateAdmin(User user)
+        {
+            throw new NotImplementedException();
+        }
+
         public User GetByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == email.ToLower());
+            return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRole)
+                .FirstOrDefault(u => u.Email == email.ToLower());
+        }
+
+        public User Login(string email, bool isAdmin = false)
+        {
+            return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRole)
+                .FirstOrDefault(u => u.Email == email.ToLower() && isAdmin == (u.UserRoleId == 2));
         }
 
         public User GetById(int id)
         {
-            return _context.Users.Include(u => u.Queue).FirstOrDefault(u => u.Id == id);
+            return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRole)
+                .FirstOrDefault(u => u.Id == id);
         }
 
         public void UpdateImage(int userId, byte[] image)

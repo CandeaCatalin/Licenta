@@ -1,6 +1,6 @@
 ﻿namespace API.Dtos.Authentication
 {
-    public class RegisterDto
+    public class RegisterUserDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

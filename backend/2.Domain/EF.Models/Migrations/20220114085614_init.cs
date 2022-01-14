@@ -56,7 +56,7 @@ namespace EF.Models.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EventCategoryId = table.Column<int>(type: "int", nullable: true),
+                    EventCategoryId = table.Column<int>(type: "int", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
@@ -67,7 +67,7 @@ namespace EF.Models.Migrations
                         column: x => x.EventCategoryId,
                         principalTable: "EventCategory",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,7 +78,7 @@ namespace EF.Models.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    QueueId = table.Column<int>(type: "int", nullable: true),
+                    QueueId = table.Column<int>(type: "int", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     EstimatedTime = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
@@ -90,7 +90,7 @@ namespace EF.Models.Migrations
                         column: x => x.QueueId,
                         principalTable: "Queues",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,7 +107,7 @@ namespace EF.Models.Migrations
                     PhysicalQueueId = table.Column<int>(type: "int", nullable: true),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    UserRoleId = table.Column<int>(type: "int", nullable: true)
+                    UserRoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,19 +117,19 @@ namespace EF.Models.Migrations
                         column: x => x.PhysicalQueueId,
                         principalTable: "PhysicalQueues",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Users_Queues_QueueId",
                         column: x => x.QueueId,
                         principalTable: "Queues",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Users_UserRole_UserRoleId",
                         column: x => x.UserRoleId,
                         principalTable: "UserRole",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -138,9 +138,9 @@ namespace EF.Models.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    QueueId = table.Column<int>(type: "int", nullable: true),
-                    PhysicalQueueId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    QueueId = table.Column<int>(type: "int", nullable: false),
+                    PhysicalQueueId = table.Column<int>(type: "int", nullable: false),
                     TimeAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimePassed = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsPassed = table.Column<bool>(type: "bit", nullable: false)
@@ -153,19 +153,19 @@ namespace EF.Models.Migrations
                         column: x => x.PhysicalQueueId,
                         principalTable: "PhysicalQueues",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UsersToQueues_Queues_QueueId",
                         column: x => x.QueueId,
                         principalTable: "Queues",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_UsersToQueues_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF.Models.Migrations
 {
     [DbContext(typeof(QueueManagerContext))]
-    [Migration("20220114083357_init")]
+    [Migration("20220114085614_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,7 @@ namespace EF.Models.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("EventCategoryId")
+                    b.Property<int>("EventCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -94,7 +94,7 @@ namespace EF.Models.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("QueueId")
+                    b.Property<int>("QueueId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -163,7 +163,7 @@ namespace EF.Models.Migrations
                     b.Property<int?>("QueueId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserRoleId")
+                    b.Property<int>("UserRoleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -218,10 +218,10 @@ namespace EF.Models.Migrations
                     b.Property<bool>("IsPassed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("PhysicalQueueId")
+                    b.Property<int>("PhysicalQueueId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("QueueId")
+                    b.Property<int>("QueueId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TimeAdded")
@@ -230,7 +230,7 @@ namespace EF.Models.Migrations
                     b.Property<DateTime>("TimePassed")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -248,7 +248,9 @@ namespace EF.Models.Migrations
                 {
                     b.HasOne("Domain.Schema.EventCategory", "EventCategory")
                         .WithMany()
-                        .HasForeignKey("EventCategoryId");
+                        .HasForeignKey("EventCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("EventCategory");
                 });
@@ -257,7 +259,9 @@ namespace EF.Models.Migrations
                 {
                     b.HasOne("Domain.Schema.Queue", "Queue")
                         .WithMany()
-                        .HasForeignKey("QueueId");
+                        .HasForeignKey("QueueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Queue");
                 });
@@ -274,7 +278,9 @@ namespace EF.Models.Migrations
 
                     b.HasOne("Domain.Schema.UserRole", "UserRole")
                         .WithMany()
-                        .HasForeignKey("UserRoleId");
+                        .HasForeignKey("UserRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PhysicalQueue");
 
@@ -287,15 +293,21 @@ namespace EF.Models.Migrations
                 {
                     b.HasOne("Domain.Schema.PhysicalQueue", "PhysicalQueue")
                         .WithMany()
-                        .HasForeignKey("PhysicalQueueId");
+                        .HasForeignKey("PhysicalQueueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Schema.Queue", "Queue")
                         .WithMany()
-                        .HasForeignKey("QueueId");
+                        .HasForeignKey("QueueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Schema.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PhysicalQueue");
 
