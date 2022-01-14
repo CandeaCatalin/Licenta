@@ -1,9 +1,10 @@
 ﻿namespace API.Dtos.Authentication
 {
-    public class LoginDto
+    public class RegisterAdminDto
     {
         public string Email { get; set; }
         public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
 
     }
 }

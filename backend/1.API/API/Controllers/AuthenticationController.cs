@@ -21,8 +21,8 @@ namespace API.Controllers
             _jwtService = jwtService;
         }
 
-        [HttpPost("register")]
-        public IActionResult Register(RegisterDto dto)
+        [HttpPost("/user/register")]
+        public IActionResult RegisterUser(RegisterUserDto dto)
         {
             if (dto.Password != dto.ConfirmPassword)
             {
@@ -35,7 +35,7 @@ namespace API.Controllers
                 LastName = dto.LastName,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Email = dto.Email.ToLower(),
-                ImageUrl = new byte[] { },
+                UserRoleId = 1
             };
             if (string.IsNullOrEmpty(dto.Password))
             {
@@ -68,10 +68,79 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("login")]
-        public IActionResult Login(LoginDto dto)
+        [HttpPost("/admin/register")]
+        public IActionResult RegisterAdmin(RegisterAdminDto dto)
         {
-            User user = _repository.GetByEmail(dto.Email);
+            if (dto.Password != dto.ConfirmPassword)
+            {
+                return Ok(new { message = "Passwords must match!" });
+            }
+
+            User user = new User
+            {
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                Email = dto.Email.ToLower(),
+                UserRoleId = 2,
+                IsActive = true
+            };
+            if (string.IsNullOrEmpty(dto.Password))
+            {
+                user.Password = null;
+            }
+
+            try
+            {
+                User returnedUser = _repository.Create(user, true);
+                string jwt = _jwtService.Generate(returnedUser.Id);
+                Response.Cookies.Append("jwt", jwt, new CookieOptions
+                {
+                    HttpOnly = true
+                });
+
+
+                return Created("success", returnedUser);
+            }
+            catch (ArgumentException e)
+            {
+                return Ok(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                return Ok(new { message = e });
+            }
+        }
+
+        [HttpPost("/user/login")]
+        public IActionResult LoginUser(LoginDto dto)
+        {
+            User user = _repository.Login(dto.Email,false);
+            if (user == null)
+            {
+                return BadRequest(new { message = "Invalid Credentials" });
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+            {
+                return BadRequest(new { message = "Invalid Credentials" });
+            }
+
+            if (user.IsActive == false)
+            {
+                return BadRequest(new { message = "The account must be activated!" });
+            }
+
+            string jwt = _jwtService.Generate(user.Id);
+            Response.Cookies.Append("jwt", jwt, new CookieOptions
+            {
+                HttpOnly = true
+            });
+            return Ok(new { user = user });
+        }
+
+        [HttpPost("/admin/login")]
+        public IActionResult LoginAdmin(LoginDto dto)
+        {
+            User user = _repository.Login(dto.Email , true);
             if (user == null)
             {
                 return BadRequest(new { message = "Invalid Credentials" });
