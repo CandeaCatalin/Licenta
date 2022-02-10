@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAxgZ0U8ca90W51TQP1PBxqQAAAAACAAAAAAAQZgAAAAEAACAAAADYbJ5/WnAmXfgG8br+fnGvBprzpBfHtEUeQREW/z0HxwAAAAAOgAAAAAIAACAAAACPKG5XC+k+JylzMReHzsqiYGCrpEB8Xd446UDFlVotr4AAAAAzS09AbdQk972Ab+HMAGKY5MAeKdfB1wQKmTmtpMs8N9mND4yRNPfImTgLU9VxyHj3ZN+H0swwJTyQgOH2gqcGWMLqEfnvd16mvdUW3UPPf/FT35trmNxFZ3PsksX5Rr0ZwD9PxmNHfSaUauIdmHLbhaSXGtdTAtRcLPSe5w0zk0AAAACa2WW6yrAfMU/US/mgQFFmVdgICX+Z3RB8kXmnk8qyXFGgBBL5fRDVz4yrJPRxLdStuOBYs4kq+hYCpX0OPfVR</EncryptedPassword>
+    <History>True|2022-02-10T17:59:12.3804994Z;True|2022-02-10T19:32:42.3654661+02:00;True|2022-02-10T19:29:05.0694550+02:00;True|2022-02-10T19:10:30.8737103+02:00;True|2022-02-10T19:03:40.7720125+02:00;True|2022-02-06T00:25:13.9285849+02:00;True|2022-02-03T22:52:45.7034714+02:00;True|2022-02-03T22:50:53.2539628+02:00;True|2022-02-03T22:48:02.7350242+02:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <EFMigrations Include="EF.Models.QueueManagerContext">
+      <Value>Data Source=tcp:queuemanagement.database.windows.net,1433%3bInitial Catalog=QueueManagement%3bUser Id=catalin.candea%40queuemanagement%3bPassword=RockyRoad12</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

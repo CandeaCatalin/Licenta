@@ -21,23 +21,23 @@ namespace Domain.Data.Repositories
             {
                 if (string.IsNullOrEmpty(user.FirstName))
                 {
-                    throw new ArgumentException("FirstName is invalid");
+                    throw new FormatException("FirstName is invalid");
                 }
 
                 if (string.IsNullOrEmpty(user.LastName))
                 {
-                    throw new ArgumentException("LastName is invalid");
+                    throw new FormatException("LastName is invalid");
                 }
             }
 
             if (string.IsNullOrEmpty(user.Password))
             {
-                throw new ArgumentException("Password is invalid");
+                throw new FormatException("Password is invalid");
             }
 
             if (string.IsNullOrEmpty(user.Email) || new System.Net.Mail.MailAddress(user.Email) == null)
             {
-                throw new ArgumentException("Email is invalid");
+                throw new FormatException("Email is invalid");
             }
 
             _context.Users.Add(user);

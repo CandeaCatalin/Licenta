@@ -21,7 +21,7 @@ namespace API.Controllers
             _jwtService = jwtService;
         }
 
-        [HttpPost("/user/register")]
+        [HttpPost("user/register")]
         public IActionResult RegisterUser(RegisterUserDto dto)
         {
             if (dto.Password != dto.ConfirmPassword)
@@ -45,30 +45,25 @@ namespace API.Controllers
             try
             {
                 User returnedUser = _repository.Create(user);
-                string jwt = _jwtService.Generate(returnedUser.Id);
-                Response.Cookies.Append("jwt", jwt, new CookieOptions
-                {
-                    HttpOnly = true
-                });
                 MailService mailService = new MailService();
                 mailService.sendEmail(returnedUser.Email,
                     "Hello. In order to confirm your registration please access " +
-                    "https://localhost:5001/api/Authentication/activateAccount?userId=" + returnedUser.Id.ToString(),
+                    "https://queuemanagementlicenta.azurewebsites.net/api/Authentication/activateAccount?userId=" + returnedUser.Id.ToString(),
                     "Confirm registration!");
 
                 return Created("success", returnedUser);
             }
-            catch (ArgumentException e)
+            catch (FormatException e)
             {
                 return Ok(new { message = e.Message });
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return Ok(new { message = e });
+                return Ok(new { message = "Email already exists" });
             }
         }
 
-        [HttpPost("/admin/register")]
+        [HttpPost("admin/register")]
         public IActionResult RegisterAdmin(RegisterAdminDto dto)
         {
             if (dto.Password != dto.ConfirmPassword)
@@ -110,23 +105,23 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("/user/login")]
+        [HttpPost("user/login")]
         public IActionResult LoginUser(LoginDto dto)
         {
             User user = _repository.Login(dto.Email, false);
             if (user == null)
             {
-                return BadRequest(new { message = "Invalid Credentials" });
+                return Ok(new { message = "Invalid Credentials" });
             }
 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
             {
-                return BadRequest(new { message = "Invalid Credentials" });
+                return Ok(new { message = "Invalid Credentials" });
             }
 
             if (user.IsActive == false)
             {
-                return BadRequest(new { message = "The account must be activated!" });
+                return Ok(new { message = "The account must be activated!" });
             }
 
             string jwt = _jwtService.Generate(user.Id);
@@ -137,7 +132,7 @@ namespace API.Controllers
             return Ok(new { user = user });
         }
 
-        [HttpPost("/admin/login")]
+        [HttpPost("admin/login")]
         public IActionResult LoginAdmin(LoginDto dto)
         {
             User user = _repository.Login(dto.Email, true);
