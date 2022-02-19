@@ -7,7 +7,7 @@ import {showMessage} from "react-native-flash-message";
 
 type UserContextType = {
     user: User;
-    register: any;
+    register: (newUser: User, password: string, confirmPassword: string) => {};
     login: any;
     logOut: any;
 };
@@ -18,25 +18,22 @@ export const UserContext = createContext<UserContextType>(null);
 export const UserProvider: FC = ({children}) => {
 
         const [user, setUser] = useState<User>({
-            email: "",
             firstName: "",
-            id: 0,
-            imageUrl: "",
             lastName: "",
-            queueId: 0,
-            queueRole: ""
+            email: "",
+            id: 0,
         });
         const navigator = useNavigation();
         useEffect(() => {
             getUser().then();
         }, [])
-        const register = async (user: User, password: string, confirmPassword: string) => {
+        const register = async (newUser: User, password: string, confirmPassword: string) => {
             try {
                 const response = await axios({
                     method: "post",
                     url: endpoint.register,
                     data: {
-                        ...user, password, confirmPassword
+                        ...newUser, password, confirmPassword
                     },
                 });
                 if (response.data.message !== undefined) {
@@ -81,19 +78,16 @@ export const UserProvider: FC = ({children}) => {
         }
         const logOut = async () => {
             try {
-                const response = await axios({
+                await axios({
                     method: "post",
                     url: endpoint.logOut,
                 });
                 setUser({
-                    email: "",
                     firstName: "",
-                    id: 0,
-                    imageUrl: "",
                     lastName: "",
-                    queueId: 0,
-                    queueRole: ""
-                });
+                    email: "",
+                    id: 0,
+                     });
                 // @ts-ignore
                 navigator.navigate("Login");
             } catch
@@ -118,8 +112,8 @@ export const UserProvider: FC = ({children}) => {
         }
         const ctx: UserContextType = {
             user: user,
-            register: (user: User, password: string, confirmPassword: string) =>
-                register(user, password, confirmPassword),
+            register: (newUser: User, password: string, confirmPassword: string) =>
+                register(newUser, password, confirmPassword),
             login: (email: string, password: string) => login(email, password),
             logOut: () => logOut()
         };

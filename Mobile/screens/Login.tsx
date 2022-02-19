@@ -1,27 +1,33 @@
-import React, {FC, useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {LinearGradient} from "expo-linear-gradient";
 import {formStyles, styles} from "../constants/Styles";
 import {Text, TextInput, TouchableOpacity, View} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {UserContext} from "../context/UserContext";
 
-
 export const Login = () => {
     const context = useContext(UserContext);
     const navigator = useNavigation();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isSubmitted, setIsSubmitted] = useState(true);
+
+    const [state, setState] = useState<LoginState>({loginCredentials: {email: "", password: ""}, isSubmitted: true});
+
     useEffect(() => {
-        if (password !== "" && email !== "") {
-            setIsSubmitted(false);
+        if (state.loginCredentials.password !== "" && state.loginCredentials.email !== "") {
+            setState(prevState => {
+                return {...prevState, isSubmitted: false}
+            });
         } else {
-            setIsSubmitted(true);
+            setState(prevState => {
+                return {...prevState, isSubmitted: true}
+            });
         }
-    }, [password, email]);
+    }, [state.loginCredentials]);
+
     const onSubmit = () => {
-        setIsSubmitted(true);
-        context.login(email, password);
+        setState(prevState => {
+            return {...prevState, isSubmitted: true}
+        });
+        context.login(state.loginCredentials.email, state.loginCredentials.password);
     }
     const onForgetPasswordClick = () => {
         console.log("Not yet implemented!");
@@ -46,15 +52,35 @@ export const Login = () => {
             <View style={formStyles.loginBox}>
                 <Text style={formStyles.formHeader}>Welcome!</Text>
                 <TextInput placeholderTextColor={"#000"} placeholder={"Email address"} style={formStyles.formBox}
-                           onChangeText={(text) => setEmail(text)}/>
+                           onChangeText={(text) =>
+                               setState(prevState => {
+                                   return {
+                                       ...prevState,
+                                       loginCredentials: {email: text, password: prevState.loginCredentials.password}
+                                   }
+                               })}/>
                 <TextInput placeholderTextColor={"#000"} placeholder={"Password"} style={formStyles.formBox}
-                           onChangeText={(text) => setPassword(text)}/>
+                           onChangeText={(text) =>
+                               setState(prevState => {
+                                   return {
+                                       ...prevState,
+                                       loginCredentials: {password: text, email: prevState.loginCredentials.email}
+                                   }
+                               })}/>
                 <Text style={formStyles.formRedirectionText} onPress={onForgetPasswordClick}>Forget password?</Text>
-                <TouchableOpacity onPress={onSubmit} disabled={isSubmitted}
-                                  style={!isSubmitted ? formStyles.formSubmitButton : formStyles.formSubmitButtonDisabled}><Text
+                <TouchableOpacity onPress={onSubmit} disabled={state.isSubmitted}
+                                  style={!state.isSubmitted ? formStyles.formSubmitButton : formStyles.formSubmitButtonDisabled}><Text
                     style={formStyles.formSubmitButtonText}>Sign in</Text></TouchableOpacity>
                 <Text style={formStyles.formRedirectionText} onPress={onNoAccountClick}>Don't have an account?</Text>
             </View>
         </LinearGradient>
     );
+}
+type loginCredentialsType = {
+    email: string;
+    password: string;
+};
+type LoginState = {
+    loginCredentials: loginCredentialsType;
+    isSubmitted: boolean;
 }

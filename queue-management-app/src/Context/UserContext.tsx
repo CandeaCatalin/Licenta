@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 type UserContextType = {
     user: User;
-    register: any;
+    register: (user:User, password:string, confirmPassword:string)=>{};
     login: any;
     logOut: any;
 };
@@ -47,8 +47,8 @@ export const UserProvider: FC = ({children}) => {
         }
     }, [user]);
 
-    const register = async (user: User, password: string, confirmPassword: string) => {
-        const response = await QueueManagementApi.register(user, password, confirmPassword);
+    const register = async (newUser:User, password: string, confirmPassword: string) => {
+        const response = await QueueManagementApi.register(newUser, password, confirmPassword);
         if (response) {
             navigate('../login', {replace: true});
         }
@@ -56,8 +56,7 @@ export const UserProvider: FC = ({children}) => {
     const login = async (email: string, password: string) => {
         const response = await QueueManagementApi.login(email, password);
         if (response) {
-            const user = await QueueManagementApi.getUser();
-            setUser(user);
+            setUser(await QueueManagementApi.getUser());
         }
     }
     const logOut = async () => {
@@ -68,8 +67,8 @@ export const UserProvider: FC = ({children}) => {
     }
     const ctx: UserContextType = {
         user: user,
-        register: (user: User, password: string, confirmPassword: string) =>
-            register(user, password, confirmPassword),
+        register: (newUser: User, password: string, confirmPassword: string) =>
+            register(newUser, password, confirmPassword),
         login: (email: string, password: string) => login(email, password),
         logOut: () => logOut()
     };

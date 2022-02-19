@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useState} from "react";
-import {ActivityIndicator, View, Text, TouchableOpacity, TextInput, Button} from "react-native";
-import {formStyles, styles} from "../constants/Styles";
+import React, {useContext} from "react";
+import {ActivityIndicator, View, Text, Button} from "react-native";
+import {styles} from "../constants/Styles";
 import {LinearGradient} from "expo-linear-gradient";
 import {UserContext} from "../context/UserContext";
 
@@ -21,8 +21,14 @@ export const Home = () => {
             style={styles.container}
         >
             {context.user.id === 0 ? <ActivityIndicator size="large" color={"#0FF"}/> :
-                <View style={styles.container}><Button title={"Logout"}
-                                                       onPress={context.logOut}/><Text>{context.user.firstName}</Text></View>}
+                <View style={styles.container}>
+                    <Button title={"Logout"} onPress={context.logOut}/>
+                    <Text>{context.user.firstName}</Text>
+                    <Text>{context.user.lastName}</Text>
+                    <Text>{context.user.email}</Text>
+                    <Text>{context.user.id}</Text>
+
+                </View>}
         </LinearGradient>
     );
 }

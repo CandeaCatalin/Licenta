@@ -7,25 +7,26 @@ import {useNavigation} from "@react-navigation/native";
 import {UserContext} from "../context/UserContext";
 
 
-export const Register = ({}) => {
+export const Register = () => {
     const navigator = useNavigation();
     const context = useContext(UserContext);
-    const [user, setUser] = useState<User>({
-        email: "",
-        firstName: "",
-        id: 0,
-        imageUrl: "",
-        lastName: "",
-        queueId: 0,
-        queueRole: ""
+    const [state, setState] = useState<RegisterState>({
+        password: "",
+        confirmPassword: "",
+        isSubmitted: false,
+        user: {
+            email: "",
+            firstName: "",
+            id: 0,
+            lastName: "",
+        }
     });
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const onSubmit = () => {
-        setIsSubmitted(true);
-        context.register(user, password, confirmPassword);
+        setState(prevState => {
+            return {...prevState, isSubmitted: true}
+        });
+        context.register(state.user, state.password, state.confirmPassword);
     }
     const onHaveAccountClick = () => {
         // @ts-ignore
@@ -47,22 +48,63 @@ export const Register = ({}) => {
             <View style={formStyles.registerBox}>
                 <Text style={formStyles.formHeader}>Welcome!</Text>
                 <TextInput placeholderTextColor={"#000"} placeholder={"First Name"} style={formStyles.formBox}
-                           onChangeText={(text) => setUser({...user, firstName: text})}/>
+                           onChangeText={(text) => setState(prevState => {
+                               return {
+                                   ...prevState,
+                                   user: {
+                                       email: prevState.user.email,
+                                       firstName: text,
+                                       lastName: prevState.user.lastName,
+                                       id: prevState.user.id,
+                                   }
+                               }
+                           })}/>
                 <TextInput placeholderTextColor={"#000"} placeholder={"Last Name"} style={formStyles.formBox}
-                           onChangeText={(text) => setUser({...user, lastName: text})}/>
+                           onChangeText={(text) => setState(prevState => {
+                               return {
+                                   ...prevState,
+                                   user: {
+                                       email: prevState.user.email,
+                                       firstName: prevState.user.firstName,
+                                       lastName: text,
+                                       id: prevState.user.id,
+                                   }
+                               }
+                           })}/>
                 <TextInput placeholderTextColor={"#000"} placeholder={"Email address"} style={formStyles.formBox}
-                           onChangeText={(text) => setUser({...user, email: text})}/>
+                           onChangeText={(text) => setState(prevState => {
+                               return {
+                                   ...prevState,
+                                   user: {
+                                       email: text,
+                                       firstName: prevState.user.firstName,
+                                       lastName: prevState.user.lastName,
+                                       id: prevState.user.id,
+                                   }
+                               }
+                           })}/>
                 <TextInput placeholderTextColor={"#000"} placeholder={"Password"} style={formStyles.formBox}
-                           onChangeText={(text) => setPassword(text)}/>
+                           onChangeText={(text) => setState(prevState => {
+                               return {...prevState, password: text}
+                           })}/>
                 <TextInput placeholderTextColor={"#000"} placeholder={"Confirm Password"} style={formStyles.formBox}
-                           onChangeText={(text) => setConfirmPassword(text)}/>
+                           onChangeText={(text) => setState(prevState => {
+                               return {...prevState, confirmPassword: text}
+                           })}/>
 
-                <TouchableOpacity onPress={onSubmit} disabled={isSubmitted}
-                                  style={!isSubmitted ? formStyles.formSubmitButton : formStyles.formSubmitButtonDisabled}><Text
+                <TouchableOpacity onPress={onSubmit} disabled={state.isSubmitted}
+                                  style={!state.isSubmitted ? formStyles.formSubmitButton : formStyles.formSubmitButtonDisabled}><Text
                     style={formStyles.formSubmitButtonText}>Register</Text></TouchableOpacity>
                 <Text style={formStyles.formRedirectionText} onPress={onHaveAccountClick}>Already have an account? Sign
                     in</Text>
             </View>
         </LinearGradient>
     );
+}
+
+type RegisterState = {
+    user: User,
+    password: string,
+    confirmPassword: string,
+    isSubmitted: boolean
 }

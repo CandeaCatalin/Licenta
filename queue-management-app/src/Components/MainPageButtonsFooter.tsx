@@ -1,5 +1,4 @@
-import {FC, useContext} from "react";
-import {UserContext} from "../Context/UserContext";
+import {FC} from "react";
 
 
 interface MainPageButtonsFooterProps {
@@ -8,7 +7,6 @@ interface MainPageButtonsFooterProps {
 }
 
 export const MainPageButtonsFooter: FC<MainPageButtonsFooterProps> = ({joinQueue, createQueue}) => {
-    const userContext = useContext(UserContext);
     return (<div className={"footer-menu"}>
         <button className={"footer-button"} onClick={() => {
             joinQueue()

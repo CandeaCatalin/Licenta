@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
 
 import {RootStackParamList} from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
+import LinkingConfiguration from './Linking';
 import {Home} from "../screens/Home";
 import {Login} from "../screens/Login";
 import {Register} from "../screens/Register";
