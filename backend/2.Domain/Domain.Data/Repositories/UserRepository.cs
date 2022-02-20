@@ -60,7 +60,7 @@ namespace Domain.Data.Repositories
         public User Login(string email, bool isAdmin = false)
         {
             return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRole)
-                .FirstOrDefault(u => u.Email == email.ToLower() && isAdmin == (u.UserRoleId == 2));
+                .FirstOrDefault(u => u.Email == email.ToLower() && isAdmin == (u.UserRoleId == 1));
         }
 
         public bool Delete(string email)

@@ -1,5 +1,6 @@
 import {User} from "../Models";
 import {toast} from "react-hot-toast";
+import axios from "axios";
 
 export class QueueManagementAPI {
     baseUrl: string;
@@ -7,27 +8,27 @@ export class QueueManagementAPI {
 
     constructor() {
         this._endpoints = {};
-        this.baseUrl = "https://localhost:5001";
+        this.baseUrl = "https://queuemanagementlicenta.azurewebsites.net";
         this._endpoints = {
-            register: '/api/Authentication/register',
-            login: '/api/Authentication/login',
+            register: '/api/Authentication/admin/register',
+            login: '/api/Authentication/admin/login',
             logout: '/api/Authentication/logout',
-            user: '/api/User',
+            user: '/api/User/get',
         };
     }
 
 
     getUser = async () => {
-        const response = await fetch(this._endpoints.user, {
-            headers: {"Content-Type": "application/json"},
+        const response = await axios({
+            method: "get",
+            url: this.baseUrl + this._endpoints.user,
         });
-        const content = await response.json();
-        if (content.id !== undefined) {
-            return content;
-        }
+
+        return response.data;
+
     };
     register = async (user: User, password: string, confirmPassword: string) => {
-        const response = await fetch(this._endpoints.register, {
+        const response = await fetch(this.baseUrl + this._endpoints.register, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             credentials: "include",
@@ -42,7 +43,7 @@ export class QueueManagementAPI {
             return false;
         }
     }
-    login = async (email:string,password:string) =>{
+    login = async (email: string, password: string) => {
         const response = await fetch(this._endpoints.login, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -57,17 +58,17 @@ export class QueueManagementAPI {
             return false;
         }
     }
-    logOut = async ()=>{
-        const response = await fetch(this._endpoints.logout,{
+    logOut = async () => {
+        const response = await fetch(this._endpoints.logout, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             credentials: "include",
         });
-        const  content = await response.json();
-        if (content.message ==="Logout Successful"){
+        const content = await response.json();
+        if (content.message === "Logout Successful") {
             toast.success(content.message);
             return true;
-        }else{
+        } else {
             toast.error(content.message);
             return false;
         }

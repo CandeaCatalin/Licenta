@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[Queues]
+(
+	[Id] INT NOT NULL,
+	[Name] NVARCHAR(200) NOT NULL,
+	[Description] NVARCHAR(MAX) NULL,
+	[CreatedTime] DATETIME NOT NULL CONSTRAINT [DF_CreatedTime_Queues] DEFAULT GETUTCDATE(),
+	CONSTRAINT [PK_Queues] PRIMARY KEY ([Id]),
+);
+GO

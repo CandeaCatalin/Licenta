@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 type UserContextType = {
     user: User;
-    register: (user:User, password:string, confirmPassword:string)=>{};
+    register: (user: User, password: string, confirmPassword: string) => {};
     login: any;
     logOut: any;
 };
@@ -20,22 +20,19 @@ export const UserProvider: FC = ({children}) => {
         email: "",
         firstName: "",
         id: 0,
-        imageUrl: "",
         lastName: "",
-        queueId: 0,
-        queueRole: ""
     });
     const navigate = useNavigate();
     useEffect(() => {
-        (async () => {
-            const response = await QueueManagementApi.getUser();
-
-            if (response !== undefined) {
-                setUser(response);
-            } else {
-                setUser({...user, id: -1}); // -1  = user not logged
+        const fetch = async () => {
+            try {
+                const response = await QueueManagementApi.getUser();
+                console.log(response);
+            } catch (error) {
+                navigate("Login");
             }
-        })();
+        }
+        fetch().then();
 
     }, []);
 
@@ -47,7 +44,7 @@ export const UserProvider: FC = ({children}) => {
         }
     }, [user]);
 
-    const register = async (newUser:User, password: string, confirmPassword: string) => {
+    const register = async (newUser: User, password: string, confirmPassword: string) => {
         const response = await QueueManagementApi.register(newUser, password, confirmPassword);
         if (response) {
             navigate('../login', {replace: true});

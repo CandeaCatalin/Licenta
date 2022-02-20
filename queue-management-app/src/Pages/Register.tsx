@@ -14,11 +14,8 @@ export const Register: FC<RegisterProps> = () => {
         email: "",
         firstName: "",
         id: 0,
-        imageUrl: "",
         lastName: "",
-        queueId: 0,
-        queueRole:""
-    });
+      });
     const userContext = useContext(UserContext);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [password, setPassword] = useState("");

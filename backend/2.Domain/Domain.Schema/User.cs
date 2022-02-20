@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Domain.Schema
 {
     public class User
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -20,5 +24,7 @@ namespace Domain.Schema
         public bool IsActive { get; set; } = false;
         public int UserRoleId { get; set; }
         public UserRole UserRole { get; set; }
+        public UsersToQueues UsersToQueues { get; set; }
+        public int UsersToQueuesId { get; set; }
     }
 }

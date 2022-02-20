@@ -6,10 +6,17 @@ namespace Domain.Schema
 {
     public class Queue
     {
+        public Queue()
+        {
+            PhysicalQueues = new HashSet<PhysicalQueue>();
+            Users = new HashSet<User>();
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsActive { get; set; }
         public DateTime CreatedTime { get; set; }
+        public ICollection<PhysicalQueue> PhysicalQueues { get; set; }
+        public ICollection<User> Users { get; set; }
+
     }
 }

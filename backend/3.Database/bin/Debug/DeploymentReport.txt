@@ -1,0 +1,41 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [dbo].[EventCategory] (Table)
+       [dbo].[EventLog] (Table)
+       [dbo].[EventLog].[IX_EventLog_EventCategory] (Index)
+       [dbo].[EventLog].[IX_EventLog_Timestamp] (Index)
+       [dbo].[PhysicalQueues] (Table)
+       [dbo].[PhysicalQueues].[IX_PhysicalQueues_QueueId] (Index)
+       [dbo].[PhysicalQueues].[IX_PhysicalQueues_Name_Description] (Index)
+       [dbo].[Queues] (Table)
+       [dbo].[Queues].[IX_Queues_Name_Description] (Index)
+       [dbo].[UserRole] (Table)
+       [dbo].[Users] (Table)
+       [dbo].[Users].[IX_Users_Email] (Index)
+       [dbo].[Users].[IX_Users_QueueId] (Index)
+       [dbo].[Users].[IX_Users_UserRoleId] (Index)
+       [dbo].[Users].[IX_Users_PhysicalQueueId] (Index)
+       [dbo].[DF_Timestamp_EventLog] (Default Constraint)
+       [dbo].[DF_EstimatedTime_PhysicalQueues] (Default Constraint)
+       [dbo].[DF_CreatedTime_PhysicalQueues] (Default Constraint)
+       [dbo].[DF_CreatedTime_Queues] (Default Constraint)
+       [dbo].[DF_CreatedTime_User] (Default Constraint)
+       [dbo].[DF_QueueId_User] (Default Constraint)
+       [dbo].[DF_PhysicalQueueId_User] (Default Constraint)
+       [dbo].[FK_EventLog_EventCategory] (Foreign Key)
+       [dbo].[FK_PhysicalQueues_Queues] (Foreign Key)
+       [dbo].[FK_Users_UserRole] (Foreign Key)
+       [dbo].[FK_Users_Queues] (Foreign Key)
+       [dbo].[FK_Users_PhysicalQueues] (Foreign Key)
+
+** Supporting actions

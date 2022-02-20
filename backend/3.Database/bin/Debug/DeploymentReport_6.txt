@@ -1,0 +1,30 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Alter
+       [dbo].[PhysicalQueues] (Table)
+       [dbo].[Users] (Table)
+
+** Supporting actions
+     Drop
+       [dbo].[PhysicalQueues].[IX_PhysicalQueues_QueueId] (Index)
+       [dbo].[Users].[IX_Users_PhysicalQueueId] (Index)
+       [dbo].[Users].[IX_Users_QueueId] (Index)
+       [dbo].[FK_PhysicalQueues_Queues] (Foreign Key)
+       [dbo].[FK_Users_PhysicalQueues] (Foreign Key)
+       [dbo].[FK_Users_Queues] (Foreign Key)
+     Create
+       [dbo].[PhysicalQueues].[IX_PhysicalQueues_QueueId] (Index)
+       [dbo].[Users].[IX_Users_PhysicalQueueId] (Index)
+       [dbo].[Users].[IX_Users_QueueId] (Index)
+       [dbo].[FK_PhysicalQueues_Queues] (Foreign Key)
+       [dbo].[FK_Users_PhysicalQueues] (Foreign Key)
+       [dbo].[FK_Users_Queues] (Foreign Key)

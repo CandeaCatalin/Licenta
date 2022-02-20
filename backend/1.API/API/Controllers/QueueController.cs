@@ -29,7 +29,6 @@ namespace API.Controllers
                 {
                     Name = dto.Name,
                     Description = dto.Description,
-                    IsActive = true
                 };
                 queue = _repository.Create(queue);
                 if (queue == null)
