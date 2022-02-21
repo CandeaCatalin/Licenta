@@ -12,9 +12,9 @@ C:\Development\Licenta\backend\3.Database\bin\Debug\Database.dacpac
 C:\Development\Licenta\backend\3.Database\bin\Debug\Database.dll
 C:\Development\Licenta\backend\3.Database\bin\Debug\Database.pdb
 C:\Development\Licenta\backend\3.Database\obj\Debug\Database.sqlproj.AssemblyReference.cache
+C:\Development\Licenta\backend\3.Database\obj\Debug\Database.dll
+C:\Development\Licenta\backend\3.Database\obj\Debug\Database.pdb
 C:\Development\Licenta\backend\3.Database\obj\Debug\Model.xml
 C:\Development\Licenta\backend\3.Database\obj\Debug\refactor.xml
 C:\Development\Licenta\backend\3.Database\obj\Debug\postdeploy.sql
 C:\Development\Licenta\backend\3.Database\obj\Debug\predeploy.sql
-C:\Development\Licenta\backend\3.Database\obj\Debug\Database.dll
-C:\Development\Licenta\backend\3.Database\obj\Debug\Database.pdb

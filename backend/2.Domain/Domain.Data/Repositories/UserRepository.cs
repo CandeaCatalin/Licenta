@@ -53,14 +53,14 @@ namespace Domain.Data.Repositories
 
         public User GetByEmail(string email)
         {
-            return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRole)
+            return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRoles)
                 .FirstOrDefault(u => u.Email == email.ToLower());
         }
 
         public User Login(string email, bool isAdmin = false)
         {
-            return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRole)
-                .FirstOrDefault(u => u.Email == email.ToLower() && isAdmin == (u.UserRoleId == 1));
+            return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRoles)
+                .FirstOrDefault(u => u.Email == email.ToLower() && isAdmin == (u.UserRolesId == 2));
         }
 
         public bool Delete(string email)
@@ -78,7 +78,7 @@ namespace Domain.Data.Repositories
 
         public User GetById(int id)
         {
-            return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRole)
+            return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRoles)
                 .FirstOrDefault(u => u.Id == id);
         }
 

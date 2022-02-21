@@ -1,0 +1,32 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       [dbo].[Users]
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Table rebuild
+       [dbo].[Users] (Table)
+
+** Supporting actions
+     Drop
+       [dbo].[DF_CreatedTime_User] (Default Constraint)
+       [dbo].[FK_UsersToQueues_User] (Foreign Key)
+       [dbo].[FK_Users_UserRole] (Foreign Key)
+       [dbo].[FK_Users_PhysicalQueues] (Foreign Key)
+       [dbo].[FK_Users_Queues] (Foreign Key)
+       [dbo].[FK_Users_UsersToQueuesId] (Foreign Key)
+     Create
+       [dbo].[Users].[IX_Users_Email] (Index)
+       [dbo].[Users].[IX_Users_QueueId] (Index)
+       [dbo].[Users].[IX_Users_UserRoleId] (Index)
+       [dbo].[Users].[IX_Users_PhysicalQueueId] (Index)
+       [dbo].[FK_UsersToQueues_User] (Foreign Key)
+       [dbo].[FK_Users_UserRole] (Foreign Key)
+       [dbo].[FK_Users_PhysicalQueues] (Foreign Key)
+       [dbo].[FK_Users_Queues] (Foreign Key)
+       [dbo].[FK_Users_UsersToQueuesId] (Foreign Key)

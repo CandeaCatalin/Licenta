@@ -13,14 +13,14 @@ Post-Deployment Script Template
 /*
 	INSERT ROLES FOR USERS
 */
-IF NOT EXISTS(SELECT * FROM [dbo].[UserRole] WHERE [Name] = 'Admin' AND [Id] = 1) 
+IF NOT EXISTS(SELECT * FROM [dbo].[UserRoles] WHERE [Name] = 'Admin' AND [Id] = 1) 
 	BEGIN 
-		INSERT INTO [dbo].[UserRole]([Id],[Name]) VALUES (1,'Admin') 
+		INSERT INTO [dbo].[UserRoles]([Id],[Name]) VALUES (1,'Admin') 
 	END
 	
-IF NOT EXISTS(SELECT * FROM [dbo].[UserRole] WHERE [Name] = 'User' AND [Id] = 2) 
+IF NOT EXISTS(SELECT * FROM [dbo].[UserRoles] WHERE [Name] = 'User' AND [Id] = 2) 
 	BEGIN 
-		INSERT INTO [dbo].[UserRole]([Id],[Name]) VALUES (2,'User') 
+		INSERT INTO [dbo].[UserRoles]([Id],[Name]) VALUES (2,'User') 
 	END
 
 /*

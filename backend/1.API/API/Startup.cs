@@ -15,6 +15,7 @@ using Domain.Data.Repositories;
 using EF.Models;
 using Microsoft.EntityFrameworkCore;
 using API.Services;
+using System.Text.Json.Serialization;
 
 namespace API
 {
@@ -31,7 +32,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x=>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Queue Management", Version = "v1" });

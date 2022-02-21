@@ -43,9 +43,10 @@ namespace EF.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => new { e.Id }).HasName("PK_User");
+                entity.Property(e => e.Id).UseIdentityColumn();
                 entity.HasIndex(e => e.Email, "IX_Users_Email").IsUnique();
                 entity.HasIndex(e => e.QueueId, "IX_Users_QueueId");
-                entity.HasIndex(e => e.UserRoleId, "IX_Users_UserRoleId");
+                entity.HasIndex(e => e.UserRolesId, "IX_Users_UserRolesId");
                 entity.HasIndex(e => e.PhysicalQueueId, "IX_Users_PhysicalQueueId");
                 entity.Property(e => e.Password).HasColumnType("nvarchar(max)");
                 entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
@@ -55,12 +56,12 @@ namespace EF.Models
                 entity.Property(e => e.IsActive).IsRequired();
                 entity.HasOne(d => d.Queue).WithMany(q => q.Users).HasForeignKey(d => new { d.QueueId }).OnDelete(DeleteBehavior.SetNull).HasConstraintName("FK_Users_Queues");
                 entity.HasOne(d => d.PhysicalQueue).WithMany(q => q.Users).HasForeignKey(d => new { d.PhysicalQueueId }).OnDelete(DeleteBehavior.SetNull).HasConstraintName("FK_Users_PhysicalQueues");
-                entity.HasOne(d => d.UserRole).WithMany(u => u.Users).OnDelete(DeleteBehavior.Cascade).HasForeignKey(d => new { d.UserRoleId }).HasConstraintName("FK_Users.UserRole");
+                entity.HasOne(d => d.UserRoles).WithMany(u => u.Users).OnDelete(DeleteBehavior.Cascade).HasForeignKey(d => new { d.UserRolesId }).HasConstraintName("FK_Users.UserRoles");
                 entity.HasOne(d=>d.UsersToQueues).WithOne(u=>u.User).HasForeignKey<UsersToQueues>(u => u.UserId).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_User_UserToQueues");
             });
             modelBuilder.Entity<UserRole>(entity =>
             {
-                entity.HasKey(e => new { e.Id }).HasName("PK_UserRole");
+                entity.HasKey(e => new { e.Id }).HasName("PK_UserRoles");
                 entity.Property(e => e.Name).HasMaxLength(100).IsRequired();
             });
             modelBuilder.Entity<EventLog>(entity => {

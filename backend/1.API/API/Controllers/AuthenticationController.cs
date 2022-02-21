@@ -35,7 +35,7 @@ namespace API.Controllers
                 LastName = dto.LastName,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Email = dto.Email.ToLower(),
-                UserRoleId = 1,
+                UserRolesId = 1,
             };
             if (string.IsNullOrEmpty(dto.Password))
             {
@@ -73,9 +73,11 @@ namespace API.Controllers
 
             User user = new User
             {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Email = dto.Email.ToLower(),
-                UserRoleId = 2,
+                UserRolesId = 2,
                 IsActive = true
             };
             if (string.IsNullOrEmpty(dto.Password))

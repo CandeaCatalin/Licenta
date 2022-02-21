@@ -9,7 +9,7 @@ namespace Domain.Schema
     public class User
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -22,9 +22,9 @@ namespace Domain.Schema
         public PhysicalQueue PhysicalQueue { get; set; }
         public DateTime CreatedTime { get; set; }
         public bool IsActive { get; set; } = false;
-        public int UserRoleId { get; set; }
-        public UserRole UserRole { get; set; }
+        public int UserRolesId { get; set; }
+        public UserRole UserRoles { get; set; }
         public UsersToQueues UsersToQueues { get; set; }
-        public int UsersToQueuesId { get; set; }
+        public int? UsersToQueuesId { get; set; }
     }
 }
