@@ -32,13 +32,15 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            
             services.AddControllers().AddJsonOptions(x=>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Queue Management", Version = "v1" });
             });
-            services.AddDbContext<QueueManagerContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DbConnection")).EnableSensitiveDataLogging().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-            
+         //   services.AddDbContext<QueueManagerContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DbConnection")).EnableSensitiveDataLogging().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            services.AddDbContext<QueueManagerContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("LocalConnection")).EnableSensitiveDataLogging().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IQueueRepository, QueueRepository>();
             services.AddScoped<JwtService>();
@@ -50,10 +52,10 @@ namespace API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QueueManagement.API v1"));
+              
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QueueManagement.API v1"));
             app.UseHttpsRedirection();
 
             app.UseRouting();

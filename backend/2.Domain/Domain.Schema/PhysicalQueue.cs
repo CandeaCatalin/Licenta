@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Schema
 {
@@ -11,6 +13,8 @@ namespace Domain.Schema
             UsersToQueues = new HashSet<UsersToQueues>();
 
         }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -18,7 +22,7 @@ namespace Domain.Schema
         public Queue Queue { get; set; }
         public ICollection<User> Users { get; set; }
         public DateTime CreatedTime { get; set; }
-        public TimeSpan EstimatedTime { get; set; }
+        public DateTime EstimatedTime { get; set; }
 
         public ICollection<UsersToQueues> UsersToQueues { get; set; }
     }

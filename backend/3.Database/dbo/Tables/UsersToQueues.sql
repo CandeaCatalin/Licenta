@@ -1,10 +1,10 @@
 ﻿CREATE TABLE [dbo].[UsersToQueues]
 (
-	[Id] INT NOT NULL,
+	[Id] INT NOT NULL IDENTITY(1,1),
 	[UserId] INT NOT NULL,
 	[PhysicalQueueId] INT NOT NULL,
-	[TimeAdded] DATETIME NOT NULL CONSTRAINT [DF_TimeAdded_UsersToQueues] DEFAULT GETUTCDATE(),
-	[TimePassed] DATETIME NOT NULL CONSTRAINT [DF_TimePassed_UsersToQueues] DEFAULT GETUTCDATE(),
+	[TimeAdded] DATETIME NOT NULL CONSTRAINT [DF_TimeAdded_UsersToQueues] DEFAULT SYSDATETIME(),
+	[TimePassed] DATETIME NOT NULL CONSTRAINT [DF_TimePassed_UsersToQueues] DEFAULT SYSDATETIME(),
 	[IsPassed] bit NOT NULL,
 	CONSTRAINT [PK_UsersToQueues] PRIMARY KEY ([Id]),
 	CONSTRAINT [FK_UsersToQueues_PhysicalQueue] FOREIGN KEY ([PhysicalQueueId]) REFERENCES [dbo].[PhysicalQueues]([Id]),

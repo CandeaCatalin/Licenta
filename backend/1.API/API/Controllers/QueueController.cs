@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using API.Dtos.Queue;
 using API.Services;
 using Domain.Data.Repositories;
@@ -21,7 +22,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add(CreateQueueDto dto)
+        public IActionResult Add( [FromBody] CreateQueueDto  dto) 
         {
             try
             {
@@ -30,21 +31,31 @@ namespace API.Controllers
                     Name = dto.Name,
                     Description = dto.Description,
                 };
-                queue = _repository.Create(queue);
+                ICollection<PhysicalQueue> physicalQueues = new List<PhysicalQueue>();
+                foreach(CreatePhysicalQueueDto physicalQueueDto in dto.PhysicalQueues)
+                {
+                    PhysicalQueue physicalQueue = new PhysicalQueue
+                    {
+                        Name = physicalQueueDto.Name,
+                        Description = physicalQueueDto.Description
+                    };
+                    physicalQueues.Add(physicalQueue);
+                }
+                queue = _repository.Create(queue, physicalQueues);
                 if (queue == null)
                 {
-                    return Ok(new { message = "Queue already exists!" });
+                    return BadRequest(new { message = "Queue already exists!" });
                 }
 
                 return Ok(queue);
             }
             catch (ArgumentException e)
             {
-                return Ok(new { message = e.Message });
+                return BadRequest(new { message = e.Message });
             }
             catch (Exception e)
             {
-                return Ok(new { message = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
     }

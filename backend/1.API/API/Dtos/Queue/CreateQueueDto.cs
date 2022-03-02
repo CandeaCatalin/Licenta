@@ -6,6 +6,6 @@ namespace API.Dtos.Queue
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        private List<CreatePhysicalQueueDto> PhyisicalQueues = new List<CreatePhysicalQueueDto>();
+        public List<CreatePhysicalQueueDto> PhysicalQueues { get; set; } = new List<CreatePhysicalQueueDto>();
     }
 }

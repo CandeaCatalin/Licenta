@@ -2,6 +2,7 @@ import {createContext, FC, useEffect, useState} from "react";
 import {User} from "../Models";
 import {QueueManagementAPI} from "./API";
 import {useNavigate} from "react-router-dom";
+import {Simulate} from "react-dom/test-utils";
 
 type UserContextType = {
     user: User;
@@ -27,7 +28,8 @@ export const UserProvider: FC = ({children}) => {
         const fetch = async () => {
             try {
                 const response = await QueueManagementApi.getUser();
-                console.log(response);
+                await new Promise(res => setTimeout(res, 1000));
+                setUser(response);
             } catch (error) {
                 navigate("Login");
             }

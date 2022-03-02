@@ -29,13 +29,13 @@ namespace API.Controllers
                 return Ok(new { message = "Passwords must match!" });
             }
 
-            User user = new User
+            User user = new()
             {
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Email = dto.Email.ToLower(),
-                UserRolesId = 1,
+                UserRolesId = 2,
             };
             if (string.IsNullOrEmpty(dto.Password))
             {
@@ -45,7 +45,7 @@ namespace API.Controllers
             try
             {
                 User returnedUser = _repository.Create(user);
-                MailService mailService = new MailService();
+                MailService mailService = new();
                 mailService.sendEmail(returnedUser.Email,
                     "Hello. In order to confirm your registration please access " +
                     "https://queuemanagementlicenta.azurewebsites.net/api/Authentication/activateAccount?userId=" + returnedUser.Id.ToString(),
@@ -57,7 +57,7 @@ namespace API.Controllers
             {
                 return Ok(new { message = e.Message });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return Ok(new { message = "Email already exists" });
             }
@@ -71,13 +71,13 @@ namespace API.Controllers
                 return Ok(new { message = "Passwords must match!" });
             }
 
-            User user = new User
+            User user = new()
             {
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Email = dto.Email.ToLower(),
-                UserRolesId = 2,
+                UserRolesId = 1,
                 IsActive = true
             };
             if (string.IsNullOrEmpty(dto.Password))
@@ -131,7 +131,7 @@ namespace API.Controllers
             {
                 HttpOnly = true
             });
-            return Ok(new { user = user });
+            return Ok(new { user });
         }
 
         [HttpPost("admin/login")]
@@ -148,17 +148,12 @@ namespace API.Controllers
                 return BadRequest(new { message = "Invalid Credentials" });
             }
 
-            if (user.IsActive == false)
-            {
-                return BadRequest(new { message = "The account must be activated!" });
-            }
-
             string jwt = _jwtService.Generate(user.Id);
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
                 HttpOnly = true
             });
-            return Ok(new { user = user });
+            return Ok(new { user });
         }
 
         [HttpPost("logout")]

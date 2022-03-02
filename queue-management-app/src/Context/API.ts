@@ -1,6 +1,7 @@
 import {User} from "../Models";
 import {toast} from "react-hot-toast";
 import axios from "axios";
+import {Queue} from "../Models/Queue";
 
 export class QueueManagementAPI {
     baseUrl: string;
@@ -8,12 +9,13 @@ export class QueueManagementAPI {
 
     constructor() {
         this._endpoints = {};
-        this.baseUrl = "https://queuemanagementlicenta.azurewebsites.net";
+        this.baseUrl = "https://localhost:5001";
         this._endpoints = {
             register: '/api/Authentication/admin/register',
             login: '/api/Authentication/admin/login',
             logout: '/api/Authentication/logout',
-            user: '/api/User/get',
+            getUser: '/api/User/get',
+            addQueue: '/api/Queue/add'
         };
     }
 
@@ -21,41 +23,51 @@ export class QueueManagementAPI {
     getUser = async () => {
         const response = await axios({
             method: "get",
-            url: this.baseUrl + this._endpoints.user,
+            url: this._endpoints.getUser,
+            withCredentials: true,
         });
-
         return response.data;
 
     };
     register = async (user: User, password: string, confirmPassword: string) => {
-        const response = await fetch(this.baseUrl + this._endpoints.register, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            credentials: "include",
-            body: JSON.stringify({...user, password, confirmPassword}),
-        });
-        const content = await response.json();
-        if (content.message === undefined) {
+        try {
+            await axios({
+                method: "post",
+                url: this.baseUrl + this._endpoints.register,
+                data: {
+                    ...user, password, confirmPassword
+                },
+                baseURL: this.baseUrl,
+                withCredentials: true
+            });
+
             toast.success("Account registered! Please activate your account.");
             return true;
-        } else {
-            toast.error(content.message);
-            return false;
+        } catch (error) {
+            // @ts-ignore
+            toast.error(error.response.data.message);
         }
+
     }
     login = async (email: string, password: string) => {
-        const response = await fetch(this._endpoints.login, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            credentials: "include",
-            body: JSON.stringify({email, password}),
-        });
-        const content = await response.json();
-        if (content.message === undefined) {
+        try {
+            await axios({
+                method: "post",
+                url: this._endpoints.login,
+                data: {
+                    email, password
+                },
+                baseURL: this.baseUrl,
+                withCredentials: true
+            },);
+
             return true;
-        } else {
-            toast.error(content.message);
+
+        } catch (error) {
+            // @ts-ignore
+            toast.error(error.response.data.message);
             return false;
+
         }
     }
     logOut = async () => {
@@ -72,6 +84,24 @@ export class QueueManagementAPI {
             toast.error(content.message);
             return false;
         }
+    }
+    addQueue = async (queue: Queue) => {
+
+        const response = await fetch(this._endpoints.addQueue, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            credentials: "include",
+            body: JSON.stringify(queue)
+        }).then();
+        const content = await response.json();
+        if (response.statusText === "OK") {
+            toast.success("Queue added successfully");
+            return true;
+        } else {
+            toast.error(content.message);
+            return false;
+        }
+
     }
 }
 

@@ -107,7 +107,7 @@ body {
     text-align: center;
 }
 
-.mainpage-body {
+.mainPage-body {
     background-color: white;
     height: 100%;
     padding-bottom: 50%;
@@ -150,4 +150,8 @@ body {
 
 .text-link:hover {
     color: rgb(81, 86, 116);
+}
+.queue-list-container{
+    width: 90%;
+    height: 80%;
 }

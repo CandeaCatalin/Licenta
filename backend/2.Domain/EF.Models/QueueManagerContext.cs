@@ -27,7 +27,7 @@ namespace EF.Models
 
                 entity.Property(e => e.Id).UseIdentityColumn();
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
-                entity.Property(e => e.CreatedTime).IsRequired().HasDefaultValueSql("(getutcdate())");
+                entity.Property(e => e.CreatedTime).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
             });
             modelBuilder.Entity<PhysicalQueue>(entity =>
             {
@@ -36,8 +36,8 @@ namespace EF.Models
                 entity.Property(e => e.Id).UseIdentityColumn();
                 entity.HasIndex(e => e.QueueId, "IX_PhysicalQueues_QueueId");
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.CreatedTime).IsRequired().HasDefaultValueSql("(getutcdate())");
-                entity.Property(e => e.EstimatedTime).IsRequired().HasDefaultValueSql("(getutcdate())");
+                entity.Property(e => e.CreatedTime).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
+                entity.Property(e => e.EstimatedTime).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
                 entity.HasOne(d => d.Queue).WithMany(q => q.PhysicalQueues).HasForeignKey(d => new { d.QueueId }).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_PhysicalQueues_Queues");
             });
             modelBuilder.Entity<User>(entity =>
@@ -52,7 +52,7 @@ namespace EF.Models
                 entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.LastName).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Email).IsRequired().HasMaxLength(250);
-                entity.Property(e => e.CreatedTime).IsRequired().HasDefaultValueSql("(getutcdate())");
+                entity.Property(e => e.CreatedTime).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
                 entity.Property(e => e.IsActive).IsRequired();
                 entity.HasOne(d => d.Queue).WithMany(q => q.Users).HasForeignKey(d => new { d.QueueId }).OnDelete(DeleteBehavior.SetNull).HasConstraintName("FK_Users_Queues");
                 entity.HasOne(d => d.PhysicalQueue).WithMany(q => q.Users).HasForeignKey(d => new { d.PhysicalQueueId }).OnDelete(DeleteBehavior.SetNull).HasConstraintName("FK_Users_PhysicalQueues");
@@ -71,7 +71,7 @@ namespace EF.Models
                 entity.HasIndex(e => e.EventCategoryId, "IX_EventLog_EventCategory");
                 entity.HasIndex(e => e.Timestamp, "IX_EventLog_Timestamp");
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
-                entity.Property(e=>e.Timestamp).IsRequired().HasDefaultValueSql("(getutcdate())");
+                entity.Property(e=>e.Timestamp).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
                 entity.HasOne(e => e.EventCategory).WithMany(e => e.EventLogs).HasForeignKey(e => new { e.EventCategoryId }).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_EventLog_EventCategory");
             });
 
@@ -85,7 +85,7 @@ namespace EF.Models
                 entity.HasIndex(e => e.PhysicalQueueId, "IX_UsersToQueues_PhysicalQueueId");
                 entity.HasIndex(e => e.UserId, "IX_UsersToQueues_UserId");
                 entity.Property(e => e.IsPassed).IsRequired().HasDefaultValue(0);
-                entity.Property(e=>e.TimeAdded).IsRequired().HasDefaultValueSql("(getutcdate())");
+                entity.Property(e=>e.TimeAdded).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
                 entity.Property(e => e.TimePassed).HasDefaultValueSql("('9999-12-31 23:59:59.99')");
                 entity.HasOne(e => e.PhysicalQueue).WithMany(q => q.UsersToQueues).HasForeignKey(e=>new { e.PhysicalQueueId }).HasConstraintName("FK_UsersToQueues_PhysicalQueue");
                 entity.HasOne(e => e.User).WithOne(u => u.UsersToQueues).HasForeignKey<User>(u => u.UsersToQueuesId).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_UsersToQueues_User");

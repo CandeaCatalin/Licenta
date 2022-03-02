@@ -3,7 +3,7 @@
 	[Id] INT NOT NULL,
 	[Value] nvarchar(max) NULL,
 	[EventCategoryId] int NOT NULL,
-	[Timestamp] DATETIME NOT NULL CONSTRAINT [DF_Timestamp_EventLog] DEFAULT GETUTCDATE(),
+	[Timestamp] DATETIME NOT NULL CONSTRAINT [DF_Timestamp_EventLog] DEFAULT SYSDATETIME(),
 	CONSTRAINT [PK_EventLog] PRIMARY KEY ([Id]),
 	CONSTRAINT [FK_EventLog_EventCategory] FOREIGN KEY ([EventCategoryId]) REFERENCES [dbo].[EventLog]([Id])
 );

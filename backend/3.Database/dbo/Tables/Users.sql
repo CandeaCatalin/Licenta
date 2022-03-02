@@ -7,7 +7,7 @@
 	[Password] NVARCHAR(max) NOT NULL,
 	[IsActive] bit NOT NULL,
 	[UserRolesId] INT NOT NULL,
-	[CreatedTime] DATETIME NOT NULL CONSTRAINT [DF_CreatedTime_User] DEFAULT GETUTCDATE(),
+	[CreatedTime] DATETIME NOT NULL CONSTRAINT [DF_CreatedTime_User] DEFAULT SYSDATETIME(),
 	[QueueId] INT NULL,
 	[UsersToQueuesId] INT NULL,
 	[PhysicalQueueId] INT NULL,
