@@ -1,4 +1,3 @@
-
 declare type Endpoints = {
-    [idx: string]: string;
+  [idx: string]: string;
 };

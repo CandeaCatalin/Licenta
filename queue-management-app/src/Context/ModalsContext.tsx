@@ -2,7 +2,6 @@ import { createContext, FC, useState } from "react";
 type ModalsContextType = {
   isAddQueueModalOpen: boolean;
   setIsAddQueueModalOpen: any;
-
 };
 // @ts-ignore
 export const ModalsContext = createContext<ModalsContextType>(null);
