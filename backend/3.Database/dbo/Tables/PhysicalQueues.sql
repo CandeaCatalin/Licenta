@@ -7,7 +7,7 @@
 	[EstimatedTime] DATETIME NOT NULL CONSTRAINT [DF_EstimatedTime_PhysicalQueues] DEFAULT SYSDATETIME(),
 	[CreatedTime] DATETIME NOT NULL CONSTRAINT [DF_CreatedTime_PhysicalQueues] DEFAULT SYSDATETIME(),
 	CONSTRAINT [PK_PhysicalQueue] PRIMARY KEY ([Id]),
-	CONSTRAINT [FK_PhysicalQueues_Queues] FOREIGN KEY ([QueueId]) REFERENCES [dbo].[Queues]([Id]),
+	CONSTRAINT [FK_PhysicalQueues_Queues] FOREIGN KEY ([QueueId]) REFERENCES [dbo].[Queues]([Id]) ON DELETE CASCADE,
 
 );
 GO

@@ -26,7 +26,7 @@ namespace API.Controllers
         {
             if (dto.Password != dto.ConfirmPassword)
             {
-                return Ok(new { message = "Passwords must match!" });
+                return BadRequest(new { message = "Passwords must match!" });
             }
 
             User user = new()
@@ -55,11 +55,11 @@ namespace API.Controllers
             }
             catch (FormatException e)
             {
-                return Ok(new { message = e.Message });
+                return BadRequest(new { message = e.Message });
             }
             catch (Exception)
             {
-                return Ok(new { message = "Email already exists" });
+                return BadRequest(new { message = "Email already exists" });
             }
         }
 
@@ -68,7 +68,7 @@ namespace API.Controllers
         {
             if (dto.Password != dto.ConfirmPassword)
             {
-                return Ok(new { message = "Passwords must match!" });
+                return BadRequest(new { message = "Passwords must match!" });
             }
 
             User user = new()
@@ -95,15 +95,15 @@ namespace API.Controllers
                 });
 
 
-                return Created("success", returnedUser);
+                return Ok(new { returnedUser });
             }
             catch (ArgumentException e)
             {
-                return Ok(new { message = e.Message });
+                return BadRequest(new { message = e.Message });
             }
             catch (Exception e)
             {
-                return Ok(new { message = e });
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -113,17 +113,17 @@ namespace API.Controllers
             User user = _repository.Login(dto.Email, false);
             if (user == null)
             {
-                return Ok(new { message = "Invalid Credentials" });
+                return BadRequest(new { message = "Invalid Credentials" });
             }
 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
             {
-                return Ok(new { message = "Invalid Credentials" });
+                return BadRequest(new { message = "Invalid Credentials" });
             }
 
             if (user.IsActive == false)
             {
-                return Ok(new { message = "The account must be activated!" });
+                return BadRequest(new { message = "The account must be activated!" });
             }
 
             string jwt = _jwtService.Generate(user.Id);

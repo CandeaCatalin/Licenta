@@ -55,7 +55,7 @@ export const UserProvider: FC = ({ children }) => {
       confirmPassword
     );
     if (response) {
-      navigate("../login", { replace: true });
+      setUser(await QueueManagementApi.getUser());
     }
   };
   const login = async (email: string, password: string) => {

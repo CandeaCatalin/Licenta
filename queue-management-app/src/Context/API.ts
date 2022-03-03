@@ -28,43 +28,32 @@ export class QueueManagementAPI {
     return response.data;
   };
   register = async (user: User, password: string, confirmPassword: string) => {
-    try {
-      await axios({
-        method: "post",
-        url: this.baseUrl + this._endpoints.register,
-        data: {
-          ...user,
-          password,
-          confirmPassword,
-        },
-        baseURL: this.baseUrl,
-        withCredentials: true,
-      });
-
-      toast.success("Account registered! Please activate your account.");
+    const response = await fetch(this._endpoints.register, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ ...user, password, confirmPassword }),
+    }).then();
+    if (response.status === 200) {
       return true;
-    } catch (error) {
-      // @ts-ignore
-      toast.error(error.response.data.message);
+    } else {
+      const content = await response.json();
+      toast.error(content.message);
+      return false;
     }
   };
   login = async (email: string, password: string) => {
-    try {
-      await axios({
-        method: "post",
-        url: this._endpoints.login,
-        data: {
-          email,
-          password,
-        },
-        baseURL: this.baseUrl,
-        withCredentials: true,
-      });
-
+    const response = await fetch(this._endpoints.login, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+    if (response.statusText === "OK") {
       return true;
-    } catch (error) {
-      // @ts-ignore
-      toast.error(error.response.data.message);
+    } else {
+      const content = await response.json();
+      toast.error(content.message);
       return false;
     }
   };

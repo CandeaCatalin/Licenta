@@ -17,8 +17,7 @@ namespace Domain.Data.Repositories
 
         public User Create(User user, bool isAdmin = false)
         {
-            if (isAdmin == false)
-            {
+           
                 if (string.IsNullOrEmpty(user.FirstName))
                 {
                     throw new FormatException("FirstName is invalid");
@@ -28,29 +27,29 @@ namespace Domain.Data.Repositories
                 {
                     throw new FormatException("LastName is invalid");
                 }
-            }
 
-            if (string.IsNullOrEmpty(user.Password))
+            if (GetByEmail(user.Email) != null)
             {
-                throw new FormatException("Password is invalid");
+                throw new FormatException("Email already exists");
             }
 
             if (string.IsNullOrEmpty(user.Email) || new System.Net.Mail.MailAddress(user.Email) == null)
             {
                 throw new FormatException("Email is invalid");
             }
-
+            if (string.IsNullOrEmpty(user.Password))
+            {
+                throw new FormatException("Password is invalid");
+            }
+            
+            
             _context.Users.Add(user);
             _context.SaveChanges();
 
             return GetByEmail(user.Email);
         }
 
-        public User CreateAdmin(User user)
-        {
-            throw new NotImplementedException();
-        }
-
+  
         public User GetByEmail(string email)
         {
             return _context.Users.Include(u => u.Queue).Include(u => u.PhysicalQueue).Include(u => u.UserRoles)

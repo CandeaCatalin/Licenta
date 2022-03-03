@@ -37,3 +37,4 @@ yarn-error.log*
 *.dbmld
 *.jfm
 backend/3.Database/Database.dbmdl
+backend/3.Database/bin/Debug/
