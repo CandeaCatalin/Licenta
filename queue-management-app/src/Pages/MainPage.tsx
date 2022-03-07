@@ -5,6 +5,8 @@ import { Loading } from "../Components/Loading";
 import { QueueContext } from "../Context/QueueContext";
 import { Modals } from "../Components/Modals";
 import { ModalsContext } from "../Context/ModalsContext";
+import { QueueListElement } from "../Components/QueueListElement";
+import { QueueListHeader } from "../Components/QueueListHeader";
 
 interface MainPageProps {}
 
@@ -43,14 +45,32 @@ export const MainPage: FC<MainPageProps> = () => {
           <Loading />
         ) : !areQueues ? (
           <div>
-            <button onClick={() => modalContext.setIsAddQueueModalOpen(true)}>
+            <button
+              onClick={() => {
+                modalContext.setIsAddQueueModalOpen(true);
+              }}
+            >
               Add first queue
             </button>
           </div>
         ) : (
-          <div className={"box queue-list-container"}>
-            Welcome {userContext.user.firstName}{" "}
-          </div>
+          <>
+            <div className="box queue-list-box">
+              <QueueListHeader />
+
+              <div className={"queue-list-container"}>
+                {queueContext.queueList.map((item, index) => {
+                  return <QueueListElement queue={item} key={item.id} />;
+                })}
+              </div>
+            </div>
+            <div
+              className="add-document"
+              onClick={() => modalContext.setIsAddQueueModalOpen(true)}
+            >
+              <div className="addition-logo">+</div>
+            </div>
+          </>
         )}
       </div>
     </>

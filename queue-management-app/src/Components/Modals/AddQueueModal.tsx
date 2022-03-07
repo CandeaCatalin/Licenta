@@ -67,7 +67,7 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
     const list = addQueue;
     list.physicalQueues = physicalQueues;
     setIsSubmitted(true);
-    if (await queueContext.addQueue(list)) {
+    if (queueContext.addQueue(list)) {
       onClose();
     }
     setIsSubmitted(false);

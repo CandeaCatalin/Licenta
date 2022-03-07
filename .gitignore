@@ -38,3 +38,5 @@ yarn-error.log*
 *.jfm
 backend/3.Database/Database.dbmdl
 backend/3.Database/bin/Debug/
+backend/3.Database/obj/Debug/Database.sqlproj.FileListAbsolute.txt
+backend/3.Database/obj/Debug/Model.xml

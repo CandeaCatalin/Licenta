@@ -1,6 +1,6 @@
 import { createContext, FC, useEffect, useState } from "react";
 import { User } from "../Models";
-import { QueueManagementAPI } from "./API";
+import { UserAPI } from "./API/UserAPI";
 import { useNavigate } from "react-router-dom";
 
 type UserContextType = {
@@ -14,7 +14,7 @@ type UserContextType = {
 export const UserContext = createContext<UserContextType>(null);
 
 export const UserProvider: FC = ({ children }) => {
-  const QueueManagementApi = new QueueManagementAPI();
+  const userAPI = new UserAPI();
 
   const [user, setUser] = useState<User>({
     email: "",
@@ -26,7 +26,7 @@ export const UserProvider: FC = ({ children }) => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await QueueManagementApi.getUser();
+        const response = await userAPI.getUser();
         await new Promise((res) => setTimeout(res, 1000));
         setUser(response);
       } catch (error) {
@@ -49,23 +49,19 @@ export const UserProvider: FC = ({ children }) => {
     password: string,
     confirmPassword: string
   ) => {
-    const response = await QueueManagementApi.register(
-      newUser,
-      password,
-      confirmPassword
-    );
+    const response = await userAPI.register(newUser, password, confirmPassword);
     if (response) {
-      setUser(await QueueManagementApi.getUser());
+      setUser(await userAPI.getUser());
     }
   };
   const login = async (email: string, password: string) => {
-    const response = await QueueManagementApi.login(email, password);
+    const response = await userAPI.login(email, password);
     if (response) {
-      setUser(await QueueManagementApi.getUser());
+      setUser(await userAPI.getUser());
     }
   };
   const logOut = async () => {
-    const response = await QueueManagementApi.logOut();
+    const response = await userAPI.logOut();
     if (response) {
       navigate("../login", { replace: true });
     }

@@ -34,7 +34,7 @@ namespace API.Controllers
                 try
                 {
                     List<Queue> queues = _queueRepository.GetQueues();
-                    return Ok(new { queues = queues });
+                    return Ok( queues );
                 }
                 catch (ArgumentException e)
                 {

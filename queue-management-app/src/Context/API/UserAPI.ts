@@ -1,9 +1,8 @@
-import { User } from "../Models";
+import { User } from "../../Models";
 import { toast } from "react-hot-toast";
-import axios from "axios";
-import { Queue } from "../Models/Queue";
+import { Queue } from "../../Models/Queue";
 
-export class QueueManagementAPI {
+export class UserAPI {
   baseUrl: string;
   _endpoints: Endpoints;
 
@@ -20,12 +19,16 @@ export class QueueManagementAPI {
   }
 
   getUser = async () => {
-    const response = await axios({
+    const response = await fetch(this._endpoints.getUser, {
       method: "get",
-      url: this._endpoints.getUser,
-      withCredentials: true,
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
     });
-    return response.data;
+    const content = await response.json();
+    if (content.status === 401) {
+      throw "Unauthorized";
+    }
+    return content;
   };
   register = async (user: User, password: string, confirmPassword: string) => {
     const response = await fetch(this._endpoints.register, {
@@ -90,4 +93,4 @@ export class QueueManagementAPI {
   };
 }
 
-export default QueueManagementAPI;
+export default UserAPI;
