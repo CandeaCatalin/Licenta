@@ -95,20 +95,15 @@ body {
 
 .button-modal-prim {
   border-radius: 20px;
-  background: linear-gradient(
-    180deg,
-    rgba(29, 205, 233, 1) 5%,
-    rgba(104, 63, 247, 1) 100%,
-    rgba(104, 63, 247, 1) 100%
-  );
-
+  background: #4d4f80;
+  color: white;
   border: none;
 }
 
 .button-modal-sec {
   border-radius: 20px;
   background: gray;
-
+  color: white;
   border-color: none;
 }
 

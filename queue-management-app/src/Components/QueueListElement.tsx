@@ -12,10 +12,11 @@ import { Queue } from "../Models/Queue";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { QueryBuilder } from "@mui/icons-material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { ModalsContext } from "../Context/ModalsContext";
+import { PhysicalQueue } from "../Models/PhysicalQueue";
 interface QueueListElementProps {
-  queue: Queue;
+  queue: Queue | PhysicalQueue;
 }
 export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
   const [open, setOpen] = useState(false);
@@ -120,6 +121,16 @@ export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
                         paddingBottom: "0px",
                       }}
                     >
+                      <MenuItem
+                        onClick={(e) => {
+                          handleClose(e);
+                          modalContext.setViewedQueue(queue);
+                          modalContext.setIsViewQueueModalOpen(true);
+                        }}
+                      >
+                        <VisibilityIcon />
+                        View
+                      </MenuItem>
                       <MenuItem
                         onClick={() => {
                           console.log("edit");

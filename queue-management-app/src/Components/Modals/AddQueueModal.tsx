@@ -3,6 +3,7 @@ import { AddPhysicalQueue } from "../AddPhysicalQueue";
 import { Queue } from "../../Models/Queue";
 import { PhysicalQueue } from "../../Models/PhysicalQueue";
 import { QueueContext } from "../../Context/QueueContext";
+import { ModalFooter } from "./ModalFooter";
 
 interface AddQueueModalProps {
   onClose: any;
@@ -143,33 +144,23 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
                   />
                 );
               })}
-
-              <button
-                onClick={() => addNewPhysicalQueue()}
-                className="btn button-modal-prim"
-                style={{ marginTop: "20px" }}
-              >
-                <span style={{ fontWeight: "bold" }}>Add new location</span>
-              </button>
+              <div>
+                <button
+                  onClick={() => addNewPhysicalQueue()}
+                  className="btn button-modal-prim"
+                  style={{ marginTop: "20px" }}
+                >
+                  <span style={{ fontWeight: "bold" }}>Add new location</span>
+                </button>
+              </div>
             </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn button-modal-sec"
-                data-bs-dismiss="modal"
-                onClick={onClose}
-              >
-                <span style={{ fontWeight: "bold" }}>Close</span>
-              </button>
-              <button
-                type="button"
-                className="btn button-modal-prim"
-                onClick={() => onSubmit()}
-                disabled={isSubmitted}
-              >
-                <span style={{ fontWeight: "bold" }}>Add Queue</span>
-              </button>
-            </div>
+            <ModalFooter
+              onClose={onClose}
+              isSubmitted={isSubmitted}
+              onSubmit={onSubmit}
+              mainButton={"Add Queue"}
+              secondButton={"Cancel"}
+            />
           </div>
         </div>
       </div>

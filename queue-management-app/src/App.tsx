@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Login, MainPage, Register } from "./Pages";
+import { Login, MainPage, OperateQueuePage, Register } from "./Pages";
 import { UserProvider } from "./Context/UserContext";
 import { Toast } from "./Components/Toast";
 import { QueueProvider } from "./Context/QueueContext";
@@ -16,6 +16,7 @@ export default function App() {
               <Route path="/" element={<MainPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/queue" element={<OperateQueuePage />} />
             </Routes>
           </ModalsProvider>
         </QueueProvider>

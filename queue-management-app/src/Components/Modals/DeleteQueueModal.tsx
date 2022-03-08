@@ -3,6 +3,7 @@ import { AddPhysicalQueue } from "../AddPhysicalQueue";
 import { Queue } from "../../Models/Queue";
 import { PhysicalQueue } from "../../Models/PhysicalQueue";
 import { QueueContext } from "../../Context/QueueContext";
+import { ModalFooter } from "./ModalFooter";
 
 interface DeleteQueueModalProps {
   onClose: any;
@@ -25,7 +26,7 @@ export const DeleteQueueModal: FC<DeleteQueueModalProps> = ({
   return (
     <>
       <div
-        id="addQueueModal"
+        id="deleteQueueModal"
         tabIndex={-1}
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -49,33 +50,17 @@ export const DeleteQueueModal: FC<DeleteQueueModalProps> = ({
               className="modal-body"
               style={{ maxHeight: "50vh", overflow: "auto" }}
             >
-              Are you sure you want to delete{" "}
-              <span style={{ fontWeight: "bold" }}>{queue.name}</span>?
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
-                  paddingTop: "20px",
-                }}
-              >
-                <button
-                  type="button"
-                  className="btn button-modal-sec"
-                  data-bs-dismiss="modal"
-                  onClick={onClose}
-                >
-                  <span style={{ fontWeight: "bold" }}>Close</span>
-                </button>
-                <button
-                  type="button"
-                  className="btn button-modal-prim"
-                  onClick={() => onSubmit()}
-                  disabled={isSubmitted}
-                >
-                  <span style={{ fontWeight: "bold" }}>Delete Queue</span>
-                </button>
+              <div style={{ paddingBottom: "15px" }}>
+                Are you sure you want to delete{" "}
+                <span style={{ fontWeight: "bold" }}>{queue.name}</span>?
               </div>
+              <ModalFooter
+                onClose={onClose}
+                isSubmitted={isSubmitted}
+                onSubmit={onSubmit}
+                mainButton={"Delete Queue"}
+                secondButton={"Cancel"}
+              />
             </div>
           </div>
         </div>

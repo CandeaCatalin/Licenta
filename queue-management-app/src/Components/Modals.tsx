@@ -2,6 +2,7 @@ import { FC, useContext } from "react";
 import { ModalsContext } from "../Context/ModalsContext";
 import { AddQueueModal } from "./Modals/AddQueueModal";
 import { DeleteQueueModal } from "./Modals/DeleteQueueModal";
+import { ViewQueueModal } from "./Modals/ViewQueueModal";
 
 interface ModalsProps {}
 
@@ -10,7 +11,8 @@ export const Modals: FC<ModalsProps> = ({}) => {
   return (
     <>
       {(modalsContext.isAddQueueModalOpen ||
-        modalsContext.isDeleteQueueModalOpen) && (
+        modalsContext.isDeleteQueueModalOpen ||
+        modalsContext.isViewQueueModalOpen) && (
         <div
           style={{
             zIndex: 500,
@@ -32,6 +34,14 @@ export const Modals: FC<ModalsProps> = ({}) => {
               <DeleteQueueModal
                 onClose={() => modalsContext.setIsDeleteQueueModalOpen(false)}
                 queue={modalsContext.deletedQueue}
+              />
+            </div>
+          )}
+          {modalsContext.isViewQueueModalOpen && (
+            <div>
+              <ViewQueueModal
+                onClose={() => modalsContext.setIsViewQueueModalOpen(false)}
+                queue={modalsContext.viewedQueue}
               />
             </div>
           )}

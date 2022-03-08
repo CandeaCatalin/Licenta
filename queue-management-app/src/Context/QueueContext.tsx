@@ -21,18 +21,22 @@ export const QueueProvider: FC = ({ children }) => {
   const navigate = useNavigate();
   useEffect(() => {
     const fetch = async () => {
-      try {
-        const response = await queueAPI.getQueue();
-        setQueueList(response.$values);
-      } catch (error) {
-        navigate("Login");
-      }
+      getQueues();
     };
     fetch().then();
   }, []);
+  const getQueues = async () => {
+    try {
+      const response = await queueAPI.getQueue();
+      setQueueList(response.$values);
+    } catch (error) {
+      navigate("Login");
+    }
+  };
   const addQueue = async (queue: Queue) => {
     const response = await queueAPI.addQueue(queue);
     if (response) {
+      getQueues();
       return true;
     } else return false;
   };
