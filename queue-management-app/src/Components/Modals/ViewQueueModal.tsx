@@ -73,6 +73,7 @@ export const ViewQueueModal: FC<ViewQueueModalProps> = (props) => {
                             <PhysicalQueueElement
                               key={index}
                               physicalQueue={item}
+                              queueName={queue.name}
                             />
                           );
                         })

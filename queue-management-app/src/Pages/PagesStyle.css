@@ -211,3 +211,21 @@ body {
   color: white;
   cursor: pointer;
 }
+.physical-queue-description {
+  font-weight: bold;
+  color: wheat;
+  padding: 20px;
+  font-size: 5vh;
+}
+.operate-btn {
+  background-color: wheat;
+  -webkit-box-shadow: 3px -3px 18px 12px rgba(0, 0, 0, 0.31);
+  box-shadow: 3px -3px 18px 12px rgba(0, 0, 0, 0.31);
+  color: #4d4f80;
+  font-size: 30px;
+}
+.big-btn {
+  height: 10vh;
+  width: 50%;
+  margin-top: 30px;
+}

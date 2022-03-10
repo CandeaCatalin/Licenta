@@ -43,6 +43,7 @@ namespace API
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IQueueRepository, QueueRepository>();
+            services.AddScoped<IPhysicalQueueRepository, PhysicalQueueRepository>();
             services.AddScoped<JwtService>();
         }
 

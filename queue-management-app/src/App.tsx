@@ -16,7 +16,10 @@ export default function App() {
               <Route path="/" element={<MainPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/queue" element={<OperateQueuePage />} />
+              <Route
+                path="/queue/:id-:queueName"
+                element={<OperateQueuePage />}
+              />
             </Routes>
           </ModalsProvider>
         </QueueProvider>

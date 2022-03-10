@@ -1,12 +1,13 @@
 import { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PhysicalQueue } from "../Models/PhysicalQueue";
 
-interface PhysicalQueueElement {
+interface PhysicalQueueElementProps {
   physicalQueue: PhysicalQueue;
+  queueName: string;
 }
 
-export const PhysicalQueueElement: FC<PhysicalQueueElement> = (props) => {
+export const PhysicalQueueElement: FC<PhysicalQueueElementProps> = (props) => {
   const navigate = useNavigate();
   const operateQueue = () => {
     navigate("queue");
@@ -16,13 +17,18 @@ export const PhysicalQueueElement: FC<PhysicalQueueElement> = (props) => {
       <td style={{ textAlign: "center" }}>{props.physicalQueue.name}</td>
       <td style={{ textAlign: "center" }}>{props.physicalQueue.description}</td>
       <td style={{ display: "flex", justifyContent: "flex-end" }}>
-        <button
-          type="button"
-          className="btn button-modal-prim"
-          onClick={() => operateQueue()}
+        <Link
+          to={`/queue/${props.physicalQueue.id}-${props.queueName}`}
+          key={props.physicalQueue.id}
         >
-          <span style={{ fontWeight: "bold" }}>Operate</span>
-        </button>
+          <button
+            type="button"
+            className="btn button-modal-prim"
+            onClick={() => operateQueue()}
+          >
+            <span style={{ fontWeight: "bold" }}>Operate</span>
+          </button>
+        </Link>
       </td>
     </tr>
   );

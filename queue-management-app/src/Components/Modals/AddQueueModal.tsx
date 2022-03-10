@@ -40,6 +40,7 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
         queueId: addQueue.id,
         createdTime: new Date(),
         estimatedTime: new Date(),
+        queue: addQueue,
       },
     ]);
   };
