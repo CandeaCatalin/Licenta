@@ -124,7 +124,7 @@ export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
                       <MenuItem
                         onClick={(e) => {
                           handleClose(e);
-                          modalContext.setViewedQueue(queue);
+                          modalContext.setQueue(queue);
                           modalContext.setIsViewQueueModalOpen(true);
                         }}
                       >
@@ -133,7 +133,8 @@ export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
                       </MenuItem>
                       <MenuItem
                         onClick={() => {
-                          console.log("edit");
+                          modalContext.setQueue(queue);
+                          modalContext.setIsEditQueueModalOpen(true);
                         }}
                       >
                         <EditIcon />
@@ -142,7 +143,7 @@ export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
                       <MenuItem
                         onClick={(e) => {
                           handleClose(e);
-                          modalContext.setDeletedQueue(queue);
+                          modalContext.setQueue(queue);
                           modalContext.setIsDeleteQueueModalOpen(true);
                         }}
                       >

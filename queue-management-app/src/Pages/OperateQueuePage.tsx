@@ -1,9 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import "./PagesStyle.css";
 import { Loading } from "../Components/Loading";
 import { useNavigate, useParams } from "react-router-dom";
 import { PhysicalQueueAPI } from "../Context/API/PhysicalQueueAPI";
 import { PhysicalQueue } from "../Models/PhysicalQueue";
+import { UserContext } from "../Context/UserContext";
 
 interface OperateQueuePageProps {}
 
@@ -11,6 +12,7 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
   const params = useParams();
   const physicalQueueAPI = new PhysicalQueueAPI();
   const navigate = useNavigate();
+  const userContext = useContext(UserContext);
   const [physicalQueue, setPhysicalQueue] = useState<PhysicalQueue>({
     name: "",
     description: "",
@@ -49,18 +51,35 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
   return (
     <>
       <div>
-        {isLoaded ? (
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            justifyContent: isLoaded ? "space-between" : "flex-end",
+          }}
+        >
+          {isLoaded ? (
+            <button
+              type="button"
+              className="operate-btn button-modal-prim"
+              style={{ fontSize: "20px" }}
+              onClick={() => navigate("/")}
+            >
+              <span style={{ fontWeight: "bold" }}>Back</span>
+            </button>
+          ) : (
+            ""
+          )}
           <button
             type="button"
             className="operate-btn button-modal-prim"
             style={{ fontSize: "20px" }}
-            onClick={() => navigate("/")}
+            onClick={() => userContext.logOut()}
           >
-            <span style={{ fontWeight: "bold" }}>Back</span>
+            <span style={{ fontWeight: "bold" }}>Logout</span>
           </button>
-        ) : (
-          ""
-        )}
+        </div>
+        )
       </div>
       <div
         style={{
@@ -80,7 +99,7 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
               }}
             >
               <div className="physical-queue-description">
-                Queue:{physicalQueue.queue.name}
+                Queue:{physicalQueue.queue?.name}
               </div>
               <div className="physical-queue-description">
                 Location:{physicalQueue.name}

@@ -189,14 +189,20 @@ body {
   white-space: nowrap;
   overflow: hidden;
 }
-.add-document {
+.add-queue-button {
   text-align: right;
   position: absolute;
   bottom: 6.5rem;
   right: 6%;
   z-index: 10;
 }
-
+.delete-physical-queue {
+  text-align: right;
+  position: absolute;
+  right: 6%;
+  z-index: 10;
+  bottom: 1rem;
+}
 .addition-logo {
   display: inline-block;
   font-size: 3rem;
@@ -211,14 +217,30 @@ body {
   color: white;
   cursor: pointer;
 }
+.delete-logo {
+  display: flex;
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2.3rem;
+  text-align: center;
+  border-radius: 50%;
+  background: #4d4f80;
+  vertical-align: middle;
+  margin-right: 0rem;
+  color: white;
+  cursor: pointer;
+  justify-content: center;
+  align-items: flex-end;
+}
 .physical-queue-description {
   font-weight: bold;
-  color: wheat;
+  color: gainsboro;
   padding: 20px;
   font-size: 5vh;
 }
 .operate-btn {
-  background-color: wheat;
+  background-color: gainsboro;
   -webkit-box-shadow: 3px -3px 18px 12px rgba(0, 0, 0, 0.31);
   box-shadow: 3px -3px 18px 12px rgba(0, 0, 0, 0.31);
   color: #4d4f80;
@@ -228,4 +250,15 @@ body {
   height: 10vh;
   width: 50%;
   margin-top: 30px;
+}
+.operate-btn:hover,
+.addition-logo:hover,
+.button-modal-prim:hover,
+.delete-logo:hover {
+  background-color: rgb(233, 154, 31);
+}
+input::placeholder {
+  color: red;
+  font-size: 1.2em;
+  font-style: italic;
 }

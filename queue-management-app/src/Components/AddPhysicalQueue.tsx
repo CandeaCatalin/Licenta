@@ -1,16 +1,31 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import { PhysicalQueue } from "../Models/PhysicalQueue";
 
 interface AddPhysicalQueueProps {
   onNameChange: any;
   onDescriptionChange: any;
+  onRemove: any;
   index: number;
+  physicalQueue?: PhysicalQueue;
 }
 
 export const AddPhysicalQueue: FC<AddPhysicalQueueProps> = ({
   onNameChange,
   onDescriptionChange,
+  onRemove,
   index,
+  physicalQueue,
 }) => {
+  const [name, setName] = useState(physicalQueue?.name);
+  const [description, setDescription] = useState(physicalQueue?.description);
+  const updateName = (value: string) => {
+    setName(value);
+    onNameChange(index, value);
+  };
+  const updateDescription = (value: string) => {
+    setDescription(value);
+    onDescriptionChange(index, value);
+  };
   return (
     <>
       <div style={{ display: "flex", marginTop: "20px" }}>
@@ -20,9 +35,9 @@ export const AddPhysicalQueue: FC<AddPhysicalQueueProps> = ({
             className="form-control"
             id="floatingInput"
             style={{ borderRadius: "10px" }}
-            placeholder="Example: Admitere AC"
+            value={name}
             onChange={(event) => {
-              onNameChange(index, event.target.value);
+              updateName(event.target.value);
             }}
           />
           <label htmlFor="floatingInput">Name</label>
@@ -36,12 +51,25 @@ export const AddPhysicalQueue: FC<AddPhysicalQueueProps> = ({
             className="form-control"
             id="floatingInput"
             style={{ borderRadius: "10px" }}
-            placeholder="Example: Admitere AC"
+            value={description}
             onChange={(event) => {
-              onDescriptionChange(index, event.target.value);
+              updateDescription(event.target.value);
             }}
           />
           <label htmlFor="floatingInput">Description</label>
+        </div>
+        <div
+          className="form-floating mb-3"
+          style={{ marginLeft: "20px", width: "25%" }}
+        >
+          <div
+            className="delete-physical-queue"
+            onClick={() => {
+              onRemove(physicalQueue?.id);
+            }}
+          >
+            <div className="delete-logo">-</div>
+          </div>
         </div>
       </div>
     </>

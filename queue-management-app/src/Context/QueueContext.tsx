@@ -1,3 +1,4 @@
+import Edit from "@mui/icons-material/Edit";
 import { createContext, FC, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Queue } from "../Models/Queue";
@@ -6,8 +7,10 @@ import { ModalsContext } from "./ModalsContext";
 
 type QueueContextType = {
   queueList: Queue[];
+  getQueues: any;
   addQueue: any;
   deleteQueue: any;
+  editQueue: any;
 };
 
 // @ts-ignore
@@ -15,7 +18,6 @@ export const QueueContext = createContext<QueueContextType>(null);
 
 export const QueueProvider: FC = ({ children }) => {
   const queueAPI = new QueueAPI();
-  const modalsContext = useContext(ModalsContext);
   const [queueList, setQueueList] = useState<Queue[]>([]);
 
   const navigate = useNavigate();
@@ -40,6 +42,9 @@ export const QueueProvider: FC = ({ children }) => {
       return true;
     } else return false;
   };
+  const editQueue = async (queue: Queue) => {
+    console.log(queue);
+  };
   const deleteQueue = async (queueId: number) => {
     const response = await queueAPI.deleteQueue(queueId);
 
@@ -53,6 +58,8 @@ export const QueueProvider: FC = ({ children }) => {
     queueList: queueList,
     addQueue: (queue: Queue) => addQueue(queue),
     deleteQueue: (queueId: number) => deleteQueue(queueId),
+    getQueues: () => getQueues(),
+    editQueue: (queue: Queue) => editQueue(queue),
   };
   return <QueueContext.Provider value={ctx}>{children}</QueueContext.Provider>;
 };

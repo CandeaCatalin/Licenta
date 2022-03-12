@@ -1,6 +1,5 @@
 import { toast } from "react-hot-toast";
 import { Queue } from "../../Models/Queue";
-
 export class QueueAPI {
   baseUrl: string;
   _endpoints: Endpoints;

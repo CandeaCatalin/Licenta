@@ -1,7 +1,8 @@
-import { createContext, FC, useEffect, useState } from "react";
+import { createContext, FC, useContext, useEffect, useState } from "react";
 import { User } from "../Models";
 import { UserAPI } from "./API/UserAPI";
 import { useNavigate } from "react-router-dom";
+import { QueueContext } from "./QueueContext";
 
 type UserContextType = {
   user: User;
@@ -15,7 +16,7 @@ export const UserContext = createContext<UserContextType>(null);
 
 export const UserProvider: FC = ({ children }) => {
   const userAPI = new UserAPI();
-
+  const queueContext = useContext(QueueContext);
   const [user, setUser] = useState<User>({
     email: "",
     firstName: "",
@@ -58,6 +59,7 @@ export const UserProvider: FC = ({ children }) => {
     const response = await userAPI.login(email, password);
     if (response) {
       setUser(await userAPI.getUser());
+      queueContext.getQueues();
     }
   };
   const logOut = async () => {

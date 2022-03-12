@@ -8,8 +8,8 @@ import { ModalsProvider } from "./Context/ModalsContext";
 export default function App() {
   return (
     <BrowserRouter>
-      <UserProvider>
-        <QueueProvider>
+      <QueueProvider>
+        <UserProvider>
           <ModalsProvider>
             <Toast />
             <Routes>
@@ -22,8 +22,8 @@ export default function App() {
               />
             </Routes>
           </ModalsProvider>
-        </QueueProvider>
-      </UserProvider>
+        </UserProvider>
+      </QueueProvider>
     </BrowserRouter>
   );
 }

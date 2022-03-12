@@ -7,5 +7,5 @@ export type PhysicalQueue = {
   id: number;
   estimatedTime: Date;
   createdTime: Date;
-  queue: Queue;
+  queue?: Queue;
 };

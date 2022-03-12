@@ -1,47 +1,68 @@
 import { FC, useContext, useEffect, useState } from "react";
-import { AddPhysicalQueue } from "../AddPhysicalQueue";
-import { Queue } from "../../Models/Queue";
-import { PhysicalQueue } from "../../Models/PhysicalQueue";
+import toast from "react-hot-toast";
 import { QueueContext } from "../../Context/QueueContext";
+import { PhysicalQueue } from "../../Models/PhysicalQueue";
+import { Queue } from "../../Models/Queue";
+import { AddPhysicalQueue } from "../AddPhysicalQueue";
 import { ModalFooter } from "./ModalFooter";
-
-import { toast } from "react-hot-toast";
-import { Toast } from "../Toast";
-
-interface AddQueueModalProps {
+type EditedQueue = {
+  name: string;
+  description: string;
+  id: number;
+  createdTime: Date;
+  physicalQueues: any;
+};
+interface EditQueueModalProps {
   onClose: any;
+  queue: {
+    name: string;
+    description: string;
+    id: number;
+    createdTime: Date;
+    physicalQueues: any;
+  };
 }
-
-export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
+export const EditQueueModal: FC<EditQueueModalProps> = (props) => {
   const queueContext = useContext(QueueContext);
 
-  const [addQueue, setAddQueue] = useState<Queue>({
+  const [isSubmitted, setIsSubmitted] = useState(true);
+  const [physicalQueues, setPhysicalQueues] = useState<PhysicalQueue[]>([]);
+  const [queue, setQueue] = useState<EditedQueue>({
     name: "",
     description: "",
     id: 0,
-    physicalQueues: [],
     createdTime: new Date(),
+    physicalQueues: [],
   });
-  const [isSubmitted, setIsSubmitted] = useState(true);
-  const [physicalQueues, setPhysicalQueues] = useState<PhysicalQueue[]>([]);
+  useEffect(() => {
+    const newQueue: Queue = {
+      name: props.queue.name,
+      description: props.queue.description,
+      createdTime: props.queue.createdTime,
+      id: props.queue.id,
+      physicalQueues: props.queue.physicalQueues.$values,
+    };
+    setQueue(newQueue);
+    setPhysicalQueues(newQueue?.physicalQueues);
+  }, [props.queue]);
   useEffect(() => {
     if (
-      addQueue.name === "" ||
-      addQueue.description === "" ||
+      queue.name === "" ||
+      queue.description === "" ||
       physicalQueues.length === 0
     ) {
     } else {
       setIsSubmitted(false);
     }
-  }, [addQueue, physicalQueues]);
+  }, [queue, physicalQueues]);
 
   const checkForm = () => {
     let isFormValid = true;
-    if (addQueue.name === "") {
+    if (queue.name === "") {
       toast.error("Name must be populated");
       isFormValid = false;
     }
-    if (addQueue.description === "") {
+    if (queue.description === "") {
       toast.error("Description must be populated");
       isFormValid = false;
     }
@@ -66,8 +87,8 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
       {
         name: "",
         description: "",
-        id: physicalQueues.length,
-        queueId: addQueue.id,
+        id: 0,
+        queueId: queue.id,
         createdTime: new Date(),
         estimatedTime: new Date(),
       },
@@ -100,13 +121,13 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
     setPhysicalQueues(list);
   };
   const onSubmit = async () => {
-    const list = addQueue;
-    list.physicalQueues = physicalQueues;
+    const editedQueue = queue;
+    editedQueue.physicalQueues = physicalQueues;
 
     if (checkForm()) {
       setIsSubmitted(true);
-      if (queueContext.addQueue(list)) {
-        onClose();
+      if (queueContext.editQueue(editedQueue)) {
+        props.onClose();
       }
       setIsSubmitted(false);
     }
@@ -131,7 +152,7 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                onClick={onClose}
+                onClick={props.onClose}
               />
             </div>
             <div
@@ -144,10 +165,9 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
                   className="form-control"
                   id="floatingInput"
                   style={{ borderRadius: "10px" }}
-                  placeholder="Example: Admitere AC"
-                  onChange={(e) =>
-                    setAddQueue({ ...addQueue, name: e.target.value })
-                  }
+                  placeholder={props.queue.name}
+                  value={queue.name}
+                  onChange={(e) => setQueue({ ...queue, name: e.target.value })}
                 />
                 <label htmlFor="floatingInput">Name</label>
               </div>
@@ -157,10 +177,11 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
                   id="floatingInput"
                   style={{ borderRadius: "10px", height: "120px" }}
                   rows={5}
+                  value={queue.description}
                   maxLength={200}
                   cols={100}
                   onChange={(e) =>
-                    setAddQueue({ ...addQueue, description: e.target.value })
+                    setQueue({ ...queue, description: e.target.value })
                   }
                 />
                 <label htmlFor="floatingInput">Description</label>
@@ -179,8 +200,8 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
                       updatePhysicalQueueDescription(index, text)
                     }
                     onRemove={(index: number) => removePhysicalQueue(index)}
-                    index={index}
                     physicalQueue={item}
+                    index={index}
                   />
                 );
               })}
@@ -195,7 +216,7 @@ export const AddQueueModal: FC<AddQueueModalProps> = ({ onClose }) => {
               </div>
             </div>
             <ModalFooter
-              onClose={onClose}
+              onClose={props.onClose}
               isSubmitted={isSubmitted}
               onSubmit={onSubmit}
               mainButton={"Add Queue"}
