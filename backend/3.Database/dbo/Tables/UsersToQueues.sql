@@ -5,7 +5,7 @@
 	[PhysicalQueueId] INT NOT NULL,
 	[TimeAdded] DATETIME NOT NULL CONSTRAINT [DF_TimeAdded_UsersToQueues] DEFAULT SYSDATETIME(),
 	[TimePassed] DATETIME NOT NULL CONSTRAINT [DF_TimePassed_UsersToQueues] DEFAULT SYSDATETIME(),
-	[IsPassed] bit NOT NULL,
+	[IsPassed] bit NULL,
 	CONSTRAINT [PK_UsersToQueues] PRIMARY KEY ([Id]),
 	CONSTRAINT [FK_UsersToQueues_PhysicalQueue] FOREIGN KEY ([PhysicalQueueId]) REFERENCES [dbo].[PhysicalQueues]([Id]),
 	CONSTRAINT [FK_UsersToQueues_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id]),

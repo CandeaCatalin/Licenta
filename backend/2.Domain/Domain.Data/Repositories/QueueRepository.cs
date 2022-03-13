@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain.Schema;
 using EF.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Data.Repositories
@@ -35,12 +36,44 @@ namespace Domain.Data.Repositories
 
         public Queue GetByName(string name)
         {
-            return _context.Queues.FirstOrDefault(q => q.Name == name);
+            return _context.Queues.Select(q => new Queue
+            {
+                Id = q.Id,
+                Name = q.Name,
+                CreatedTime = q.CreatedTime,
+                Description = q.Description,
+                PhysicalQueues = q.PhysicalQueues.Select(pq => new PhysicalQueue
+                {
+                    Id = pq.Id,
+                    Name = pq.Name,
+                    Description = pq.Description,
+                    CreatedTime = pq.CreatedTime,
+                    EstimatedTime = pq.EstimatedTime,
+                    QueueId = q.Id,
+                    Queue = q,
+                }),
+            }).FirstOrDefault(q => q.Name == name);
         }
 
         public Queue GetById(int id)
         {
-            return _context.Queues.Find(id);
+            return _context.Queues.Select(q => new Queue
+            {
+                Id = q.Id,
+                Name = q.Name,
+                CreatedTime = q.CreatedTime,
+                Description = q.Description,
+                PhysicalQueues = q.PhysicalQueues.Select(pq => new PhysicalQueue
+                {
+                    Id = pq.Id,
+                    Name = pq.Name,
+                    Description = pq.Description,
+                    CreatedTime = pq.CreatedTime,
+                    EstimatedTime = pq.EstimatedTime,
+                    QueueId = q.Id,
+                    Queue = q,
+                }),
+            }).FirstOrDefault(q => q.Id == id);
         }
         private void AddPhysicalQueues(int queueId, ICollection<PhysicalQueue> physicalQueues)
         {
@@ -64,7 +97,22 @@ namespace Domain.Data.Repositories
 
         public List<Queue> GetQueues()
         {
-            return _context.Queues.Include(Queue => Queue.PhysicalQueues).ToList();
+            return _context.Queues.Select(q => new Queue
+            {
+                Id = q.Id,
+                Name = q.Name,
+                CreatedTime = q.CreatedTime,
+                Description = q.Description,
+                PhysicalQueues = q.PhysicalQueues.Select(pq => new PhysicalQueue
+                {
+                    Id = pq.Id,
+                    Name = pq.Name,
+                    Description = pq.Description,
+                    CreatedTime = pq.CreatedTime,
+                    EstimatedTime = pq.EstimatedTime,
+                    Queue = q,
+                }),
+            }).ToList();
         }
         public bool DeleteQueue(int queueId)
         {
@@ -100,7 +148,7 @@ namespace Domain.Data.Repositories
                 editedQueue.Name = queue.Name;
                 editedQueue.Description = queue.Description;
                 _context.Queues.Update(editedQueue);
-                List<PhysicalQueue> editedPhysicalQueues = _context.PhysicalQueues.Where(epq =>epq.QueueId == queue.Id).ToList();
+                List<PhysicalQueue> editedPhysicalQueues = _context.Queues.Find(queue.Id).PhysicalQueues.ToList();
                 foreach(PhysicalQueue epq in editedPhysicalQueues)
                 {
                     PhysicalQueue editedPhysicalQueue = physicalQueues.FirstOrDefault(pq => epq.Id == pq.Id);
@@ -125,6 +173,42 @@ namespace Domain.Data.Repositories
             _context.SaveChanges();
                 return GetById(queue.Id);  
             
+        }
+        public void AddUserToQueue(int queueId, int userId)
+        {
+            var list = _context.UsersToQueues.FromSqlInterpolated($"[dbo].[GetUsersQueue] {queueId}").ToList();
+            if (list.Find(utq => utq.UserId == userId) != null)
+            {
+                throw new ArgumentException("User already in a queue!");
+            }
+            if(_context.Users.Find(userId) == null)
+            {
+                throw new ArgumentException("User does not exist!");
+            }
+            if(GetById(queueId) == null)
+            {
+                throw new ArgumentException("Queue does not exist!");
+            }
+            List<PhysicalQueue> physicalQueues = _context.PhysicalQueues.Where(pq => pq.QueueId == queueId).ToList();
+            int pqIdWithLessUsers = physicalQueues[0].Id;
+            int minimumUsers = int.MaxValue;
+            foreach(PhysicalQueue physicalQueue in physicalQueues)
+            {
+                int countUsers = list.Count(c => c.PhysicalQueueId == physicalQueue.Id);
+                if (minimumUsers > countUsers)
+                {
+                    pqIdWithLessUsers = physicalQueue.Id;
+                    minimumUsers = countUsers;
+                }
+            }
+            UsersToQueues newUsersToQueues = new()
+            {
+                PhysicalQueueId = pqIdWithLessUsers,
+                UserId = userId,
+                IsPassed = false,
+            };
+            _context.UsersToQueues.Add(newUsersToQueues);
+            _context.SaveChanges();
         }
     }
 }

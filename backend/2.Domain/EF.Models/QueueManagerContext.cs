@@ -28,35 +28,31 @@ namespace EF.Models
                 entity.Property(e => e.Id).UseIdentityColumn();
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
                 entity.Property(e => e.CreatedTime).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
+                entity.HasMany(q => q.PhysicalQueues).WithOne(pq => pq.Queue);
             });
             modelBuilder.Entity<PhysicalQueue>(entity =>
             {
                 entity.HasKey(e => new { e.Id }).HasName("PK_PhysicalQueue");
 
                 entity.Property(e => e.Id).UseIdentityColumn();
-                entity.HasIndex(e => e.QueueId, "IX_PhysicalQueues_QueueId");
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.CreatedTime).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
                 entity.Property(e => e.EstimatedTime).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
-                entity.HasOne(d => d.Queue).WithMany(q => q.PhysicalQueues).HasForeignKey(d => new { d.QueueId }).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_PhysicalQueues_Queues");
+                entity.HasOne(d => d.Queue).WithMany(q => q.PhysicalQueues).IsRequired();
             });
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => new { e.Id }).HasName("PK_User");
                 entity.Property(e => e.Id).UseIdentityColumn();
                 entity.HasIndex(e => e.Email, "IX_Users_Email").IsUnique();
-                entity.HasIndex(e => e.QueueId, "IX_Users_QueueId");
-                entity.HasIndex(e => e.UserRolesId, "IX_Users_UserRolesId");
-                entity.HasIndex(e => e.PhysicalQueueId, "IX_Users_PhysicalQueueId");
+                entity.HasIndex(e => e.UserRoleId, "IX_Users_UserRolesId");
                 entity.Property(e => e.Password).HasColumnType("nvarchar(max)");
                 entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.LastName).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Email).IsRequired().HasMaxLength(250);
                 entity.Property(e => e.CreatedTime).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
                 entity.Property(e => e.IsActive).IsRequired();
-                entity.HasOne(d => d.Queue).WithMany(q => q.Users).HasForeignKey(d => new { d.QueueId }).OnDelete(DeleteBehavior.SetNull).HasConstraintName("FK_Users_Queues");
-                entity.HasOne(d => d.PhysicalQueue).WithMany(q => q.Users).HasForeignKey(d => new { d.PhysicalQueueId }).OnDelete(DeleteBehavior.SetNull).HasConstraintName("FK_Users_PhysicalQueues");
-                entity.HasOne(d => d.UserRoles).WithMany(u => u.Users).OnDelete(DeleteBehavior.Cascade).HasForeignKey(d => new { d.UserRolesId }).HasConstraintName("FK_Users.UserRoles");
+                entity.HasOne(d => d.UserRole).WithMany().OnDelete(DeleteBehavior.Cascade).HasForeignKey(d => new { d.UserRoleId }).HasConstraintName("FK_Users.UserRoles");
                 entity.HasOne(d=>d.UsersToQueues).WithOne(u=>u.User).HasForeignKey<UsersToQueues>(u => u.UserId).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_User_UserToQueues");
             });
             modelBuilder.Entity<UserRole>(entity =>
@@ -72,7 +68,7 @@ namespace EF.Models
                 entity.HasIndex(e => e.Timestamp, "IX_EventLog_Timestamp");
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e=>e.Timestamp).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
-                entity.HasOne(e => e.EventCategory).WithMany(e => e.EventLogs).HasForeignKey(e => new { e.EventCategoryId }).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_EventLog_EventCategory");
+                entity.HasOne(e => e.EventCategory).WithMany().HasForeignKey(e => new { e.EventCategoryId }).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_EventLog_EventCategory");
             });
 
             modelBuilder.Entity<EventCategory>(entity=>{
@@ -84,7 +80,7 @@ namespace EF.Models
                 entity.Property(e => e.Id).UseIdentityColumn();
                 entity.HasIndex(e => e.PhysicalQueueId, "IX_UsersToQueues_PhysicalQueueId");
                 entity.HasIndex(e => e.UserId, "IX_UsersToQueues_UserId");
-                entity.Property(e => e.IsPassed).IsRequired().HasDefaultValue(0);
+                entity.Property(e => e.IsPassed).IsRequired();
                 entity.Property(e=>e.TimeAdded).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
                 entity.Property(e => e.TimePassed).HasDefaultValueSql("('9999-12-31 23:59:59.99')");
                 entity.HasOne(e => e.PhysicalQueue).WithMany(q => q.UsersToQueues).HasForeignKey(e=>new { e.PhysicalQueueId }).HasConstraintName("FK_UsersToQueues_PhysicalQueue");

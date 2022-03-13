@@ -9,7 +9,6 @@ namespace Domain.Schema
     {
         public PhysicalQueue()
         {
-            Users = new HashSet<User>();
             UsersToQueues = new HashSet<UsersToQueues>();
 
         }
@@ -20,7 +19,6 @@ namespace Domain.Schema
         public string Description { get; set; }
         public int QueueId { get; set; }
         public Queue Queue { get; set; }
-        public ICollection<User> Users { get; set; }
         public DateTime CreatedTime { get; set; }
         public DateTime EstimatedTime { get; set; }
 

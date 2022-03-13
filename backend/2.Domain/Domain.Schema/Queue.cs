@@ -10,16 +10,14 @@ namespace Domain.Schema
         public Queue()
         {
             PhysicalQueues = new HashSet<PhysicalQueue>();
-            Users = new HashSet<User>();
-        }
+         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreatedTime { get; set; }
-        public ICollection<PhysicalQueue> PhysicalQueues { get; set; }
-        public ICollection<User> Users { get; set; }
-
+        public IEnumerable<PhysicalQueue> PhysicalQueues { get; set; }
+ 
     }
 }
