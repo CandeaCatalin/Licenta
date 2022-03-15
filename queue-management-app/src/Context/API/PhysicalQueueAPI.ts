@@ -6,8 +6,7 @@ export class PhysicalQueueAPI {
     this.baseUrl = "https://localhost:5001";
     this._endpoints = {
       getPhysicalQueue: "/api/PhysicalQueue/get?id=",
-      addQueue: "/api/Queue/add",
-      deleteQueue: "/api/Queue/delete",
+      getNextUser: "/api/PhysicalQueue/getNextUser?id=",
     };
   }
   getPhysicalQueue = async (id: number) => {
@@ -20,6 +19,24 @@ export class PhysicalQueueAPI {
 
     if (typeof content.id === "number") {
       return content;
+    } else {
+      throw "error";
+    }
+  };
+  getNextUser = async (physicalQueueId: number) => {
+    const response = await fetch(
+      this._endpoints.getNextUser + physicalQueueId,
+      {
+        method: "post",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const content = await response.json();
+
+    if (typeof content.userName === "string") {
+      return content.userName;
     } else {
       throw "error";
     }

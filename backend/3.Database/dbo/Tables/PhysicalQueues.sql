@@ -4,7 +4,7 @@
 	[Name] NVARCHAR(100) NOT NULL,
 	[Description] NVARCHAR(MAX) NULL,
 	[QueueId] INT NULL,
-	[EstimatedTime] DATETIME NOT NULL CONSTRAINT [DF_EstimatedTime_PhysicalQueues] DEFAULT SYSDATETIME(),
+	[EstimatedTime] BIGINT NOT NULL DEFAULT 0 ,
 	[CreatedTime] DATETIME NOT NULL CONSTRAINT [DF_CreatedTime_PhysicalQueues] DEFAULT SYSDATETIME(),
 	CONSTRAINT [PK_PhysicalQueue] PRIMARY KEY ([Id]),
 	CONSTRAINT [FK_PhysicalQueues_Queues] FOREIGN KEY ([QueueId]) REFERENCES [dbo].[Queues]([Id]) ON DELETE CASCADE,

@@ -159,13 +159,26 @@ namespace API.Controllers
             }
         }
         [HttpPost("AddUserToQueue")]
-        public IActionResult AddUserToQueue(AddUserToQueueDtocs dto)
+        public IActionResult AddUserToQueue(AddUserToQueueDto dto)
         {
             try
             {
                 _queueRepository.AddUserToQueue(dto.QueueId, dto.UserId);
                 return Ok();
             }catch(Exception e)
+            {
+                return BadRequest();
+            }
+        }
+        [HttpPost("PassUserInQueue")]
+        public IActionResult PassUserInQueue(PassUserInQueueDto dto)
+        {
+            try
+            {
+                _queueRepository.PassUserInQueue(dto.PhysicalQueueId);
+                return Ok();
+            }
+            catch (Exception e)
             {
                 return BadRequest();
             }

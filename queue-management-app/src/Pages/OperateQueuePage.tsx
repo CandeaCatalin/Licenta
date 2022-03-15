@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { PhysicalQueueAPI } from "../Context/API/PhysicalQueueAPI";
 import { PhysicalQueue } from "../Models/PhysicalQueue";
 import { UserContext } from "../Context/UserContext";
+import { QueueContext } from "../Context/QueueContext";
 
 interface OperateQueuePageProps {}
 
@@ -13,6 +14,9 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
   const physicalQueueAPI = new PhysicalQueueAPI();
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
+  const queueContext = useContext(QueueContext);
+  const [nextUsername, setNextUsername] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(true);
   const [physicalQueue, setPhysicalQueue] = useState<PhysicalQueue>({
     name: "",
     description: "",
@@ -36,8 +40,9 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
           const response = await physicalQueueAPI.getPhysicalQueue(
             parseInt(params.id)
           );
-
           setPhysicalQueue(response);
+          await getNextUserName();
+
           await new Promise((res) => setTimeout(res, 1000));
           setIsLoaded(true);
         } catch (error) {
@@ -47,7 +52,27 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
     };
     fetch().then();
   }, []);
-  const buttonPress = () => {};
+  useEffect(() => {
+    const fetch = async () => {
+      setInterval(async function () {
+        await getNextUserName();
+      }, 60000 * 5);
+    };
+    fetch().then();
+  }, []);
+  const buttonPress = async () => {
+    setIsSubmitted(true);
+    queueContext.passUserInQueue(physicalQueue.id);
+    await getNextUserName();
+    setIsSubmitted(false);
+  };
+  const getNextUserName = async () => {
+    if (typeof params.id === "string") {
+      const name = await physicalQueueAPI.getNextUser(parseInt(params.id));
+
+      setNextUsername(name);
+    }
+  };
   return (
     <>
       <div>
@@ -108,12 +133,13 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
                 Description:{physicalQueue.description}
               </div>
               <div className="physical-queue-description">
-                Next: Not Available
+                Next: {nextUsername}
               </div>
               <button
                 type="button"
                 className="operate-btn big-btn button-modal-prim"
                 onClick={() => buttonPress()}
+                disabled={isSubmitted && nextUsername === ""}
               >
                 <span style={{ fontWeight: "bold" }}>NEXT</span>
               </button>

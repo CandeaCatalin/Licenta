@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace API.Dtos.Queue
 {
-    public class AddUserToQueueDtocs
+    public class PassUserInQueueDto
     {
-        public int UserId { get; set; }
-        public int QueueId { get; set; }
+        public int PhysicalQueueId { get; set; }
     }
 }

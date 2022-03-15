@@ -46,6 +46,27 @@ namespace API.Controllers
                     return BadRequest(new { message = e.Message });
                 }
             }
-        }      
+        }
+        [HttpPost("getNextUser")]
+        public IActionResult GetNextUser(int id)
+        {
+            if (_jwtService.CheckIfUserIsLogged(_userRepository, Request) == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                try
+                {
+                    string userName = _physicalQueueRepository.GetNextUser(id);
+                    return Ok(new { userName = userName });
+                }
+
+                catch (Exception e)
+                {
+                    return BadRequest(new { message = e.Message });
+                }
+            }
+        }
     }
 }

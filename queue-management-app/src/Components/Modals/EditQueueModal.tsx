@@ -35,15 +35,8 @@ export const EditQueueModal: FC<EditQueueModalProps> = (props) => {
     physicalQueues: [],
   });
   useEffect(() => {
-    const newQueue: Queue = {
-      name: props.queue.name,
-      description: props.queue.description,
-      createdTime: props.queue.createdTime,
-      id: props.queue.id,
-      physicalQueues: props.queue.physicalQueues.$values,
-    };
-    setQueue(newQueue);
-    setPhysicalQueues(newQueue?.physicalQueues);
+    setQueue(props.queue);
+    setPhysicalQueues(props.queue.physicalQueues);
   }, [props.queue]);
   useEffect(() => {
     if (
@@ -145,7 +138,7 @@ export const EditQueueModal: FC<EditQueueModalProps> = (props) => {
           <div className="modal-content" style={{ borderRadius: "20px" }}>
             <div className="modal-header">
               <h5 className="modal-title" id="deleteModalLabel">
-                Add Queue
+                Edit Queue
               </h5>
               <button
                 type="button"
@@ -219,7 +212,7 @@ export const EditQueueModal: FC<EditQueueModalProps> = (props) => {
               onClose={props.onClose}
               isSubmitted={isSubmitted}
               onSubmit={onSubmit}
-              mainButton={"Add Queue"}
+              mainButton={"Edit Queue"}
               secondButton={"Cancel"}
             />
           </div>

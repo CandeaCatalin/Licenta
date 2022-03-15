@@ -11,6 +11,7 @@ type QueueContextType = {
   addQueue: any;
   deleteQueue: any;
   editQueue: any;
+  passUserInQueue: any;
 };
 
 // @ts-ignore
@@ -30,7 +31,7 @@ export const QueueProvider: FC = ({ children }) => {
   const getQueues = async () => {
     try {
       const response = await queueAPI.getQueue();
-      setQueueList(response.$values);
+      setQueueList(response);
     } catch (error) {
       navigate("Login");
     }
@@ -43,7 +44,10 @@ export const QueueProvider: FC = ({ children }) => {
     } else return false;
   };
   const editQueue = async (queue: Queue) => {
-    console.log(queue);
+    const response = await queueAPI.editQueue(queue);
+    if (response === true) {
+      getQueues();
+    }
   };
   const deleteQueue = async (queueId: number) => {
     const response = await queueAPI.deleteQueue(queueId);
@@ -54,12 +58,17 @@ export const QueueProvider: FC = ({ children }) => {
       return true;
     } else return false;
   };
+  const passUserInQueue = async (physicalQueue: number) => {
+    await queueAPI.passUserInQueue(physicalQueue);
+  };
   const ctx: QueueContextType = {
     queueList: queueList,
     addQueue: (queue: Queue) => addQueue(queue),
     deleteQueue: (queueId: number) => deleteQueue(queueId),
     getQueues: () => getQueues(),
     editQueue: (queue: Queue) => editQueue(queue),
+    passUserInQueue: (physicalQueueId: number) =>
+      passUserInQueue(physicalQueueId),
   };
   return <QueueContext.Provider value={ctx}>{children}</QueueContext.Provider>;
 };

@@ -83,7 +83,7 @@ namespace EF.Models
                 entity.Property(e => e.IsPassed).IsRequired();
                 entity.Property(e=>e.TimeAdded).IsRequired().HasDefaultValueSql("(SYSDATETIME())");
                 entity.Property(e => e.TimePassed).HasDefaultValueSql("('9999-12-31 23:59:59.99')");
-                entity.HasOne(e => e.PhysicalQueue).WithMany(q => q.UsersToQueues).HasForeignKey(e=>new { e.PhysicalQueueId }).HasConstraintName("FK_UsersToQueues_PhysicalQueue");
+                entity.HasOne(e => e.PhysicalQueue).WithMany(q => q.UsersToQueues).HasForeignKey(e=>new { e.PhysicalQueueId }).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_UsersToQueues_PhysicalQueue");
                 entity.HasOne(e => e.User).WithOne(u => u.UsersToQueues).HasForeignKey<User>(u => u.UsersToQueuesId).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_UsersToQueues_User");
             });
         }

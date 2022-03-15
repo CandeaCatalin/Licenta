@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Domain.Schema;
 using EF.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Data.Repositories
@@ -148,31 +148,42 @@ namespace Domain.Data.Repositories
                 editedQueue.Name = queue.Name;
                 editedQueue.Description = queue.Description;
                 _context.Queues.Update(editedQueue);
-                List<PhysicalQueue> editedPhysicalQueues = _context.Queues.Find(queue.Id).PhysicalQueues.ToList();
-                foreach(PhysicalQueue epq in editedPhysicalQueues)
+                List<PhysicalQueue> oldPhyisicalQueues = _context.Queues.Find(queue.Id).PhysicalQueues.ToList();
+                List<int> oldPhysicalQueuesIds = oldPhyisicalQueues.Select(pq => pq.Id).ToList();
+
+                List<UsersToQueues> OldUsersToQueues = _context.UsersToQueues.AsNoTracking().Where(utq => oldPhysicalQueuesIds.Contains(utq.PhysicalQueueId) && utq.IsPassed == false).ToList();
+            // _context.UsersToQueues.RemoveRange(OldUsersToQueues);
+
+            _context.UsersToQueues.RemoveRange(_context.UsersToQueues.Where(utq => oldPhysicalQueuesIds.Contains(utq.PhysicalQueueId)));
+            foreach (PhysicalQueue epq in oldPhyisicalQueues)
+            {
+                PhysicalQueue editedPhysicalQueue = physicalQueues.FirstOrDefault(pq => epq.Id == pq.Id);
+                if (editedPhysicalQueue != null)
                 {
-                    PhysicalQueue editedPhysicalQueue = physicalQueues.FirstOrDefault(pq => epq.Id == pq.Id);
-                    if(editedPhysicalQueue != null)
-                    {
-                        epq.Name = editedPhysicalQueue.Name;
-                        epq.Description = editedPhysicalQueue.Description;
-                        _context.PhysicalQueues.Update(epq);
-                        physicalQueues.Remove(editedPhysicalQueue);
-                    }
-                    else
-                    {
-                    _context.PhysicalQueues.Remove(epq);
-                    }
+                    epq.Name = editedPhysicalQueue.Name;
+                    epq.Description = editedPhysicalQueue.Description;
+                    _context.PhysicalQueues.Update(epq);
+                    physicalQueues.Remove(editedPhysicalQueue);
                 }
-                foreach(PhysicalQueue pq in physicalQueues)
+                else
+                {
+                    _context.PhysicalQueues.Remove(epq);
+                }
+            }
+            foreach (PhysicalQueue pq in physicalQueues)
             {
                 pq.Id = 0;
             }
-                AddPhysicalQueues(queue.Id, physicalQueues);
+            AddPhysicalQueues(queue.Id, physicalQueues);
 
             _context.SaveChanges();
-                return GetById(queue.Id);  
-            
+            List<PhysicalQueue> newPhysicalQueue = _context.PhysicalQueues.Where(pq => pq.QueueId == queue.Id).ToList();
+            List<int> newPhysicalQueueIds = newPhysicalQueue.Select(pq => pq.Id).ToList();
+
+            RealocateUsersInQueues(OldUsersToQueues, newPhysicalQueueIds);
+
+            return GetById(queue.Id);
+
         }
         public void AddUserToQueue(int queueId, int userId)
         {
@@ -208,6 +219,47 @@ namespace Domain.Data.Repositories
                 IsPassed = false,
             };
             _context.UsersToQueues.Add(newUsersToQueues);
+            _context.SaveChanges();
+        }
+        public UsersToQueues GetNextInQueue(int physicalQueueId)
+        {
+            return _context.UsersToQueues.FirstOrDefault(utq => utq.PhysicalQueueId == physicalQueueId && utq.IsPassed == false);
+        }
+        public void PassUserInQueue( int physicalQueueId)
+        {
+            UsersToQueues passedUserInQueue = GetNextInQueue(physicalQueueId);
+            if(passedUserInQueue == null)
+            {
+                throw new ArgumentException("Queue is empty!");
+            }
+            passedUserInQueue.IsPassed = true;
+            passedUserInQueue.TimePassed = DateTime.Now;
+      
+            _context.UsersToQueues.Update(passedUserInQueue);
+            UsersToQueues prevPassedUserInQueue = _context.UsersToQueues.OrderByDescending(utq => utq.Id).FirstOrDefault(utq => utq.PhysicalQueueId == physicalQueueId && utq.IsPassed == true);
+            PhysicalQueue physicalQueue = _context.PhysicalQueues.Find(physicalQueueId);
+            if(prevPassedUserInQueue == null)
+            {
+                physicalQueue.EstimatedTime = (passedUserInQueue.TimePassed - new TimeSpan(0)).Ticks;
+            }else                 
+                physicalQueue.EstimatedTime = (physicalQueue.EstimatedTime + (passedUserInQueue.TimePassed.Subtract(prevPassedUserInQueue.TimePassed)).Ticks)/2;
+            
+                
+            _context.PhysicalQueues.Update(physicalQueue);
+            _context.SaveChanges();
+        }
+        public void RealocateUsersInQueues(List<UsersToQueues> oldUsersToQueues, List<int> newPhysicalQueuesIds)
+        {
+            foreach(UsersToQueues utq in oldUsersToQueues)
+            {
+            UsersToQueues newUsersToQueues = new()
+            {
+                PhysicalQueueId = newPhysicalQueuesIds[oldUsersToQueues.IndexOf(utq) % newPhysicalQueuesIds.Count],
+                UserId = utq.UserId,
+                IsPassed = false,
+            };
+                _context.UsersToQueues.Add(newUsersToQueues);
+            }
             _context.SaveChanges();
         }
     }

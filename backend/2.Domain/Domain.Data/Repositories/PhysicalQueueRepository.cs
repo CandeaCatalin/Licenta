@@ -28,7 +28,22 @@ namespace Domain.Data.Repositories
         }
         public PhysicalQueue GetById(int id)
         {
-            return _context.PhysicalQueues.Include(pq => pq.Queue).FirstOrDefault(pq=>pq.Id == id);
+
+            PhysicalQueue pq = _context.PhysicalQueues.FirstOrDefault(pq => pq.Id == id );
+            Queue queue = _context.Queues.FirstOrDefault(q => q.PhysicalQueues.Contains(pq));
+            pq.Queue = queue;
+            return pq;
+        }
+
+        public string GetNextUser(int pqId)
+        {
+            UsersToQueues usersToQueues = _context.UsersToQueues.FirstOrDefault(utq => utq.PhysicalQueueId == pqId && utq.IsPassed == false);
+            if(usersToQueues != null) {
+                User nextUser = _context.Users.Find(usersToQueues.UserId);
+                return nextUser.FirstName + " " + nextUser.LastName;
+            }
+            return "";
+            
         }
     }
 }

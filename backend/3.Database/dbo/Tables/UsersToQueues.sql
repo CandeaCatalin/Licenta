@@ -7,8 +7,10 @@
 	[TimePassed] DATETIME NOT NULL CONSTRAINT [DF_TimePassed_UsersToQueues] DEFAULT SYSDATETIME(),
 	[IsPassed] bit NULL,
 	CONSTRAINT [PK_UsersToQueues] PRIMARY KEY ([Id]),
-	CONSTRAINT [FK_UsersToQueues_PhysicalQueue] FOREIGN KEY ([PhysicalQueueId]) REFERENCES [dbo].[PhysicalQueues]([Id]),
-	CONSTRAINT [FK_UsersToQueues_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id]),
+	CONSTRAINT [FK_UsersToQueues_PhysicalQueue] FOREIGN KEY ([PhysicalQueueId]) REFERENCES [dbo].[PhysicalQueues]([Id]) ON DELETE CASCADE
+,
+	CONSTRAINT [FK_UsersToQueues_User] FOREIGN KEY ([UserId]) REFERENCES  [dbo].[Users]([Id]) ON DELETE CASCADE
+,
 );
 GO
 CREATE NONCLUSTERED INDEX [IX_UsersToQueues_UserId] ON [dbo].[UsersToQueues]([UserId]);

@@ -11,14 +11,7 @@ interface ViewQueueModalProps {
 export const ViewQueueModal: FC<ViewQueueModalProps> = (props) => {
   const [queue, setQueue] = useState<Queue>();
   useEffect(() => {
-    const newQueue: Queue = {
-      name: props.queue.name,
-      description: props.queue.description,
-      createdTime: props.queue.createdTime,
-      id: props.queue.id,
-      physicalQueues: props.queue.physicalQueues.$values,
-    };
-    setQueue(newQueue);
+    setQueue(props.queue);
   }, [props.queue]);
   return (
     <>

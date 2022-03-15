@@ -20,7 +20,7 @@ namespace Domain.Schema
         public int QueueId { get; set; }
         public Queue Queue { get; set; }
         public DateTime CreatedTime { get; set; }
-        public DateTime EstimatedTime { get; set; }
+        public long EstimatedTime { get; set; }
 
         public ICollection<UsersToQueues> UsersToQueues { get; set; }
     }

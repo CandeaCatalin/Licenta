@@ -7,6 +7,7 @@ namespace Domain.Data.Repositories
     {
         public PhysicalQueue Get(int id);
         public PhysicalQueue GetById(int id);
+        public string GetNextUser(int pqId);
 
     }
 }
