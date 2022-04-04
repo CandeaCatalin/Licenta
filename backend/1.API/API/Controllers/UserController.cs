@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Security.Claims;
 using API.Dtos.User;
 using API.Services;
 using Domain.Data.Repositories;
 using Domain.Schema;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -20,16 +22,11 @@ namespace API.Controllers
             _jwtService = jwtService;
         }
 
+        [Authorize]
         [HttpGet("get")]
         public IActionResult GetUser()
         {
-            User user = _jwtService.CheckIfUserIsLogged(_repository, Request);
-            if (user == null)
-            {
-                return Unauthorized();
-            }
-            else
-                return Ok(user);
+         return Ok(_repository.GetById(int.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier))));
         }
 
         [HttpPost("delete")]

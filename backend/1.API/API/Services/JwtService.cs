@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using Domain.Data.Repositories;
 using Domain.Schema;
@@ -13,12 +14,19 @@ namespace API.Services
         private readonly string secureKey = "Licenta 2022 Candea Catalin";
         public string Generate(int id)
         {
-            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secureKey));
-            SigningCredentials credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
-            JwtHeader header = new JwtHeader(credentials);
-            JwtPayload payload = new JwtPayload(id.ToString(), null, null, null, DateTime.Today.AddDays(1));
-            JwtSecurityToken securityToken = new JwtSecurityToken(header, payload);
-            return new JwtSecurityTokenHandler().WriteToken(securityToken);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenKey = Encoding.UTF8.GetBytes(secureKey);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+              {
+             new Claim(ClaimTypes.NameIdentifier, id.ToString())
+              }),
+                Expires = DateTime.UtcNow.AddMinutes(10),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
         public JwtSecurityToken Verify(string jwt)
         {
@@ -34,23 +42,6 @@ namespace API.Services
                                         },
                                         out SecurityToken validatedToken);
             return (JwtSecurityToken)validatedToken;
-        }
-
-        public User CheckIfUserIsLogged(IUserRepository repository, HttpRequest request)
-        {
-            try
-            {
-                string jwt = request.Cookies["jwt"];
-                JwtSecurityToken token = Verify(jwt);
-
-                int userId = int.Parse(token.Issuer);
-                User user = repository.GetById(userId);
-                return user;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
         }
     }
 }

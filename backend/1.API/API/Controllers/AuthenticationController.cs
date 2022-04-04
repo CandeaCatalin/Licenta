@@ -45,13 +45,8 @@ namespace API.Controllers
             try
             {
                 User returnedUser = _repository.Create(user);
-                MailService mailService = new();
-                mailService.sendEmail(returnedUser.Email,
-                    "Hello. In order to confirm your registration please access " +
-                    "https://queuemanagementlicenta.azurewebsites.net/api/Authentication/activateAccount?userId=" + returnedUser.Id.ToString(),
-                    "Confirm registration!");
-
-                return Created("success", returnedUser);
+                string jwt = _jwtService.Generate(user.Id);
+                return Created("success", jwt);
             }
             catch (FormatException e)
             {
@@ -89,13 +84,8 @@ namespace API.Controllers
             {
                 User returnedUser = _repository.Create(user, true);
                 string jwt = _jwtService.Generate(returnedUser.Id);
-                Response.Cookies.Append("jwt", jwt, new CookieOptions
-                {
-                    HttpOnly = true
-                });
-
-
-                return Ok(new { returnedUser });
+               
+                return Ok(new { jwt });
             }
             catch (ArgumentException e)
             {
@@ -127,11 +117,7 @@ namespace API.Controllers
             }
 
             string jwt = _jwtService.Generate(user.Id);
-            Response.Cookies.Append("jwt", jwt, new CookieOptions
-            {
-                HttpOnly = true
-            });
-            return Ok(new { user });
+            return Ok(new { user, jwt });
         }
 
         [HttpPost("admin/login")]
@@ -149,17 +135,13 @@ namespace API.Controllers
             }
 
             string jwt = _jwtService.Generate(user.Id);
-            Response.Cookies.Append("jwt", jwt, new CookieOptions
-            {
-                HttpOnly = true
-            });
-            return Ok(new { user });
+         
+            return Ok(new { jwt });
         }
 
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("jwt");
             return Ok(new { message = "Logout Successful" });
         }
 

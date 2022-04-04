@@ -13,7 +13,10 @@ export class PhysicalQueueAPI {
     const response = await fetch(this._endpoints.getPhysicalQueue + id, {
       method: "get",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
     });
     const content = await response.json();
 
@@ -29,7 +32,10 @@ export class PhysicalQueueAPI {
       {
         method: "post",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
       }
     );
 

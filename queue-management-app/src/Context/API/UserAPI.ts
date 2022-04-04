@@ -22,7 +22,10 @@ export class UserAPI {
     const response = await fetch(this._endpoints.getUser, {
       method: "get",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
     });
     const content = await response.json();
     if (content.status === 401) {
@@ -38,6 +41,8 @@ export class UserAPI {
       body: JSON.stringify({ ...user, password, confirmPassword }),
     }).then();
     if (response.status === 200) {
+      const content = await response.json();
+      localStorage.setItem("jwt", content.jwt);
       return true;
     } else {
       const content = await response.json();
@@ -48,11 +53,15 @@ export class UserAPI {
   login = async (email: string, password: string) => {
     const response = await fetch(this._endpoints.login, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       credentials: "include",
       body: JSON.stringify({ email, password }),
     });
-    if (response.statusText === "OK") {
+    if (response.status !== 401) {
+      const content = await response.json();
+      localStorage.setItem("jwt", content.jwt);
       return true;
     } else {
       const content = await response.json();
@@ -60,25 +69,18 @@ export class UserAPI {
       return false;
     }
   };
-  logOut = async () => {
-    const response = await fetch(this._endpoints.logout, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
-    const content = await response.json();
-    if (content.message === "Logout Successful") {
-      toast.success(content.message);
-      return true;
-    } else {
-      toast.error(content.message);
-      return false;
-    }
+  logOut = () => {
+    localStorage.removeItem("jwt");
+    toast.success("Logout Successful");
+    return true;
   };
   addQueue = async (queue: Queue) => {
     const response = await fetch(this._endpoints.addQueue, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
       credentials: "include",
       body: JSON.stringify(queue),
     }).then();

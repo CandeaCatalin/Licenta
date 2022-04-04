@@ -1,6 +1,7 @@
 ﻿using API.Services;
 using Domain.Data.Repositories;
 using Domain.Schema;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class PhysicalQueueController : ControllerBase
     {
@@ -24,17 +26,11 @@ namespace API.Controllers
             _userRepository = userRepository;
             _jwtService = jwtService;
         }
-        // GET: api/<PhysicalQueueController>
 
         [HttpGet("get")]
         public IActionResult GetPhysicalQueue(int id)
         {
-            if (_jwtService.CheckIfUserIsLogged(_userRepository, Request) == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
+            
                 try
                 {
                     PhysicalQueue physicalQueue = _physicalQueueRepository.Get(id);
@@ -45,17 +41,11 @@ namespace API.Controllers
                 {
                     return BadRequest(new { message = e.Message });
                 }
-            }
+            
         }
         [HttpPost("getNextUser")]
         public IActionResult GetNextUser(int id)
-        {
-            if (_jwtService.CheckIfUserIsLogged(_userRepository, Request) == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
+        {        
                 try
                 {
                     string userName = _physicalQueueRepository.GetNextUser(id);
@@ -65,8 +55,7 @@ namespace API.Controllers
                 catch (Exception e)
                 {
                     return BadRequest(new { message = e.Message });
-                }
-            }
+                }          
         }
     }
 }

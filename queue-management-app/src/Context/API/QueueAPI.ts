@@ -17,7 +17,10 @@ export class QueueAPI {
   addQueue = async (queue: Queue) => {
     const response = await fetch(this._endpoints.addQueue, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
       credentials: "include",
       body: JSON.stringify(queue),
     }).then();
@@ -34,7 +37,10 @@ export class QueueAPI {
     const response = await fetch(this._endpoints.getQueue, {
       method: "get",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
     });
     const content = await response.json();
     if (content.status === 401) {
@@ -45,7 +51,10 @@ export class QueueAPI {
   deleteQueue = async (queueId: number) => {
     const response = await fetch(this._endpoints.deleteQueue, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
       credentials: "include",
       body: JSON.stringify(queueId),
     }).then();
@@ -61,7 +70,10 @@ export class QueueAPI {
   editQueue = async (queue: Queue) => {
     const response = await fetch(this._endpoints.editQueue, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
       credentials: "include",
       body: JSON.stringify(queue),
     }).then();
@@ -77,7 +89,10 @@ export class QueueAPI {
   passUserInQueue = async (physicalQueueId: number) => {
     const response = await fetch(this._endpoints.passUserInQueue, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
       credentials: "include",
       body: JSON.stringify({ physicalQueueId: physicalQueueId }),
     }).then();

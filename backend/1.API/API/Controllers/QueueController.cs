@@ -4,11 +4,14 @@ using API.Dtos.Queue;
 using API.Services;
 using Domain.Data.Repositories;
 using Domain.Schema;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
+
+    [Authorize]
     [ApiController]
     public class QueueController : ControllerBase
     {
@@ -25,12 +28,6 @@ namespace API.Controllers
         [HttpGet("get")]
         public IActionResult GetQueues()
         {
-            if (_jwtService.CheckIfUserIsLogged(_userRepository, Request) == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
                 try
                 {
                     List<Queue> queues = _queueRepository.GetQueues();
@@ -43,18 +40,12 @@ namespace API.Controllers
                 catch (Exception e)
                 {
                     return BadRequest(new { message = e.Message });
-                }
-            }
+                }      
         }
         [HttpPost("add")]
         public IActionResult Add( [FromBody] CreateQueueDto  dto) 
         {
-            if (_jwtService.CheckIfUserIsLogged(_userRepository, Request) == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
+           
                 try
                 {
                     Queue queue = new Queue
@@ -88,19 +79,13 @@ namespace API.Controllers
                 {
                     return BadRequest(new { message = e.Message });
                 }
-            }
-                
+            
         }
         
         [HttpPost("delete")]
         public IActionResult DeleteQueue([FromBody] int queueId)
         {
-            if (_jwtService.CheckIfUserIsLogged(_userRepository, Request) == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
+           
                 try
                 {
                     _queueRepository.DeleteQueue(queueId);
@@ -114,17 +99,12 @@ namespace API.Controllers
                 {
                     return BadRequest(new { message = e.Message });
                 }
-            }
+           
         }
         [HttpPost("edit")]
         public IActionResult EditQueue([FromBody] EditQueueDto dto)
         {
-            if (_jwtService.CheckIfUserIsLogged(_userRepository, Request) == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
+           
                 try
                 {
                     Queue queue = new Queue
@@ -156,7 +136,7 @@ namespace API.Controllers
                 {
                     return BadRequest(new { message = e.Message });
                 }
-            }
+          
         }
         [HttpPost("AddUserToQueue")]
         public IActionResult AddUserToQueue(AddUserToQueueDto dto)
