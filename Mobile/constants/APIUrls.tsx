@@ -1,6 +1,8 @@
+const baseUrl = "http://192.168.0.133:5004";
+// const baseUrl = "";
 export const endpoint = {
-    login: "https://queuemanagementlicenta.azurewebsites.net/api/authentication/user/login",
-    logOut: "https://queuemanagementlicenta.azurewebsites.net/api/authentication/logout",
-    getUser: "https://queuemanagementlicenta.azurewebsites.net/api/User/get",
-    register: "https://queuemanagementlicenta.azurewebsites.net/api/authentication/user/register"
-}
+  login: baseUrl + "/api/authentication/user/login",
+  logOut: baseUrl + "/api/authentication/logout",
+  getUser: baseUrl + "/api/User/get",
+  register: baseUrl + "/api/authentication/user/register",
+};
