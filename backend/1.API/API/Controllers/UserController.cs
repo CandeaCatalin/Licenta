@@ -29,13 +29,13 @@ namespace API.Controllers
          return Ok(_repository.GetById(int.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier))));
         }
 
-        [HttpPost("delete")]
+        [HttpDelete]
         public IActionResult DeleteUser(DeleteUserDto dto)
         {
             try
             {
-                _repository.Delete(dto.Email);
-                return Ok(new { message = dto.Email + " was deleted!" });
+                _repository.Delete(dto.Id);
+                return Ok(new { message ="Deleted!" });
             }
             catch (Exception e)
             {

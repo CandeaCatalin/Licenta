@@ -56,21 +56,23 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
     const fetch = async () => {
       setInterval(async function () {
         await getNextUserName();
-      }, 60000 * 5);
+      }, 60000 * 2);
     };
     fetch().then();
   }, []);
   const buttonPress = async () => {
     setIsSubmitted(true);
-    queueContext.passUserInQueue(physicalQueue.id);
-    await getNextUserName();
-    setIsSubmitted(false);
+    await queueContext.passUserInQueue(physicalQueue.id);
+    if ((await getNextUserName()) !== 0) {
+      setIsSubmitted(false);
+    }
   };
   const getNextUserName = async () => {
     if (typeof params.id === "string") {
       const name = await physicalQueueAPI.getNextUser(parseInt(params.id));
 
-      setNextUsername(name);
+      await setNextUsername(name);
+      return name.length;
     }
   };
   return (

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { PhysicalQueue } from "../Models/PhysicalQueue";
 
 interface AddPhysicalQueueProps {
@@ -26,6 +26,10 @@ export const AddPhysicalQueue: FC<AddPhysicalQueueProps> = ({
     setDescription(value);
     onDescriptionChange(index, value);
   };
+  useEffect(() => {
+    setName(physicalQueue?.name);
+    setDescription(physicalQueue?.description);
+  }, [physicalQueue]);
   return (
     <>
       <div style={{ display: "flex", marginTop: "20px" }}>

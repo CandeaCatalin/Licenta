@@ -8,7 +8,7 @@ namespace Domain.Data.Repositories
         User GetByEmail(string email);
         User GetById(int id);
         User Login(string email, bool isAdmin = false);
-        bool Delete(string email);
+        bool Delete(int id);
         void VerifyRegistration(int userId);
     }
 }

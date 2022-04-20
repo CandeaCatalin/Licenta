@@ -108,9 +108,9 @@ export const EditQueueModal: FC<EditQueueModalProps> = (props) => {
     });
     setPhysicalQueues(list);
   };
-  const removePhysicalQueue = (index: number) => {
+  const removePhysicalQueue = (id: number) => {
     var list = physicalQueues;
-    list = list.filter((queue) => queue.id !== index);
+    list = list.filter((queue) => queue.id !== id);
     setPhysicalQueues(list);
   };
   const onSubmit = async () => {
@@ -192,7 +192,7 @@ export const EditQueueModal: FC<EditQueueModalProps> = (props) => {
                     onDescriptionChange={(index: number, text: string) =>
                       updatePhysicalQueueDescription(index, text)
                     }
-                    onRemove={(index: number) => removePhysicalQueue(index)}
+                    onRemove={(id: number) => removePhysicalQueue(id)}
                     physicalQueue={item}
                     index={index}
                   />
