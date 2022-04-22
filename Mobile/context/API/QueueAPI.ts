@@ -42,11 +42,10 @@ export class QueueAPI {
       }
     );
     const content = await response.json();
-
     if (content.status === 1) {
-      return true;
+      return content.id;
     } else {
-      return false;
+      return 0;
     }
   };
 }

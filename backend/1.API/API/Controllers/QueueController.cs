@@ -143,8 +143,8 @@ namespace API.Controllers
         {
             try
             {
-                _queueRepository.AddUserToQueue(dto.QueueId, dto.UserId);
-                return Ok(new { message="Success", status =1 });
+                int id = _queueRepository.AddUserToQueue(dto.QueueId, dto.UserId);
+                return Ok(new { message="Success", status =1, id = id });
             }catch(Exception e)
             {
                 return Ok(new { message ="Failure", status = 0 });

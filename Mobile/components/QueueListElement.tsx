@@ -11,11 +11,11 @@ interface QueueListElementProps {
 export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
   const queueContext = useContext(QueueContext);
   const userContext = useContext(UserContext);
-  const physicalQueueContext = useContext(PhysicalQueueContext);
 
   const joinQueue = async (userId: number, queueId: number) => {
-    await queueContext.addUserInQueue(userId, queueId);
-    physicalQueueContext.getPhysicalQueue(userContext.user.usersToQueuesId);
+    const id = await queueContext.addUserInQueue(userId, queueId);
+    userContext.setUser({ ...userContext.user, usersToQueuesId: id });
+    console.log(id);
   };
   return (
     <View
@@ -64,7 +64,7 @@ export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
             borderBottomRightRadius: 10,
             alignItems: "center",
           }}
-          onPress={() => joinQueue(userContext.user.id, queue.id)}
+          onPress={async () => await joinQueue(userContext.user.id, queue.id)}
         >
           <Text
             style={{ color: "gainsboro", fontWeight: "bold", fontSize: 15 }}

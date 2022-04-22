@@ -11,6 +11,7 @@ namespace Domain.Data.Repositories
 {
 
 
+
     public class PhysicalQueueRepository : IPhysicalQueueRepository
     {
         private readonly QueueManagerContext _context;
@@ -52,6 +53,14 @@ namespace Domain.Data.Repositories
             }
             return "";
             
+        }
+
+        public bool LeaveQueue(int userId)
+        {
+            UsersToQueues removedUTQ = _context.UsersToQueues.FirstOrDefault(utq => (utq.UserId == userId && utq.IsPassed == false));
+            _context.UsersToQueues.Remove(removedUTQ);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

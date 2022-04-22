@@ -11,6 +11,8 @@ type UserContextType = {
   register: (newUser: User, password: string, confirmPassword: string) => {};
   login: any;
   logOut: any;
+  getUser: any;
+  setUser: any;
 };
 
 // @ts-ignore
@@ -30,8 +32,7 @@ export const UserProvider: FC = ({ children }) => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await userAPI.getUser();
-        setUser(response);
+        getUser();
       } catch (error) {
         // @ts-ignore
         navigator.navigate("Login");
@@ -52,6 +53,10 @@ export const UserProvider: FC = ({ children }) => {
       navigator.navigate("Home");
     }
   }, [user]);
+  const getUser = async () => {
+    const response = await userAPI.getUser();
+    setUser(response);
+  };
   const register = async (
     newUser: User,
     password: string,
@@ -87,6 +92,8 @@ export const UserProvider: FC = ({ children }) => {
       register(newUser, password, confirmPassword),
     login: (email: string, password: string) => login(email, password),
     logOut: () => logOut(),
+    getUser: () => getUser(),
+    setUser: (newUser: User) => setUser(newUser),
   };
   return <UserContext.Provider value={ctx}>{children}</UserContext.Provider>;
 };

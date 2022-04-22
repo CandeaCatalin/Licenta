@@ -1,50 +1,46 @@
+import { getData, storeData } from "../../constants/Storage";
 export class PhysicalQueueAPI {
   baseUrl: string;
   _endpoints: Endpoints;
   constructor() {
     this._endpoints = {};
-    this.baseUrl = "https://localhost:5001";
+    this.baseUrl = "http://192.168.1.4:5004";
     this._endpoints = {
-      getPhysicalQueue: "/api/PhysicalQueue/get?id=",
-      getNextUser: "/api/PhysicalQueue/getNextUser?id=",
+      getPhysicalQueue: "/api/PhysicalQueue/getByUsersToQueues?id=",
+      leavePhysicalQueue: "/api/PhysicalQueue/leavePhysicalQueue",
     };
   }
-  getPhysicalQueue = async (id: number) => {
-    const response = await fetch(this._endpoints.getPhysicalQueue + id, {
-      method: "get",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-      },
-    });
+  getPhysicalQueue = async (usersToQueuesId: number | null) => {
+    const response = await fetch(
+      this.baseUrl + this._endpoints.getPhysicalQueue + usersToQueuesId,
+      {
+        method: "get",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + (await getData("jwt")),
+        },
+      }
+    );
     const content = await response.json();
-
     if (typeof content.id === "number") {
       return content;
     } else {
       throw "error";
     }
   };
-  getNextUser = async (physicalQueueId: number) => {
-    const response = await fetch(
-      this._endpoints.getNextUser + physicalQueueId,
-      {
-        method: "post",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("jwt"),
-        },
-      }
-    );
-
-    const content = await response.json();
-
-    if (typeof content.userName === "string") {
-      return content.userName;
-    } else {
-      throw "error";
-    }
+  leaveQueue = async (userId: number) => {
+    await fetch(this.baseUrl + this._endpoints.leavePhysicalQueue, {
+      method: "post",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + (await getData("jwt")),
+      },
+      body: JSON.stringify({
+        userId: userId,
+      }),
+    });
+    return true;
   };
 }

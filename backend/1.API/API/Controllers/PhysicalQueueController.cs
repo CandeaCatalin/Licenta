@@ -1,4 +1,5 @@
-﻿using API.Services;
+﻿using API.Dtos.Queue;
+using API.Services;
 using Domain.Data.Repositories;
 using Domain.Schema;
 using Microsoft.AspNetCore.Authorization;
@@ -66,6 +67,20 @@ namespace API.Controllers
                     throw new Exception("The queue does not exist");
                 PhysicalQueue physicalQueue = _physicalQueueRepository.GetByUtqId(id);
                 return Ok( new { physicalQueue = physicalQueue});
+            }
+
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+        [HttpPost("leavePhysicalQueue")]
+        public IActionResult LeavePhysicalQueue(LeavePhysicalQueueDto dto)
+        {
+            try
+            {
+                _physicalQueueRepository.LeaveQueue(dto.UserId);
+                return Ok();
             }
 
             catch (Exception e)

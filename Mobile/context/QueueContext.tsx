@@ -3,6 +3,7 @@ import { createContext, FC, useContext, useEffect, useState } from "react";
 import { showMessage } from "react-native-flash-message";
 import { Queue } from "../Models/Queue";
 import QueueAPI from "./API/QueueAPI";
+import { UserContext } from "./UserContext";
 
 type QueueContextType = {
   queueList: Queue[];
@@ -43,10 +44,11 @@ export const QueueProvider: FC = ({ children }) => {
   const addUserInQueue = async (userId: number, queueId: number) => {
     try {
       const response = await queueAPI.addUserInQueue(userId, queueId);
-
-      if (response) {
+      if (response != 0) {
         // @ts-ignore
+
         navigator.navigate("Queue");
+        return response;
       }
     } catch (error) {
       showMessage({

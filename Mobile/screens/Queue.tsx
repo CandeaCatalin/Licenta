@@ -11,12 +11,17 @@ import {
 import { styles } from "../constants/Styles";
 import { LinearGradient } from "expo-linear-gradient";
 import { UserContext } from "../context/UserContext";
-import { QueueListElement } from "../components/QueueListElement";
-import { QueueContext } from "../context/QueueContext";
+import { PhysicalQueueContext } from "../context/PhysicalQueueContext";
 
-export const Home = () => {
+export const Queue = () => {
   const userContext = useContext(UserContext);
-  const queueContext = useContext(QueueContext);
+  const physicalQueueContext = useContext(PhysicalQueueContext);
+  useEffect(() => {
+    const fetch = async () => {
+      //   await physicalQueueContext.getPhysicalQueue();
+    };
+    fetch().then();
+  }, []);
 
   return (
     <LinearGradient
@@ -52,12 +57,29 @@ export const Home = () => {
           <ActivityIndicator size="large" color={"#0FF"} />
         ) : (
           <View style={styles.container}>
-            <View style={styles.queueListBox}>
-              <ScrollView style={{ paddingTop: 20 }}>
-                {queueContext.queueList.map((item) => {
-                  return <QueueListElement queue={item} key={item.id} />;
-                })}
-              </ScrollView>
+            <View style={styles.queuePageDetails}>
+              <TouchableOpacity
+                onPress={() => {
+                  physicalQueueContext.leaveQueue(
+                    userContext.user.id,
+                    userContext.user.usersToQueuesId
+                  );
+                }}
+                style={{
+                  backgroundColor: "#4d4f80",
+                  width: 100,
+                  height: 25,
+                  borderRadius: 20,
+                  alignItems: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  Leave queue
+                </Text>
+              </TouchableOpacity>
+              <Text>Text:{userContext.user.usersToQueuesId}</Text>
             </View>
           </View>
         )}

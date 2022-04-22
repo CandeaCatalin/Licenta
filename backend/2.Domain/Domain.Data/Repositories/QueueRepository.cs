@@ -185,7 +185,7 @@ namespace Domain.Data.Repositories
             return GetById(queue.Id);
 
         }
-        public void AddUserToQueue(int queueId, int userId)
+        public int AddUserToQueue(int queueId, int userId)
         {
             var list = _context.UsersToQueues.FromSqlInterpolated($"[dbo].[GetUsersQueue] {queueId}").ToList();
             if (list.Find(utq => utq.UserId == userId) != null)
@@ -220,6 +220,7 @@ namespace Domain.Data.Repositories
             };
             _context.UsersToQueues.Add(newUsersToQueues);
             _context.SaveChanges();
+            return _context.UsersToQueues.FirstOrDefault(utq => utq.UserId == userId && utq.PhysicalQueueId == newUsersToQueues.PhysicalQueueId && utq.IsPassed == false).Id;
         }
         public UsersToQueues GetNextInQueue(int physicalQueueId)
         {
