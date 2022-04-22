@@ -8,7 +8,7 @@ export class UserAPI {
 
   constructor() {
     this._endpoints = {};
-    this.baseUrl = "http://192.168.0.133:5004";
+    this.baseUrl = "http://192.168.1.4:5004";
     this._endpoints = {
       register: "/api/Authentication/user/register",
       login: "/api/Authentication/user/login",

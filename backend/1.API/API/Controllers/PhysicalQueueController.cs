@@ -57,5 +57,21 @@ namespace API.Controllers
                     return BadRequest(new { message = e.Message });
                 }          
         }
+        [HttpGet("getByUsersToQueues")]
+        public IActionResult GetPhysicalQueueByUsersToQueues(int id)
+        {
+            try
+            {
+                if (id == 0)
+                    throw new Exception("The queue does not exist");
+                PhysicalQueue physicalQueue = _physicalQueueRepository.GetByUtqId(id);
+                return Ok( new { physicalQueue = physicalQueue});
+            }
+
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }

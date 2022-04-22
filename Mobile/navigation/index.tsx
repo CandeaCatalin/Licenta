@@ -10,6 +10,8 @@ import { Register } from "../screens/Register";
 import { UserProvider } from "../context/UserContext";
 import { QueueProvider } from "../context/QueueContext";
 import { View } from "react-native";
+import { Queue } from "../screens/Queue";
+import { PhysicalQueueProvider } from "../context/PhysicalQueueContext";
 
 export default function Navigation() {
   return (
@@ -24,14 +26,17 @@ function RootNavigator() {
   return (
     <QueueProvider>
       <UserProvider>
-        <Stack.Navigator
-          initialRouteName={"Home"}
-          screenOptions={{ headerShown: false, gestureEnabled: false }}
-        >
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register} />
-        </Stack.Navigator>
+        <PhysicalQueueProvider>
+          <Stack.Navigator
+            initialRouteName={"Home"}
+            screenOptions={{ headerShown: false, gestureEnabled: false }}
+          >
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="Queue" component={Queue} />
+          </Stack.Navigator>
+        </PhysicalQueueProvider>
       </UserProvider>
     </QueueProvider>
   );

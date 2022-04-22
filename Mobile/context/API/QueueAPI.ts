@@ -5,7 +5,7 @@ export class QueueAPI {
   _endpoints: Endpoints;
   constructor() {
     this._endpoints = {};
-    this.baseUrl = "http://192.168.0.133:5004";
+    this.baseUrl = "http://192.168.1.4:5004";
     this._endpoints = {
       getQueue: "/api/Queue/get",
       addUserInQueue: "/api/Queue/AddUserToQueue",
@@ -29,7 +29,6 @@ export class QueueAPI {
   };
 
   addUserInQueue = async (userId: number, queueId: number) => {
-    console.log(userId, queueId);
     const response = await fetch(
       this.baseUrl + this._endpoints.addUserInQueue,
       {
@@ -41,9 +40,10 @@ export class QueueAPI {
         credentials: "include",
         body: JSON.stringify({ userId: userId, queueId: queueId }),
       }
-    ).then();
-    const content = await response;
-    if (content.statusText === "OK") {
+    );
+    const content = await response.json();
+
+    if (content.status === 1) {
       return true;
     } else {
       return false;

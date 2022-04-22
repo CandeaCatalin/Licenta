@@ -77,8 +77,11 @@ namespace Domain.Data.Repositories
 
         public User GetById(int id)
         {
-            return _context.Users.Include(u => u.UserRole)
+            User user = _context.Users.Include(u => u.UserRole)
                 .FirstOrDefault(u => u.Id == id);
+            user.UsersToQueues = _context.UsersToQueues.FirstOrDefault(utq => utq.UserId == id && utq.IsPassed == false);
+            user.UsersToQueuesId = user.UsersToQueues?.Id;
+            return user;
         }
 
         public void UpdateImage(int userId, byte[] image)

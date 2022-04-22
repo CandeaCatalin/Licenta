@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { createContext, FC, useContext, useEffect, useState } from "react";
+import { showMessage } from "react-native-flash-message";
 import { Queue } from "../Models/Queue";
 import QueueAPI from "./API/QueueAPI";
 
@@ -15,11 +16,18 @@ export const QueueContext = createContext<QueueContextType>(null);
 export const QueueProvider: FC = ({ children }) => {
   const queueAPI = new QueueAPI();
   const [queueList, setQueueList] = useState<Queue[]>([]);
-
-  const navigator = useNavigation();
   useEffect(() => {
     const fetch = async () => {
       await getQueues();
+    };
+    fetch().then();
+  }, []);
+  const navigator = useNavigation();
+  useEffect(() => {
+    const fetch = async () => {
+      setInterval(async function () {
+        await getQueues();
+      }, 60000);
     };
     fetch().then();
   }, []);
@@ -35,12 +43,16 @@ export const QueueProvider: FC = ({ children }) => {
   const addUserInQueue = async (userId: number, queueId: number) => {
     try {
       const response = await queueAPI.addUserInQueue(userId, queueId);
+
       if (response) {
         // @ts-ignore
-        // navigator.navigate("queueDetails", [userId, queueId]);
+        navigator.navigate("Queue");
       }
     } catch (error) {
-      console.log(error);
+      showMessage({
+        message: "An error was encountered!",
+        type: "warning",
+      });
     }
   };
   const ctx: QueueContextType = {

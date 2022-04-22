@@ -3,4 +3,5 @@ export type User = {
   lastName: string;
   email: string;
   id: number;
+  usersToQueuesId: number | null;
 };

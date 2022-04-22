@@ -17,6 +17,17 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 20,
   },
+  queuePageDetails: {
+    width: (Dimensions.get("window").width * 9) / 10,
+    height:
+      Platform.OS === "ios"
+        ? (Dimensions.get("window").height * 8) / 10 + 25
+        : (Dimensions.get("window").height * 8) / 10,
+    paddingTop: 0,
+
+    padding: 16,
+    borderRadius: 20,
+  },
   queueListContainerHeader: {
     top: 0,
     backgroundColor: "gainsboro",

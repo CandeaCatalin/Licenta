@@ -24,6 +24,7 @@ export const UserProvider: FC = ({ children }) => {
     lastName: "",
     email: "",
     id: 0,
+    usersToQueuesId: null,
   });
   const navigator = useNavigation();
   useEffect(() => {
@@ -43,6 +44,9 @@ export const UserProvider: FC = ({ children }) => {
     if (user?.id === -1) {
       // @ts-ignore
       navigator.navigate("Login");
+    } else if (user?.usersToQueuesId !== null) {
+      // @ts-ignore
+      navigator.navigate("Queue");
     } else {
       // @ts-ignore
       navigator.navigate("Home");

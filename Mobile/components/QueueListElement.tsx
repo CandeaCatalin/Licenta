@@ -1,5 +1,6 @@
 import React, { FC, useContext } from "react";
 import { View, Text, Button, TouchableOpacity } from "react-native";
+import { PhysicalQueueContext } from "../context/PhysicalQueueContext";
 import { QueueContext } from "../context/QueueContext";
 import { UserContext } from "../context/UserContext";
 import { Queue } from "../Models/Queue";
@@ -10,6 +11,12 @@ interface QueueListElementProps {
 export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
   const queueContext = useContext(QueueContext);
   const userContext = useContext(UserContext);
+  const physicalQueueContext = useContext(PhysicalQueueContext);
+
+  const joinQueue = async (userId: number, queueId: number) => {
+    await queueContext.addUserInQueue(userId, queueId);
+    physicalQueueContext.getPhysicalQueue(userContext.user.usersToQueuesId);
+  };
   return (
     <View
       style={{
@@ -57,9 +64,7 @@ export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
             borderBottomRightRadius: 10,
             alignItems: "center",
           }}
-          onPress={() =>
-            queueContext.addUserInQueue(userContext.user.id, queue.id)
-          }
+          onPress={() => joinQueue(userContext.user.id, queue.id)}
         >
           <Text
             style={{ color: "gainsboro", fontWeight: "bold", fontSize: 15 }}

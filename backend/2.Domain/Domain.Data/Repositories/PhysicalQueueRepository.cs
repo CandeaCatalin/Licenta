@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Data.Repositories
 {
+
+
     public class PhysicalQueueRepository : IPhysicalQueueRepository
     {
         private readonly QueueManagerContext _context;
@@ -33,6 +35,12 @@ namespace Domain.Data.Repositories
             Queue queue = _context.Queues.FirstOrDefault(q => q.PhysicalQueues.Contains(pq));
             pq.Queue = queue;
             return pq;
+        }
+
+        public PhysicalQueue GetByUtqId(int id)
+        {
+            int physicalQueueId = _context.UsersToQueues.Find(id).PhysicalQueueId;
+            return _context.PhysicalQueues.Find(physicalQueueId);
         }
 
         public string GetNextUser(int pqId)
