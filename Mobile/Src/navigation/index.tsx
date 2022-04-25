@@ -9,9 +9,10 @@ import { Login } from "../screens/Login";
 import { Register } from "../screens/Register";
 import { UserProvider } from "../context/UserContext";
 import { QueueProvider } from "../context/QueueContext";
-import { View } from "react-native";
+import { BackHandler, View } from "react-native";
 import { Queue } from "../screens/Queue";
 import { PhysicalQueueProvider } from "../context/PhysicalQueueContext";
+import { useEffect } from "react";
 
 export default function Navigation() {
   return (
@@ -23,6 +24,13 @@ export default function Navigation() {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
   return (
     <QueueProvider>
       <UserProvider>

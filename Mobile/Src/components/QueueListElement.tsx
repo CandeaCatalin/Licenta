@@ -1,9 +1,8 @@
 import React, { FC, useContext } from "react";
-import { View, Text, Button, TouchableOpacity } from "react-native";
-import { PhysicalQueueContext } from "../context/PhysicalQueueContext";
+import { View, Text, TouchableOpacity } from "react-native";
 import { QueueContext } from "../context/QueueContext";
 import { UserContext } from "../context/UserContext";
-import { Queue } from "../Models/Queue";
+import { Queue } from "../Models";
 
 interface QueueListElementProps {
   queue: Queue;
@@ -15,7 +14,6 @@ export const QueueListElement: FC<QueueListElementProps> = ({ queue }) => {
   const joinQueue = async (userId: number, queueId: number) => {
     const id = await queueContext.addUserInQueue(userId, queueId);
     userContext.setUser({ ...userContext.user, usersToQueuesId: id });
-    console.log(id);
   };
   return (
     <View

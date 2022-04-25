@@ -1,9 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-import { createContext, FC, useContext, useEffect, useState } from "react";
+import { createContext, FC, useEffect, useState } from "react";
 import { showMessage } from "react-native-flash-message";
 import { Queue } from "../Models/Queue";
 import QueueAPI from "./API/QueueAPI";
-import { UserContext } from "./UserContext";
 
 type QueueContextType = {
   queueList: Queue[];
@@ -47,7 +46,9 @@ export const QueueProvider: FC = ({ children }) => {
       if (response != 0) {
         // @ts-ignore
 
-        navigator.navigate("Queue");
+        navigator.navigate("Queue", {
+          usersToQueuesId: response,
+        });
         return response;
       }
     } catch (error) {

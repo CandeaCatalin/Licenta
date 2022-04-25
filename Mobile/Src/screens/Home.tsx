@@ -1,18 +1,17 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import {
   ActivityIndicator,
   View,
   Text,
-  Button,
   ScrollView,
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { styles } from "../constants/Styles";
 import { LinearGradient } from "expo-linear-gradient";
 import { UserContext } from "../context/UserContext";
 import { QueueListElement } from "../components/QueueListElement";
 import { QueueContext } from "../context/QueueContext";
+import { styles } from "../constants/Styles";
 
 export const Home = () => {
   const userContext = useContext(UserContext);

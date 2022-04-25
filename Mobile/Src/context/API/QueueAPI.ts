@@ -1,11 +1,11 @@
+import { baseUrl } from "../../constants/APIUrls";
 import { getData } from "../../constants/Storage";
-import { Queue } from "../../Models/Queue";
 export class QueueAPI {
   baseUrl: string;
   _endpoints: Endpoints;
   constructor() {
     this._endpoints = {};
-    this.baseUrl = "http://192.168.1.4:5004";
+    this.baseUrl = baseUrl;
     this._endpoints = {
       getQueue: "/api/Queue/get",
       addUserInQueue: "/api/Queue/AddUserToQueue",

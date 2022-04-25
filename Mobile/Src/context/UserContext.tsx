@@ -2,7 +2,6 @@ import { createContext, FC, useContext, useEffect, useState } from "react";
 import { User } from "../Models";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserAPI from "./API/UserAPI";
 import { QueueContext } from "./QueueContext";
 axios.defaults.withCredentials = true;
@@ -47,15 +46,22 @@ export const UserProvider: FC = ({ children }) => {
       navigator.navigate("Login");
     } else if (user?.usersToQueuesId !== null) {
       // @ts-ignore
-      navigator.navigate("Queue");
+      navigator.navigate("Queue", {
+        usersToQueuesId: user.usersToQueuesId,
+      });
     } else {
       // @ts-ignore
       navigator.navigate("Home");
     }
   }, [user]);
   const getUser = async () => {
-    const response = await userAPI.getUser();
-    setUser(response);
+    try {
+      const response = await userAPI.getUser();
+
+      setUser(response);
+    } catch (e) {
+      console.log(e);
+    }
   };
   const register = async (
     newUser: User,

@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { showMessage } from "react-native-flash-message";
+import { baseUrl } from "../../constants/APIUrls";
 import { getData, storeData } from "../../constants/Storage";
 import { User } from "../../Models";
 export class UserAPI {
@@ -8,7 +9,7 @@ export class UserAPI {
 
   constructor() {
     this._endpoints = {};
-    this.baseUrl = "http://192.168.1.4:5004";
+    this.baseUrl = baseUrl;
     this._endpoints = {
       register: "/api/Authentication/user/register",
       login: "/api/Authentication/user/login",

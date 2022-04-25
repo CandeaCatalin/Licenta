@@ -27,6 +27,11 @@ export const styles = StyleSheet.create({
 
     padding: 16,
     borderRadius: 20,
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
   },
   queueListContainerHeader: {
     top: 0,
@@ -35,6 +40,7 @@ export const styles = StyleSheet.create({
     marginLeft: -15,
     marginRight: -15,
   },
+  queueText: { color: "white", fontWeight: "bold", fontSize: 30, padding: 5 },
 });
 export const formStyles = StyleSheet.create({
   container: {

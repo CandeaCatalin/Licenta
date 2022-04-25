@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { formStyles, styles } from "../constants/Styles";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../context/UserContext";
@@ -38,9 +37,7 @@ export const Login = () => {
       state.loginCredentials.password
     );
   };
-  const onForgetPasswordClick = () => {
-    console.log("Not yet implemented!");
-  };
+
   const onNoAccountClick = () => {
     // @ts-ignore
     navigator.navigate("Register");

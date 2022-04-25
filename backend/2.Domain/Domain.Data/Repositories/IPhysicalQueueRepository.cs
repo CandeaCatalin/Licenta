@@ -1,5 +1,5 @@
 ﻿using Domain.Schema;
-
+using System;
 
 namespace Domain.Data.Repositories
 {
@@ -7,9 +7,9 @@ namespace Domain.Data.Repositories
     {
         public PhysicalQueue Get(int id);
         public PhysicalQueue GetById(int id);
-        public PhysicalQueue GetByUtqId(int id);
+        public PhysicalQueue GetByUserId(int id);
         public bool LeaveQueue(int userId);
         public string GetNextUser(int pqId);
-
+        public TimeSpan GetEstimatedTime(int id);
     }
 }

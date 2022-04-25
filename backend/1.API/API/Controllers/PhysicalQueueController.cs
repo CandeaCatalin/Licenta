@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -58,15 +59,21 @@ namespace API.Controllers
                     return BadRequest(new { message = e.Message });
                 }          
         }
-        [HttpGet("getByUsersToQueues")]
-        public IActionResult GetPhysicalQueueByUsersToQueues(int id)
+        [HttpGet("getByUsersId")]
+        public IActionResult GetPhysicalQueueByUserId()
         {
             try
             {
-                if (id == 0)
-                    throw new Exception("The queue does not exist");
-                PhysicalQueue physicalQueue = _physicalQueueRepository.GetByUtqId(id);
-                return Ok( new { physicalQueue = physicalQueue});
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                if (identity != null)
+                {
+                    IEnumerable<Claim> claims = identity.Claims;
+
+                    PhysicalQueue physicalQueue = _physicalQueueRepository.GetByUserId(int.Parse(claims.ElementAt(0).Value));
+                    TimeSpan et = _physicalQueueRepository.GetEstimatedTime(physicalQueue.Id);
+                    return Ok(new { physicalQueue = physicalQueue, estimatedTime= et.ToString(@"hh\:mm\:ss")});
+                }
+                return BadRequest();
             }
 
             catch (Exception e)
@@ -74,7 +81,7 @@ namespace API.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
-        [HttpPost("leavePhysicalQueue")]
+            [HttpPost("leavePhysicalQueue")]
         public IActionResult LeavePhysicalQueue(LeavePhysicalQueueDto dto)
         {
             try
@@ -86,6 +93,18 @@ namespace API.Controllers
             catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
+            }
+        }
+        [HttpGet("GetEstimatedTime")]
+        public IActionResult GetEstimatedTime(int id)
+        {
+            try
+            {
+                TimeSpan estimatedTime = _physicalQueueRepository.GetEstimatedTime(id);
+                return Ok(estimatedTime.ToString(@"hh\:mm\:ss"));
+            }catch(Exception e)
+            {
+                return BadRequest();
             }
         }
     }

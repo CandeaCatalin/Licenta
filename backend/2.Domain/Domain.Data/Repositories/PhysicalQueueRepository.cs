@@ -38,10 +38,26 @@ namespace Domain.Data.Repositories
             return pq;
         }
 
-        public PhysicalQueue GetByUtqId(int id)
+        public PhysicalQueue GetByUserId(int id)
         {
-            int physicalQueueId = _context.UsersToQueues.Find(id).PhysicalQueueId;
-            return _context.PhysicalQueues.Find(physicalQueueId);
+
+            UsersToQueues utq = _context.UsersToQueues.FirstOrDefault(utq => utq.UserId == id && utq.IsPassed == false);
+            if(utq == null)
+            {
+                throw new Exception("User not in queue");
+            }
+
+            PhysicalQueue pq = _context.PhysicalQueues.Find(utq.PhysicalQueueId); 
+            Queue queue = _context.Queues.FirstOrDefault(q => q.PhysicalQueues.Contains(pq));
+            pq.Queue = queue;
+            return pq;
+        }
+
+        public TimeSpan GetEstimatedTime(int id)
+        {
+            PhysicalQueue myQueue = GetById(id);
+            TimeSpan estimatedTime = new TimeSpan(myQueue.EstimatedTime);
+            return estimatedTime;
         }
 
         public string GetNextUser(int pqId)

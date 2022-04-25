@@ -237,17 +237,19 @@ namespace Domain.Data.Repositories
             passedUserInQueue.TimePassed = DateTime.Now;
       
             _context.UsersToQueues.Update(passedUserInQueue);
-            UsersToQueues prevPassedUserInQueue = _context.UsersToQueues.OrderByDescending(utq => utq.Id).FirstOrDefault(utq => utq.PhysicalQueueId == physicalQueueId && utq.IsPassed == true);
             PhysicalQueue physicalQueue = _context.PhysicalQueues.Find(physicalQueueId);
-            if(prevPassedUserInQueue == null)
+            List<UsersToQueues> usersInQueueToday = _context.UsersToQueues.Where(utq => utq.PhysicalQueueId == physicalQueueId && utq.IsPassed == true && utq.TimePassed.Date == DateTime.Today.Date).ToList();
+            long totalTicks = passedUserInQueue.TimePassed.Ticks -passedUserInQueue.TimeAdded.Ticks;
+            int totalUsersPassed = 1;
+            foreach(UsersToQueues utq in usersInQueueToday)
             {
-                physicalQueue.EstimatedTime = (passedUserInQueue.TimePassed - new TimeSpan(0)).Ticks;
-            }else                 
-                physicalQueue.EstimatedTime = (physicalQueue.EstimatedTime + (passedUserInQueue.TimePassed.Subtract(prevPassedUserInQueue.TimePassed)).Ticks)/2;
-            
+                totalTicks = totalTicks + utq.TimePassed.Ticks - utq.TimeAdded.Ticks;
+            }
+            physicalQueue.EstimatedTime = totalTicks / (totalUsersPassed+usersInQueueToday.Count);
+       
                 
             _context.PhysicalQueues.Update(physicalQueue);
-            _context.SaveChanges();
+             _context.SaveChanges();
         }
         public void RealocateUsersInQueues(List<UsersToQueues> oldUsersToQueues, List<int> newPhysicalQueuesIds)
         {

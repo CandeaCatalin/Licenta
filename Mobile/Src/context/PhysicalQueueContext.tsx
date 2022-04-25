@@ -1,13 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import { createContext, FC, useContext, useEffect, useState } from "react";
-import { showMessage } from "react-native-flash-message";
+import { createContext, FC, useState } from "react";
 import { PhysicalQueue } from "../Models/PhysicalQueue";
-import { Queue } from "../Models/Queue";
 import { PhysicalQueueAPI } from "./API/PhysicalQueueAPI";
-import { UserContext } from "./UserContext";
-
 type PhysicalQueueContextType = {
   physicalQueue: PhysicalQueue;
+  estimatedTime: String;
   getPhysicalQueue: any;
   leaveQueue: any;
 };
@@ -19,22 +16,26 @@ export const PhysicalQueueContext =
 export const PhysicalQueueProvider: FC = ({ children }) => {
   const physicalQueueAPI = new PhysicalQueueAPI();
 
-  const userContext = useContext(UserContext);
-
   const [physicalQueue, setPhysicalQueue] = useState<PhysicalQueue>({
     name: "",
     description: "",
     id: 0,
   });
+  const [estimatedTime, setEstimatedTime] = useState("");
   const navigator = useNavigation();
 
-  const getPhysicalQueue = async (usersToQueuesId: number | null) => {
+  const getPhysicalQueue = async () => {
     try {
-      const response = await physicalQueueAPI.getPhysicalQueue(usersToQueuesId);
-      console.log(response);
-      setPhysicalQueue(response);
+      const response = await physicalQueueAPI.getPhysicalQueue();
+      if (response !== null) {
+        setPhysicalQueue(response.physicalQueue);
+        setEstimatedTime(response.estimatedTime);
+      } else {
+        throw "Error";
+      }
     } catch (error) {
       // @ts-ignore
+
       navigator.navigate("Home");
     }
   };
@@ -43,10 +44,11 @@ export const PhysicalQueueProvider: FC = ({ children }) => {
     // @ts-ignore
     navigator.navigate("Home");
   };
+
   const ctx: PhysicalQueueContextType = {
     physicalQueue: physicalQueue,
-    getPhysicalQueue: (usersToQueuesId: number | null) =>
-      getPhysicalQueue(usersToQueuesId),
+    estimatedTime: estimatedTime,
+    getPhysicalQueue: () => getPhysicalQueue(),
     leaveQueue: (userId: number, usersToQueuesId: number) => leaveQueue(userId),
   };
   return (
