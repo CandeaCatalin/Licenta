@@ -1,9 +1,7 @@
-import Edit from "@mui/icons-material/Edit";
-import { createContext, FC, useContext, useEffect, useState } from "react";
+import { createContext, FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Queue } from "../Models/Queue";
 import QueueAPI from "./API/QueueAPI";
-import { ModalsContext } from "./ModalsContext";
 
 type QueueContextType = {
   queueList: Queue[];

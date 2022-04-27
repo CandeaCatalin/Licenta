@@ -1,7 +1,5 @@
-import { FC, useContext, useEffect, useState } from "react";
-import { AddPhysicalQueue } from "../AddPhysicalQueue";
+import { FC, useContext, useState } from "react";
 import { Queue } from "../../Models/Queue";
-import { PhysicalQueue } from "../../Models/PhysicalQueue";
 import { QueueContext } from "../../Context/QueueContext";
 import { ModalFooter } from "./ModalFooter";
 

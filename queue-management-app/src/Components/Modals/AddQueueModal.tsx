@@ -6,7 +6,6 @@ import { QueueContext } from "../../Context/QueueContext";
 import { ModalFooter } from "./ModalFooter";
 
 import { toast } from "react-hot-toast";
-import { Toast } from "../Toast";
 
 interface AddQueueModalProps {
   onClose: any;

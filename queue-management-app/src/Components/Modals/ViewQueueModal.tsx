@@ -1,8 +1,6 @@
-import { FC, useContext, useEffect, useState } from "react";
-import { QueueContext } from "../../Context/QueueContext";
+import { FC, useEffect, useState } from "react";
 import { Queue } from "../../Models/Queue";
 import { PhysicalQueueElement } from "../PhysicalQueueElement";
-import { QueueListElement } from "../QueueListElement";
 
 interface ViewQueueModalProps {
   onClose: any;

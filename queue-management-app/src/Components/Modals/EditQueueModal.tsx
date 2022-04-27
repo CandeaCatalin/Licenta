@@ -2,7 +2,6 @@ import { FC, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { QueueContext } from "../../Context/QueueContext";
 import { PhysicalQueue } from "../../Models/PhysicalQueue";
-import { Queue } from "../../Models/Queue";
 import { AddPhysicalQueue } from "../AddPhysicalQueue";
 import { ModalFooter } from "./ModalFooter";
 type EditedQueue = {

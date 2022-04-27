@@ -3,6 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../context/UserContext";
+import { styles, formStyles } from "../constants/Styles";
 
 export const Login = () => {
   const context = useContext(UserContext);
