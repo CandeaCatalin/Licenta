@@ -1,21 +1,16 @@
+using API.Services;
+using Domain.Data.Repositories;
+using EF.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-
-using Domain.Data.Repositories;
-using EF.Models;
-using Microsoft.EntityFrameworkCore;
-using API.Services;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace API
 {
@@ -55,12 +50,13 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Queue Management", Version = "v1" });
             });
-         //   services.AddDbContext<QueueManagerContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DbConnection")).EnableSensitiveDataLogging().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            //   services.AddDbContext<QueueManagerContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DbConnection")).EnableSensitiveDataLogging().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             services.AddDbContext<QueueManagerContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("LocalConnection")).EnableSensitiveDataLogging().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IQueueRepository, QueueRepository>();
             services.AddScoped<IPhysicalQueueRepository, PhysicalQueueRepository>();
+            services.AddScoped<IEventLogRepository, EventLogRepository>();
             services.AddScoped<JwtService>();
         }
 
@@ -70,12 +66,12 @@ namespace API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-              
+
             }
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QueueManagement.API v1"));
             //app.UseHttpsRedirection();
-           
+
             app.UseRouting();
             app.UseCors(options => options.WithOrigins(new[] { "http://localhost:3000", "http://localhost:8080", "http://localhost:4200", "http://localhost:19006" }).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             app.UseAuthentication();

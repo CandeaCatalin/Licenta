@@ -16,5 +16,5 @@ namespace Domain.Schema
         public DateTime TimeAdded { get; set; }
         public DateTime TimePassed { get; set; }
         public bool IsPassed { get; set; } = false;
-}
+    }
 }

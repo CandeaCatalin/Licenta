@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[EventLog]
 (
-	[Id] INT NOT NULL,
+	[Id] INT NOT NULL IDENTITY(1,1),
 	[Value] nvarchar(max) NULL,
 	[EventCategoryId] int NOT NULL,
 	[Timestamp] DATETIME NOT NULL CONSTRAINT [DF_Timestamp_EventLog] DEFAULT SYSDATETIME(),

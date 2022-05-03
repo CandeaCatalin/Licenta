@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Domain.Schema
+﻿namespace Domain.Schema
 {
     public class EventCategory
     {

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Domain.Schema;
+using EF.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Domain.Schema;
-using EF.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Data.Repositories
 {
@@ -127,31 +127,31 @@ namespace Domain.Data.Repositories
                 _context.SaveChanges();
                 return true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
-            
+
         }
 
         public Queue Edit(Queue queue, ICollection<PhysicalQueue> physicalQueues)
         {
-            
-                if (string.IsNullOrEmpty(queue.Name))
-                    throw new ArgumentException("Name is empty!");
-                if (string.IsNullOrEmpty(queue.Description))
-                    throw new ArgumentException("Description is empty!");
-                if (GetById(queue.Id) == null)
-                    throw new ArgumentException("Queue does not exist!");
-                CheckPhysicalQueuesFields(physicalQueues);
-                Queue editedQueue = GetById(queue.Id);
-                editedQueue.Name = queue.Name;
-                editedQueue.Description = queue.Description;
-                _context.Queues.Update(editedQueue);
-                List<PhysicalQueue> oldPhyisicalQueues = _context.Queues.Find(queue.Id).PhysicalQueues.ToList();
-                List<int> oldPhysicalQueuesIds = oldPhyisicalQueues.Select(pq => pq.Id).ToList();
 
-                List<UsersToQueues> OldUsersToQueues = _context.UsersToQueues.AsNoTracking().Where(utq => oldPhysicalQueuesIds.Contains(utq.PhysicalQueueId) && utq.IsPassed == false).ToList();
+            if (string.IsNullOrEmpty(queue.Name))
+                throw new ArgumentException("Name is empty!");
+            if (string.IsNullOrEmpty(queue.Description))
+                throw new ArgumentException("Description is empty!");
+            if (GetById(queue.Id) == null)
+                throw new ArgumentException("Queue does not exist!");
+            CheckPhysicalQueuesFields(physicalQueues);
+            Queue editedQueue = GetById(queue.Id);
+            editedQueue.Name = queue.Name;
+            editedQueue.Description = queue.Description;
+            _context.Queues.Update(editedQueue);
+            List<PhysicalQueue> oldPhyisicalQueues = _context.Queues.Find(queue.Id).PhysicalQueues.ToList();
+            List<int> oldPhysicalQueuesIds = oldPhyisicalQueues.Select(pq => pq.Id).ToList();
+
+            List<UsersToQueues> OldUsersToQueues = _context.UsersToQueues.AsNoTracking().Where(utq => oldPhysicalQueuesIds.Contains(utq.PhysicalQueueId) && utq.IsPassed == false).ToList();
             // _context.UsersToQueues.RemoveRange(OldUsersToQueues);
 
             _context.UsersToQueues.RemoveRange(_context.UsersToQueues.Where(utq => oldPhysicalQueuesIds.Contains(utq.PhysicalQueueId)));
@@ -192,18 +192,18 @@ namespace Domain.Data.Repositories
             {
                 throw new ArgumentException("User already in a queue!");
             }
-            if(_context.Users.Find(userId) == null)
+            if (_context.Users.Find(userId) == null)
             {
                 throw new ArgumentException("User does not exist!");
             }
-            if(GetById(queueId) == null)
+            if (GetById(queueId) == null)
             {
                 throw new ArgumentException("Queue does not exist!");
             }
             List<PhysicalQueue> physicalQueues = _context.PhysicalQueues.Where(pq => pq.QueueId == queueId).ToList();
             int pqIdWithLessUsers = physicalQueues[0].Id;
             int minimumUsers = int.MaxValue;
-            foreach(PhysicalQueue physicalQueue in physicalQueues)
+            foreach (PhysicalQueue physicalQueue in physicalQueues)
             {
                 int countUsers = list.Count(c => c.PhysicalQueueId == physicalQueue.Id);
                 if (minimumUsers > countUsers)
@@ -226,41 +226,42 @@ namespace Domain.Data.Repositories
         {
             return _context.UsersToQueues.FirstOrDefault(utq => utq.PhysicalQueueId == physicalQueueId && utq.IsPassed == false);
         }
-        public void PassUserInQueue( int physicalQueueId)
+        public int PassUserInQueue(int physicalQueueId)
         {
             UsersToQueues passedUserInQueue = GetNextInQueue(physicalQueueId);
-            if(passedUserInQueue == null)
+            if (passedUserInQueue == null)
             {
                 throw new ArgumentException("Queue is empty!");
             }
             passedUserInQueue.IsPassed = true;
             passedUserInQueue.TimePassed = DateTime.Now;
-      
+
             _context.UsersToQueues.Update(passedUserInQueue);
             PhysicalQueue physicalQueue = _context.PhysicalQueues.Find(physicalQueueId);
             List<UsersToQueues> usersInQueueToday = _context.UsersToQueues.Where(utq => utq.PhysicalQueueId == physicalQueueId && utq.IsPassed == true && utq.TimePassed.Date == DateTime.Today.Date).ToList();
-            long totalTicks = passedUserInQueue.TimePassed.Ticks -passedUserInQueue.TimeAdded.Ticks;
+            long totalTicks = passedUserInQueue.TimePassed.Ticks - passedUserInQueue.TimeAdded.Ticks;
             int totalUsersPassed = 1;
-            foreach(UsersToQueues utq in usersInQueueToday)
+            foreach (UsersToQueues utq in usersInQueueToday)
             {
                 totalTicks = totalTicks + utq.TimePassed.Ticks - utq.TimeAdded.Ticks;
             }
-            physicalQueue.EstimatedTime = totalTicks / (totalUsersPassed+usersInQueueToday.Count);
-       
-                
+            physicalQueue.EstimatedTime = totalTicks / (totalUsersPassed + usersInQueueToday.Count);
+
+
             _context.PhysicalQueues.Update(physicalQueue);
-             _context.SaveChanges();
+            _context.SaveChanges();
+            return passedUserInQueue.Id;
         }
         public void RealocateUsersInQueues(List<UsersToQueues> oldUsersToQueues, List<int> newPhysicalQueuesIds)
         {
-            foreach(UsersToQueues utq in oldUsersToQueues)
+            foreach (UsersToQueues utq in oldUsersToQueues)
             {
-            UsersToQueues newUsersToQueues = new()
-            {
-                PhysicalQueueId = newPhysicalQueuesIds[oldUsersToQueues.IndexOf(utq) % newPhysicalQueuesIds.Count],
-                UserId = utq.UserId,
-                IsPassed = false,
-            };
+                UsersToQueues newUsersToQueues = new()
+                {
+                    PhysicalQueueId = newPhysicalQueuesIds[oldUsersToQueues.IndexOf(utq) % newPhysicalQueuesIds.Count],
+                    UserId = utq.UserId,
+                    IsPassed = false,
+                };
                 _context.UsersToQueues.Add(newUsersToQueues);
             }
             _context.SaveChanges();

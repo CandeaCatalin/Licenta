@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using Domain.Schema;
+﻿using Domain.Schema;
 using EF.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 
 namespace Domain.Data.Repositories
 {
@@ -17,16 +17,16 @@ namespace Domain.Data.Repositories
 
         public User Create(User user, bool isAdmin = false)
         {
-           
-                if (string.IsNullOrEmpty(user.FirstName))
-                {
-                    throw new FormatException("FirstName is invalid");
-                }
 
-                if (string.IsNullOrEmpty(user.LastName))
-                {
-                    throw new FormatException("LastName is invalid");
-                }
+            if (string.IsNullOrEmpty(user.FirstName))
+            {
+                throw new FormatException("FirstName is invalid");
+            }
+
+            if (string.IsNullOrEmpty(user.LastName))
+            {
+                throw new FormatException("LastName is invalid");
+            }
 
             if (GetByEmail(user.Email) != null)
             {
@@ -41,15 +41,15 @@ namespace Domain.Data.Repositories
             {
                 throw new FormatException("Password is invalid");
             }
-            
-            
+
+
             _context.Users.Add(user);
             _context.SaveChanges();
 
             return GetByEmail(user.Email);
         }
 
-  
+
         public User GetByEmail(string email)
         {
             return _context.Users.Include(u => u.UserRole)
@@ -62,7 +62,7 @@ namespace Domain.Data.Repositories
                 .FirstOrDefault(u => u.Email == email.ToLower() && isAdmin == (u.UserRoleId == 1));
         }
 
-        public bool Delete(int Id)
+        public User Delete(int Id)
         {
             User user = GetById(Id);
             if (user == null)
@@ -72,7 +72,7 @@ namespace Domain.Data.Repositories
 
             _context.Users.Remove(user);
             _context.SaveChanges();
-            return true;
+            return user;
         }
 
         public User GetById(int id)

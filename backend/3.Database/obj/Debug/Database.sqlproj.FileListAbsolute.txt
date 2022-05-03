@@ -18,3 +18,13 @@ C:\Development\Licenta\backend\3.Database\obj\Debug\Model.xml
 C:\Development\Licenta\backend\3.Database\obj\Debug\refactor.xml
 C:\Development\Licenta\backend\3.Database\obj\Debug\postdeploy.sql
 C:\Development\Licenta\backend\3.Database\obj\Debug\predeploy.sql
+D:\Faculta\Licenta\backend\3.Database\bin\Debug\Database.dacpac
+D:\Faculta\Licenta\backend\3.Database\bin\Debug\Database.dll
+D:\Faculta\Licenta\backend\3.Database\bin\Debug\Database.pdb
+D:\Faculta\Licenta\backend\3.Database\obj\Debug\Database.sqlproj.AssemblyReference.cache
+D:\Faculta\Licenta\backend\3.Database\obj\Debug\Model.xml
+D:\Faculta\Licenta\backend\3.Database\obj\Debug\refactor.xml
+D:\Faculta\Licenta\backend\3.Database\obj\Debug\postdeploy.sql
+D:\Faculta\Licenta\backend\3.Database\obj\Debug\predeploy.sql
+D:\Faculta\Licenta\backend\3.Database\obj\Debug\Database.dll
+D:\Faculta\Licenta\backend\3.Database\obj\Debug\Database.pdb

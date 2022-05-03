@@ -13,6 +13,6 @@ namespace Domain.Data.Repositories
         public List<Queue> GetQueues();
         public bool DeleteQueue(int queueId);
         public int AddUserToQueue(int queueId, int userId);
-        public void PassUserInQueue(int physicalQueueId);
+        public int PassUserInQueue(int physicalQueueId);
     }
 }

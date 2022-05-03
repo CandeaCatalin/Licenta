@@ -2,10 +2,7 @@
 using EF.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Data.Repositories
 {
@@ -23,7 +20,7 @@ namespace Domain.Data.Repositories
         public PhysicalQueue Get(int id)
         {
             PhysicalQueue physicalQueue = GetById(id);
-            if(physicalQueue == null)
+            if (physicalQueue == null)
             {
                 throw new Exception("Queue does not exist!");
             }
@@ -32,7 +29,7 @@ namespace Domain.Data.Repositories
         public PhysicalQueue GetById(int id)
         {
 
-            PhysicalQueue pq = _context.PhysicalQueues.FirstOrDefault(pq => pq.Id == id );
+            PhysicalQueue pq = _context.PhysicalQueues.FirstOrDefault(pq => pq.Id == id);
             Queue queue = _context.Queues.FirstOrDefault(q => q.PhysicalQueues.Contains(pq));
             pq.Queue = queue;
             return pq;
@@ -42,12 +39,12 @@ namespace Domain.Data.Repositories
         {
 
             UsersToQueues utq = _context.UsersToQueues.FirstOrDefault(utq => utq.UserId == id && utq.IsPassed == false);
-            if(utq == null)
+            if (utq == null)
             {
                 throw new Exception("User not in queue");
             }
 
-            PhysicalQueue pq = _context.PhysicalQueues.Find(utq.PhysicalQueueId); 
+            PhysicalQueue pq = _context.PhysicalQueues.Find(utq.PhysicalQueueId);
             Queue queue = _context.Queues.FirstOrDefault(q => q.PhysicalQueues.Contains(pq));
             pq.Queue = queue;
             return pq;
@@ -63,20 +60,22 @@ namespace Domain.Data.Repositories
         public string GetNextUser(int pqId)
         {
             UsersToQueues usersToQueues = _context.UsersToQueues.FirstOrDefault(utq => utq.PhysicalQueueId == pqId && utq.IsPassed == false);
-            if(usersToQueues != null) {
+            if (usersToQueues != null)
+            {
                 User nextUser = _context.Users.Find(usersToQueues.UserId);
                 return nextUser.FirstName + " " + nextUser.LastName;
             }
             return "";
-            
+
         }
 
-        public bool LeaveQueue(int userId)
+        public int LeaveQueue(int userId)
         {
             UsersToQueues removedUTQ = _context.UsersToQueues.FirstOrDefault(utq => (utq.UserId == userId && utq.IsPassed == false));
+            int physicalQueueId = removedUTQ.PhysicalQueueId;
             _context.UsersToQueues.Remove(removedUTQ);
             _context.SaveChanges();
-            return true;
+            return physicalQueueId;
         }
     }
 }

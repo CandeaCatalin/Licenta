@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -22,6 +21,6 @@ namespace Domain.Schema
         public UserRole UserRole { get; set; }
         public int? UsersToQueuesId { get; set; }
         public UsersToQueues UsersToQueues { get; set; }
-        
+
     }
 }

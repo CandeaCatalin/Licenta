@@ -1,10 +1,9 @@
-﻿using System;
-using API.Dtos.Authentication;
+﻿using API.Dtos.Authentication;
 using API.Services;
 using Domain.Data.Repositories;
 using Domain.Schema;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace API.Controllers
 {
@@ -84,7 +83,7 @@ namespace API.Controllers
             {
                 User returnedUser = _repository.Create(user, true);
                 string jwt = _jwtService.Generate(returnedUser.Id);
-               
+
                 return Ok(new { jwt });
             }
             catch (ArgumentException e)
@@ -135,7 +134,6 @@ namespace API.Controllers
             }
 
             string jwt = _jwtService.Generate(user.Id);
-         
             return Ok(new { jwt });
         }
 

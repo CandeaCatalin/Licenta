@@ -1,6 +1,6 @@
-﻿using System;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MimeKit;
+using System;
 
 namespace API.Services
 {
