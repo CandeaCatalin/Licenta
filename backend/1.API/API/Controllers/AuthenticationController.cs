@@ -35,6 +35,7 @@ namespace API.Controllers
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Email = dto.Email.ToLower(),
                 UserRoleId = 2,
+                IsActive = true
             };
             if (string.IsNullOrEmpty(dto.Password))
             {

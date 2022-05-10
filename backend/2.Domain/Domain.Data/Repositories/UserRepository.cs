@@ -59,7 +59,7 @@ namespace Domain.Data.Repositories
         public User Login(string email, bool isAdmin = false)
         {
             return _context.Users.Include(u => u.UserRole)
-                .FirstOrDefault(u => u.Email == email.ToLower() && isAdmin == (u.UserRoleId == 1));
+                .FirstOrDefault(u => u.Email == email.ToLower() && isAdmin == (u.UserRoleId == 1) &&u.IsActive == true);
         }
 
         public User Delete(int Id)
