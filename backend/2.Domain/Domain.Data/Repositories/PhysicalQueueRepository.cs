@@ -50,10 +50,12 @@ namespace Domain.Data.Repositories
             return pq;
         }
 
-        public TimeSpan GetEstimatedTime(int id)
+        public TimeSpan GetEstimatedTime(int id,int userId)
         {
             PhysicalQueue myQueue = GetById(id);
-            TimeSpan estimatedTime = new TimeSpan(myQueue.EstimatedTime);
+            UsersToQueues userToQueueEntity = _context.UsersToQueues.FirstOrDefault(utq => utq.IsPassed == false && utq.UserId == userId);
+            int usersUntilMe = _context.UsersToQueues.Count(utq => utq.IsPassed == false && userToQueueEntity.Id > utq.Id);
+            TimeSpan estimatedTime = new TimeSpan(myQueue.EstimatedTime * usersUntilMe);
             return estimatedTime;
         }
 

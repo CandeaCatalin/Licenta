@@ -46,7 +46,7 @@ namespace API.Controllers
             {
                 User returnedUser = _repository.Create(user);
                 string jwt = _jwtService.Generate(user.Id);
-                return Created("success", jwt);
+                return Created("success", new { jwt });
             }
             catch (FormatException e)
             {

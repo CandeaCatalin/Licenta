@@ -2,7 +2,7 @@
   "name": "mobile",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
-  "proxy": "http://192.168.1.4:5004",
+  "proxy": "http://192.168.100.49:5004",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",

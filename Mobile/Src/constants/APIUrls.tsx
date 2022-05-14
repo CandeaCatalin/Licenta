@@ -1,4 +1,4 @@
-export const baseUrl = "http://192.168.1.4:5004";
+export const baseUrl = "http://192.168.100.49:5004";
 export const endpoint = {
   login: baseUrl + "/api/authentication/user/login",
   logOut: baseUrl + "/api/authentication/logout",

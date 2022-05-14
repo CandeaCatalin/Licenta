@@ -67,9 +67,9 @@ namespace API.Controllers
                 if (identity != null)
                 {
                     IEnumerable<Claim> claims = identity.Claims;
-
-                    PhysicalQueue physicalQueue = _physicalQueueRepository.GetByUserId(int.Parse(claims.ElementAt(0).Value));
-                    TimeSpan et = _physicalQueueRepository.GetEstimatedTime(physicalQueue.Id);
+                    int userId = int.Parse(claims.ElementAt(0).Value);
+                    PhysicalQueue physicalQueue = _physicalQueueRepository.GetByUserId(userId);
+                    TimeSpan et = _physicalQueueRepository.GetEstimatedTime(physicalQueue.Id, userId);
                     return Ok(new { physicalQueue = physicalQueue, estimatedTime = et.ToString(@"hh\:mm\:ss") });
                 }
                 return BadRequest();
@@ -97,19 +97,6 @@ namespace API.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
-        [HttpGet("GetEstimatedTime")]
-        public IActionResult GetEstimatedTime(int id)
-        {
-            try
-            {
-                TimeSpan estimatedTime = _physicalQueueRepository.GetEstimatedTime(id);
-                return Ok(estimatedTime.ToString(@"hh\:mm\:ss"));
-            }
-            catch (Exception e)
-            {
-                _LogRepository.logEvent($"Couldn't get estimated time. Error: {e.Message} InnerException:{e.InnerException}", EventLogType.Error);
-                return BadRequest();
-            }
-        }
+        
     }
 }

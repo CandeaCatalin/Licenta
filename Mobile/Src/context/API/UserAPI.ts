@@ -35,14 +35,15 @@ export class UserAPI {
     return content;
   };
   register = async (user: User, password: string, confirmPassword: string) => {
-    const response = await fetch(this._endpoints.register, {
+    const response = await fetch(this.baseUrl + this._endpoints.register, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ ...user, password, confirmPassword }),
     }).then();
-    if (response.status === 200) {
+    if (response.status === 201) {
       const content = await response.json();
+
       storeData("jwt", content.jwt);
       return true;
     } else {

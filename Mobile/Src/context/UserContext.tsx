@@ -71,6 +71,11 @@ export const UserProvider: FC = ({ children }) => {
     const response = await userAPI.register(newUser, password, confirmPassword);
     if (response) {
       setUser(await userAPI.getUser());
+      try {
+        queueContext.getQueues();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   const login = async (email: string, password: string) => {

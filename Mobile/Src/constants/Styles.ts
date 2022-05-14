@@ -28,10 +28,9 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 20,
     display: "flex",
-    alignContent: "center",
     justifyContent: "center",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   queueListContainerHeader: {
     top: 0,
@@ -40,7 +39,19 @@ export const styles = StyleSheet.create({
     marginLeft: -15,
     marginRight: -15,
   },
-  queueText: { color: "white", fontWeight: "bold", fontSize: 30, padding: 5 },
+  queueTextTag: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 25,
+    padding: 5,
+    textAlign: "left",
+  },
+  queueText: {
+    color: "white",
+    fontSize: 25,
+    padding: 5,
+    textAlign: "left",
+  },
 });
 export const formStyles = StyleSheet.create({
   container: {

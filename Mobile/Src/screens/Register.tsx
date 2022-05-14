@@ -106,6 +106,7 @@ export const Register = () => {
         />
         <TextInput
           placeholderTextColor={"#000"}
+          secureTextEntry={true}
           placeholder={"Password"}
           style={formStyles.formBox}
           onChangeText={(text) =>
@@ -116,6 +117,7 @@ export const Register = () => {
         />
         <TextInput
           placeholderTextColor={"#000"}
+          secureTextEntry={true}
           placeholder={"Confirm Password"}
           style={formStyles.formBox}
           onChangeText={(text) =>

@@ -122,14 +122,14 @@ export const Queue = () => {
           onPress={userContext.logOut}
           style={{
             backgroundColor: "#4d4f80",
-            width: 45,
+            width: 65,
             height: 25,
             borderRadius: 20,
             alignItems: "center",
             display: "flex",
             justifyContent: "center",
-
-            left: (Dimensions.get("window").width * 5) / 6,
+            marginTop: 30,
+            left: (Dimensions.get("window").width * 4.5) / 6,
           }}
         >
           <Text style={{ color: "white", fontWeight: "bold" }}>Logout</Text>
@@ -139,14 +139,23 @@ export const Queue = () => {
         ) : (
           <View style={styles.container}>
             <View style={styles.queuePageDetails}>
-              <Text style={styles.queueText}>
-                Location: {physicalQueueContext.physicalQueue?.name}
+              <Text>
+                <Text style={styles.queueTextTag}>Location: </Text>
+                <Text style={styles.queueText}>
+                  {physicalQueueContext.physicalQueue?.name}
+                </Text>
               </Text>
-              <Text style={styles.queueText}>
-                Description: {physicalQueueContext.physicalQueue?.description}
+              <Text>
+                <Text style={styles.queueTextTag}>Description: </Text>
+                <Text style={styles.queueText}>
+                  {physicalQueueContext.physicalQueue?.description}
+                </Text>
               </Text>
-              <Text style={styles.queueText}>
-                Estimated time: {physicalQueueContext.estimatedTime}{" "}
+              <Text>
+                <Text style={styles.queueTextTag}>Estimated time: </Text>
+                <Text style={styles.queueText}>
+                  {physicalQueueContext.estimatedTime}
+                </Text>
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -154,13 +163,14 @@ export const Queue = () => {
                 }}
                 style={{
                   backgroundColor: "#252540",
-                  width: 150,
+                  width: "100%",
                   height: 70,
                   borderRadius: 20,
                   alignItems: "center",
                   display: "flex",
                   justifyContent: "center",
                   margin: 50,
+                  marginLeft: 0,
                 }}
               >
                 <Text
@@ -177,7 +187,7 @@ export const Queue = () => {
   );
 };
 
-const modalstyles = StyleSheet.create({
+export const modalstyles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: "center",

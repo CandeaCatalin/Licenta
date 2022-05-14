@@ -10,6 +10,6 @@ namespace Domain.Data.Repositories
         public PhysicalQueue GetByUserId(int id);
         public int LeaveQueue(int userId);
         public string GetNextUser(int pqId);
-        public TimeSpan GetEstimatedTime(int id);
+        public TimeSpan GetEstimatedTime(int id,int userId);
     }
 }
