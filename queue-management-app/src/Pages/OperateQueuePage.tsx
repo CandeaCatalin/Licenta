@@ -56,7 +56,7 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
     const fetch = async () => {
       setInterval(async function () {
         await getNextUserName();
-      }, 60000 * 2);
+      }, 10000);
     };
     fetch().then();
   }, []);
@@ -106,7 +106,6 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
             <span style={{ fontWeight: "bold" }}>Logout</span>
           </button>
         </div>
-        )
       </div>
       <div
         style={{
@@ -126,13 +125,13 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
               }}
             >
               <div className="physical-queue-description">
-                Queue:{physicalQueue.queue?.name}
+                Queue: {physicalQueue.queue?.name}
               </div>
               <div className="physical-queue-description">
-                Location:{physicalQueue.name}
+                Location: {physicalQueue.name}
               </div>
               <div className="physical-queue-description">
-                Description:{physicalQueue.description}
+                Description: {physicalQueue.description}
               </div>
               <div className="physical-queue-description">
                 Next: {nextUsername}

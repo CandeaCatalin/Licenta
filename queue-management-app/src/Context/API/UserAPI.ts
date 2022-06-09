@@ -59,7 +59,7 @@ export class UserAPI {
       credentials: "include",
       body: JSON.stringify({ email, password }),
     });
-    if (response.status !== 401) {
+    if (response.status !== 400) {
       const content = await response.json();
       localStorage.setItem("jwt", content.jwt);
       return true;

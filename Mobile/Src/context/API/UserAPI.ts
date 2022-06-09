@@ -78,8 +78,8 @@ export class UserAPI {
       return false;
     }
   };
-  logOut = async () => {
-    await AsyncStorage.removeItem("jwt");
+  logOut = () => {
+    AsyncStorage.removeItem("jwt");
     showMessage({
       message: "Logout Successful",
       type: "success",

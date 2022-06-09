@@ -52,7 +52,7 @@ export const UserProvider: FC = ({ children }) => {
   ) => {
     const response = await userAPI.register(newUser, password, confirmPassword);
     if (response) {
-      setUser(await userAPI.getUser());
+      navigate("../login", { replace: true });
     }
   };
   const login = async (email: string, password: string) => {

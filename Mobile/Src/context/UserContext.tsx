@@ -89,8 +89,8 @@ export const UserProvider: FC = ({ children }) => {
       }
     }
   };
-  const logOut = async () => {
-    const response = await userAPI.logOut();
+  const logOut = () => {
+    const response = userAPI.logOut();
     if (response) {
       // @ts-ignore
       navigator.navigate("Login");

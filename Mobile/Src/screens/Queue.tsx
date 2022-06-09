@@ -27,7 +27,7 @@ export const Queue = () => {
     fetch().then();
     const interval = setInterval(async () => {
       await fetch().then();
-    }, 20000);
+    }, 10000);
     return () => clearInterval(interval);
   }, []);
   return (
