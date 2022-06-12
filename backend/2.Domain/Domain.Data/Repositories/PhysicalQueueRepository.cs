@@ -55,8 +55,15 @@ namespace Domain.Data.Repositories
             PhysicalQueue myQueue = GetById(id);
             UsersToQueues userToQueueEntity = _context.UsersToQueues.FirstOrDefault(utq => utq.IsPassed == false && utq.UserId == userId);
             int usersUntilMe = _context.UsersToQueues.Count(utq => utq.IsPassed == false && userToQueueEntity.Id > utq.Id);
-            TimeSpan estimatedTime = new TimeSpan(myQueue.EstimatedTime * usersUntilMe);
-            return estimatedTime;
+            if(myQueue.EstimatedTime == 0)
+            {
+               return new TimeSpan(6000000000 * usersUntilMe); //10 minutes for new locations
+            }
+            else
+            {
+               return new TimeSpan(myQueue.EstimatedTime * usersUntilMe);
+            }
+            
         }
 
         public string GetNextUser(int pqId)

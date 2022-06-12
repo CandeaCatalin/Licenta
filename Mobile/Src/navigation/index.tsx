@@ -1,8 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-
-import { RootStackParamList } from "../types";
 import LinkingConfiguration from "./Linking";
 import { Home } from "../screens/Home";
 import { Login } from "../screens/Login";
@@ -13,6 +11,7 @@ import { BackHandler, View } from "react-native";
 import { Queue } from "../screens/Queue";
 import { PhysicalQueueProvider } from "../context/PhysicalQueueContext";
 import { useEffect } from "react";
+import { RootStackParamList } from "../Models/types";
 
 export default function Navigation() {
   return (
@@ -36,7 +35,7 @@ function RootNavigator() {
       <UserProvider>
         <PhysicalQueueProvider>
           <Stack.Navigator
-            initialRouteName={"Home"}
+            // initialRouteName={"Login"}
             screenOptions={{ headerShown: false, gestureEnabled: false }}
           >
             <Stack.Screen name="Home" component={Home} />
