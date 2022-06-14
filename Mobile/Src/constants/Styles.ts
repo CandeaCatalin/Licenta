@@ -46,6 +46,14 @@ export const styles = StyleSheet.create({
     padding: 5,
     textAlign: "left",
   },
+  noteTag: {
+    color: "red",
+    fontWeight: "bold",
+    fontSize: 25,
+    padding: 5,
+    textAlign: "left",
+  },
+  noteText: { color: "red", fontSize: 25, padding: 5, textAlign: "left" },
   queueText: {
     color: "white",
     fontSize: 25,

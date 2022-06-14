@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "QueueManagementUPT",
+    "name": "qUPT",
     "slug": "QueueManagementUPT",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,12 +17,14 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "queue-management-system-upt",
+      "buildNumber": "1.0.0"
     },
     "android": {
+      "package": "com.catalin.candea.QueueManagementUPT",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#2d3192"
       }
     },
     "web": {

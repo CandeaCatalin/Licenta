@@ -19,7 +19,9 @@ export const Queue = () => {
   const userContext = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const physicalQueueContext = useContext(PhysicalQueueContext);
-
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [hours, setHours] = useState(0);
   useEffect(() => {
     const fetch = async () => {
       await physicalQueueContext.getPhysicalQueue();
@@ -30,6 +32,63 @@ export const Queue = () => {
     }, 10000);
     return () => clearInterval(interval);
   }, []);
+  useEffect(() => {
+    const splitiedEstimatedTime = physicalQueueContext.estimatedTime.split(":");
+
+    const seconds = parseInt(splitiedEstimatedTime[2]);
+    const minutes = parseInt(splitiedEstimatedTime[1]);
+    const hours = parseInt(splitiedEstimatedTime[0]);
+    setSeconds(seconds);
+    setMinutes(minutes);
+    setHours(hours);
+  }, [physicalQueueContext.estimatedTime]);
+  useEffect(() => {
+    const timerTimeout = setInterval(() => {
+      calculateTime();
+    }, 1000);
+    return () => {
+      clearInterval(timerTimeout);
+    };
+  }, [seconds, minutes, hours]);
+  const calculateTime = () => {
+    const newTime = { second: seconds, minute: minutes, hour: hours };
+    if (hours === 0) {
+      if (minutes === 0) {
+        if (seconds === 0) {
+          return false;
+        } else {
+          newTime.second--;
+        }
+      } else {
+        if (seconds === 0) {
+          newTime.minute--;
+          newTime.second = 59;
+        } else {
+          newTime.second--;
+        }
+      }
+    } else {
+      if (minutes === 0) {
+        if (seconds === 0) {
+          newTime.hour--;
+          newTime.minute = 59;
+          newTime.second = 59;
+        } else {
+          newTime.second--;
+        }
+      } else {
+        if (seconds === 0) {
+          newTime.minute--;
+          newTime.second = 59;
+        } else {
+          newTime.second--;
+        }
+      }
+    }
+    setSeconds(newTime.second);
+    setMinutes(newTime.minute);
+    setHours(newTime.hour);
+  };
   return (
     <LinearGradient
       colors={[" rgba(45, 49, 146, 1) 100%", "rgba(75, 79, 114, 1) 100%"]}
@@ -154,7 +213,14 @@ export const Queue = () => {
               <Text>
                 <Text style={styles.queueTextTag}>Estimated time: </Text>
                 <Text style={styles.queueText}>
-                  {physicalQueueContext.estimatedTime}
+                  {hours}:{minutes}:{seconds}
+                </Text>
+              </Text>
+              <Text>
+                <Text style={styles.noteTag}>Note:</Text>
+                <Text style={styles.noteText}>
+                  Be sure to be there 15 minutes earlier! The estimations might
+                  not be 100% accurate as the application is still in testing.
                 </Text>
               </Text>
               <TouchableOpacity

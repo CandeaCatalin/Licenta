@@ -24,12 +24,11 @@ export const QueueProvider: FC = ({ children }) => {
   }, []);
   const navigator = useNavigation();
   useEffect(() => {
-    const fetch = async () => {
-      setInterval(async function () {
-        await getQueues();
-      }, 60000);
-    };
-    fetch().then();
+    const getQueuesTimeout = setInterval(async function () {
+      await getQueues();
+    }, 60000);
+
+    return () => clearTimeout(getQueuesTimeout);
   }, []);
   const getQueues = async () => {
     try {

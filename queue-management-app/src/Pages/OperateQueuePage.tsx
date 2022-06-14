@@ -33,6 +33,7 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
     },
   });
   const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     const fetch = async () => {
       if (typeof params.id === "string") {
@@ -53,12 +54,10 @@ export const OperateQueuePage: FC<OperateQueuePageProps> = () => {
     fetch().then();
   }, []);
   useEffect(() => {
-    const fetch = async () => {
-      setInterval(async function () {
-        await getNextUserName();
-      }, 10000);
-    };
-    fetch().then();
+    const getUser = setInterval(async function () {
+      await getNextUserName();
+    }, 10000);
+    return () => clearTimeout(getUser);
   }, []);
   const buttonPress = async () => {
     setIsSubmitted(true);

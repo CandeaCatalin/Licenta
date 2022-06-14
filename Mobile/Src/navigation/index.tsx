@@ -35,7 +35,6 @@ function RootNavigator() {
       <UserProvider>
         <PhysicalQueueProvider>
           <Stack.Navigator
-            // initialRouteName={"Login"}
             screenOptions={{ headerShown: false, gestureEnabled: false }}
           >
             <Stack.Screen name="Home" component={Home} />

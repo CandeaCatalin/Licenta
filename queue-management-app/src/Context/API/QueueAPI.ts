@@ -5,17 +5,17 @@ export class QueueAPI {
   _endpoints: Endpoints;
   constructor() {
     this._endpoints = {};
-    this.baseUrl = "https://localhost:5001";
+    this.baseUrl = "https://queue-management-system-api.azurewebsites.net";
     this._endpoints = {
       getQueue: "/api/Queue/get",
       addQueue: "/api/Queue/add",
       deleteQueue: "/api/Queue/delete",
-      editQueue: "api/Queue/edit",
+      editQueue: "/api/Queue/edit",
       passUserInQueue: "/api/Queue/PassUserInQueue",
     };
   }
   addQueue = async (queue: Queue) => {
-    const response = await fetch(this._endpoints.addQueue, {
+    const response = await fetch(this.baseUrl + this._endpoints.addQueue, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export class QueueAPI {
     }
   };
   getQueue = async () => {
-    const response = await fetch(this._endpoints.getQueue, {
+    const response = await fetch(this.baseUrl + this._endpoints.getQueue, {
       method: "get",
       credentials: "include",
       headers: {
@@ -49,7 +49,7 @@ export class QueueAPI {
     return content;
   };
   deleteQueue = async (queueId: number) => {
-    const response = await fetch(this._endpoints.deleteQueue, {
+    const response = await fetch(this.baseUrl + this._endpoints.deleteQueue, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export class QueueAPI {
     }
   };
   editQueue = async (queue: Queue) => {
-    const response = await fetch(this._endpoints.editQueue, {
+    const response = await fetch(this.baseUrl + this._endpoints.editQueue, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,15 +87,18 @@ export class QueueAPI {
     }
   };
   passUserInQueue = async (physicalQueueId: number) => {
-    const response = await fetch(this._endpoints.passUserInQueue, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-      },
-      credentials: "include",
-      body: JSON.stringify({ physicalQueueId: physicalQueueId }),
-    }).then();
+    const response = await fetch(
+      this.baseUrl + this._endpoints.passUserInQueue,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+        credentials: "include",
+        body: JSON.stringify({ physicalQueueId: physicalQueueId }),
+      }
+    ).then();
     const content = await response;
     if (content.statusText === "OK") {
       toast.success("User passed!");

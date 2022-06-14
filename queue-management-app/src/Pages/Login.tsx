@@ -50,15 +50,6 @@ export const Login: FC<LoginProps> = () => {
                 />
                 <label htmlFor="floatingPassword">Password</label>
               </div>
-              <div className="checkbox mt-3">
-                <div className="row">
-                  <div className={"col-12"}>
-                    <Link className="text-link" to={"/forgetPassword"}>
-                      Forget password?
-                    </Link>
-                  </div>
-                </div>
-              </div>
 
               <button
                 className="submit-button w-100 btn btn-lg mt-3"

@@ -8,7 +8,7 @@ export class UserAPI {
 
   constructor() {
     this._endpoints = {};
-    this.baseUrl = "https://localhost:5001";
+    this.baseUrl = "https://queue-management-system-api.azurewebsites.net";
     this._endpoints = {
       register: "/api/Authentication/admin/register",
       login: "/api/Authentication/admin/login",
@@ -19,7 +19,7 @@ export class UserAPI {
   }
 
   getUser = async () => {
-    const response = await fetch(this._endpoints.getUser, {
+    const response = await fetch(this.baseUrl + this._endpoints.getUser, {
       method: "get",
       credentials: "include",
       headers: {
@@ -34,7 +34,7 @@ export class UserAPI {
     return content;
   };
   register = async (user: User, password: string, confirmPassword: string) => {
-    const response = await fetch(this._endpoints.register, {
+    const response = await fetch(this.baseUrl + this._endpoints.register, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -51,7 +51,7 @@ export class UserAPI {
     }
   };
   login = async (email: string, password: string) => {
-    const response = await fetch(this._endpoints.login, {
+    const response = await fetch(this.baseUrl + this._endpoints.login, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export class UserAPI {
     return true;
   };
   addQueue = async (queue: Queue) => {
-    const response = await fetch(this._endpoints.addQueue, {
+    const response = await fetch(this.baseUrl + this._endpoints.addQueue, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

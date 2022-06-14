@@ -3,21 +3,24 @@ export class PhysicalQueueAPI {
   _endpoints: Endpoints;
   constructor() {
     this._endpoints = {};
-    this.baseUrl = "https://localhost:5001";
+    this.baseUrl = "https://queue-management-system-api.azurewebsites.net";
     this._endpoints = {
       getPhysicalQueue: "/api/PhysicalQueue/get?id=",
       getNextUser: "/api/PhysicalQueue/getNextUser?id=",
     };
   }
   getPhysicalQueue = async (id: number) => {
-    const response = await fetch(this._endpoints.getPhysicalQueue + id, {
-      method: "get",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-      },
-    });
+    const response = await fetch(
+      this.baseUrl + this._endpoints.getPhysicalQueue + id,
+      {
+        method: "get",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    );
     const content = await response.json();
 
     if (typeof content.id === "number") {
@@ -28,7 +31,7 @@ export class PhysicalQueueAPI {
   };
   getNextUser = async (physicalQueueId: number) => {
     const response = await fetch(
-      this._endpoints.getNextUser + physicalQueueId,
+      this.baseUrl + this._endpoints.getNextUser + physicalQueueId,
       {
         method: "post",
         credentials: "include",
