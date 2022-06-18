@@ -217,7 +217,7 @@ export const Queue = () => {
                 </Text>
               </Text>
               <Text>
-                <Text style={styles.noteTag}>Note:</Text>
+                <Text style={styles.noteTag}>Note: </Text>
                 <Text style={styles.noteText}>
                   Be sure to be there 15 minutes earlier! The estimations might
                   not be 100% accurate as the application is still in testing.

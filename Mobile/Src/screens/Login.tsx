@@ -37,6 +37,9 @@ export const Login = () => {
       state.loginCredentials.email,
       state.loginCredentials.password
     );
+    setState((prevState) => {
+      return { ...prevState, isSubmitted: false };
+    });
   };
 
   const onNoAccountClick = () => {
